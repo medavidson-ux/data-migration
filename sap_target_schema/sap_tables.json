@@ -1,0 +1,4555 @@
+{
+  "T001": {
+    "description": "Company Codes",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BUTXT",
+        "description": "Company Name",
+        "sap_type": "CHAR(25)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "LAND1",
+        "description": "Country Key",
+        "sap_type": "CHAR(3)",
+        "key": false
+      }
+    ]
+  },
+  "CSKS": {
+    "description": "Cost Center Master Data",
+    "module": "CO",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KOKRS",
+        "description": "Controlling Area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "KOSTL",
+        "description": "Cost Center",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "DATBI",
+        "description": "Valid To",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "DATAB",
+        "description": "Valid From",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "CSKT": {
+    "description": "Cost Center Texts",
+    "module": "CO",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "SPRAS",
+        "description": "Language",
+        "sap_type": "LANG",
+        "key": true
+      },
+      {
+        "field": "KOKRS",
+        "description": "Controlling Area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "KOSTL",
+        "description": "Cost Center",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "DATBI",
+        "description": "Valid To",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "KTEXT",
+        "description": "Name",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "TCURC": {
+    "description": "Currency Codes",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency Key",
+        "sap_type": "CUKY",
+        "key": true
+      },
+      {
+        "field": "LTEXT",
+        "description": "Long Text",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "TCURR": {
+    "description": "Exchange Rates",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KURST",
+        "description": "Exchange Rate Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "FCURR",
+        "description": "From Currency",
+        "sap_type": "CUKY",
+        "key": true
+      },
+      {
+        "field": "TCURR",
+        "description": "To Currency",
+        "sap_type": "CUKY",
+        "key": true
+      },
+      {
+        "field": "GDATU",
+        "description": "Valid From",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "UKURS",
+        "description": "Exchange Rate",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "NRIV": {
+    "description": "Number Range Intervals",
+    "module": "Cross-app",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "OBJECT",
+        "description": "Number Range Object",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "NRRANGENR",
+        "description": "Range Number",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "FROMNUMBER",
+        "description": "From Number",
+        "sap_type": "CHAR(20)",
+        "key": false
+      },
+      {
+        "field": "TONUMBER",
+        "description": "To Number",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "T052": {
+    "description": "Terms of Payment",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ZTERM",
+        "description": "Payment Terms Key",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "TEXT1",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      },
+      {
+        "field": "ZTAG1",
+        "description": "Days 1",
+        "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "ZPRZ1",
+        "description": "Percentage 1",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "T007A": {
+    "description": "Tax Codes (Processing)",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KALSM",
+        "description": "Tax Procedure",
+        "sap_type": "CHAR(6)",
+        "key": true
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax Code",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "TEXT1",
+        "description": "Description",
+        "sap_type": "CHAR(50)",
+        "key": false
+      }
+    ]
+  },
+  "T007S": {
+    "description": "Tax Code Descriptions",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "SPRAS",
+        "description": "Language",
+        "sap_type": "LANG",
+        "key": true
+      },
+      {
+        "field": "KALSM",
+        "description": "Tax Procedure",
+        "sap_type": "CHAR(6)",
+        "key": true
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax Code",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "TEXT1",
+        "description": "Description",
+        "sap_type": "CHAR(50)",
+        "key": false
+      }
+    ]
+  },
+  "T009": {
+    "description": "Fiscal Year Variants",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "PERIV",
+        "description": "Fiscal Year Variant",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "BUTXT",
+        "description": "Description",
+        "sap_type": "CHAR(20)",
+        "key": false
+      },
+      {
+        "field": "ANZBP",
+        "description": "Number of Periods",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "T009B": {
+    "description": "Fiscal Year Period Texts",
+    "module": "FI",
+    "type": "config",
+    "fields": [
+      {
+        "field": "PERIV",
+        "description": "Fiscal Year Variant",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "SPRAS",
+        "description": "Language",
+        "sap_type": "LANG",
+        "key": true
+      },
+      {
+        "field": "POPER",
+        "description": "Posting Period",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MONAT",
+        "description": "Month Text",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "SKA1": {
+    "description": "GL Account Master (Chart of Accounts)",
+    "module": "FI",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KTOPL",
+        "description": "Chart of Accounts",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "SAKNR",
+        "description": "GL Account Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "KTOKS",
+        "description": "Account Group",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "XBILK",
+        "description": "Balance Sheet Account Indicator",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "SKB1": {
+    "description": "GL Account Master (Company Code Segment)",
+    "module": "FI",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "SAKNR",
+        "description": "GL Account Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "WAERS",
+        "description": "Account Currency",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "MITKZ",
+        "description": "Reconciliation Account Type",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "ACDOCA": {
+    "description": "Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table)",
+    "module": "FI (Universal Journal)",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "RCLNT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "RLDNR",
+        "description": "Ledger",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "RBUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "DOCLN",
+        "description": "Journal Entry Item",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "RACCT",
+        "description": "GL Account",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "KOSTL",
+        "description": "Cost Center",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "POPER",
+        "description": "Posting Period",
+        "sap_type": "NUMC",
+        "key": false
+      },
+      {
+        "field": "BUDAT",
+        "description": "Posting Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "SGTXT",
+        "description": "Line Item Text",
+        "sap_type": "CHAR(50)",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "RWCUR",
+        "description": "Transaction Currency",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "HSL",
+        "description": "Amount in Company Code Currency (signed)",
+        "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "DRCRK",
+        "description": "Debit/Credit Indicator ('S'=Debit, 'H'=Credit)",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "BKPF": {
+    "description": "Accounting Document Header",
+    "module": "FI",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "BLDAT",
+        "description": "Document Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "BUDAT",
+        "description": "Posting Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "BLART",
+        "description": "Document Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "MONAT",
+        "description": "Fiscal Period",
+        "sap_type": "NUMC",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "BKTXT",
+        "description": "Document Header Text",
+        "sap_type": "CHAR(25)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency Key",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "USNAM",
+        "description": "User Name (entered by)",
+        "sap_type": "CHAR(12)",
+        "key": false
+      }
+    ]
+  },
+  "VBKPF": {
+    "description": "Document Header for Parked Documents (pre-posting holding area)",
+    "module": "FI",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "STATUS_ALL",
+        "description": "Overall Status of Parked Document",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "REGUH": {
+    "description": "Payment Program: Payment Header",
+    "module": "FI",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LAUFD",
+        "description": "Run Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "LAUFI",
+        "description": "Run ID",
+        "sap_type": "CHAR(6)",
+        "key": true
+      },
+      {
+        "field": "ZBUKR",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "LIFNR",
+        "description": "Vendor",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "KUNNR",
+        "description": "Customer",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "RZAWE",
+        "description": "Payment Method",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "RWBTR",
+        "description": "Payment Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "REGUP": {
+    "description": "Payment Program: Payment Line Items",
+    "module": "FI",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LAUFD",
+        "description": "Run Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "LAUFI",
+        "description": "Run ID",
+        "sap_type": "CHAR(6)",
+        "key": true
+      },
+      {
+        "field": "XVORL",
+        "description": "Payment Proposal Flag",
+        "sap_type": "CHAR(1)",
+        "key": true
+      },
+      {
+        "field": "VBLNR",
+        "description": "Payment Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Cleared Document Number",
+        "sap_type": "CHAR(10)",
+        "key": false
+      }
+    ]
+  },
+  "RSEG": {
+    "description": "Invoice Verification: Line Items",
+    "module": "MM-IV",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Invoice Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "BUZEI",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchase Order",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "EBELP",
+        "description": "PO Item",
+        "sap_type": "NUMC",
+        "key": false
+      },
+      {
+        "field": "WRBTR",
+        "description": "Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "RBKP": {
+    "description": "Invoice Verification: Document Header",
+    "module": "MM-IV",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "Invoice Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "LIFNR",
+        "description": "Vendor",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "BLDAT",
+        "description": "Document Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "RMWWR",
+        "description": "Gross Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "VBRK": {
+    "description": "Billing Document Header",
+    "module": "SD-Billing",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Billing Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "FKART",
+        "description": "Billing Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KUNAG",
+        "description": "Sold-to Party",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "FKDAT",
+        "description": "Billing Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "NETWR",
+        "description": "Net Value",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "VBRP": {
+    "description": "Billing Document Item",
+    "module": "SD-Billing",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Billing Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "FKIMG",
+        "description": "Billed Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "NETWR",
+        "description": "Net Value",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "ANKA": {
+    "description": "Asset Class: General Data",
+    "module": "FI-AA",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ANLKL",
+        "description": "Asset Class",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "KTOPL",
+        "description": "Chart of Accounts",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "ANKT": {
+    "description": "Asset Class Descriptions",
+    "module": "FI-AA",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "SPRAS",
+        "description": "Language",
+        "sap_type": "LANG",
+        "key": true
+      },
+      {
+        "field": "ANLKL",
+        "description": "Asset Class",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "TXK50",
+        "description": "Description",
+        "sap_type": "CHAR(50)",
+        "key": false
+      }
+    ]
+  },
+  "ANLA": {
+    "description": "Asset Master: General Data",
+    "module": "FI-AA",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLKL",
+        "description": "Asset Class",
+        "sap_type": "CHAR(8)",
+        "key": false
+      },
+      {
+        "field": "TXT50",
+        "description": "Description",
+        "sap_type": "CHAR(50)",
+        "key": false
+      },
+      {
+        "field": "AKTIV",
+        "description": "Capitalization Date",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "ANLZ": {
+    "description": "Asset Master: Time-Dependent Data",
+    "module": "FI-AA",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BDATU",
+        "description": "Valid To",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "KOSTL",
+        "description": "Cost Center",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "STORT",
+        "description": "Location",
+        "sap_type": "CHAR(10)",
+        "key": false
+      }
+    ]
+  },
+  "ANLB": {
+    "description": "Asset Master: Depreciation Terms",
+    "module": "FI-AA",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "AFABE",
+        "description": "Depreciation Area",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "AFASL",
+        "description": "Depreciation Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "NDJAR",
+        "description": "Planned Useful Life (Years)",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "AFAMA": {
+    "description": "Depreciation Key",
+    "module": "FI-AA",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AFAPL",
+        "description": "Chart of Depreciation",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "AFASL",
+        "description": "Depreciation Key",
+        "sap_type": "CHAR(4)",
+        "key": true
+      }
+    ]
+  },
+  "T499S": {
+    "description": "Location (Plant Location Groups)",
+    "module": "FI-AA",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "STORT",
+        "description": "Location",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "STLTX",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      }
+    ]
+  },
+  "ANEK": {
+    "description": "Asset Posting Document Header",
+    "module": "FI-AA",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": false
+      },
+      {
+        "field": "BELNR",
+        "description": "Document Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      }
+    ]
+  },
+  "ANEP": {
+    "description": "Asset Posting Line Items",
+    "module": "FI-AA",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "LNRAN",
+        "description": "Sequence Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "BWASL",
+        "description": "Transaction Type",
+        "sap_type": "CHAR(3)",
+        "key": false
+      },
+      {
+        "field": "ANBTR",
+        "description": "Posting Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "ANLP": {
+    "description": "Asset Periodic Values (Planned Depreciation)",
+    "module": "FI-AA",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "AFABER",
+        "description": "Depreciation Area",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "PERAF",
+        "description": "Period",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "NAFAP",
+        "description": "Planned Depreciation",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "ANLC": {
+    "description": "Asset Value Fields (Accumulated Values)",
+    "module": "FI-AA",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ANLN1",
+        "description": "Asset Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "AFABER",
+        "description": "Depreciation Area",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "KANSW",
+        "description": "Cumulative Acquisition Value",
+        "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "KNAFA",
+        "description": "Accumulated Depreciation",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "MPLA": {
+    "description": "Maintenance Plan Header",
+    "module": "PM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WARPL",
+        "description": "Maintenance Plan",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "WPTXT",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "MPOS": {
+    "description": "Maintenance Item",
+    "module": "PM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WAPOS",
+        "description": "Maintenance Item",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment",
+        "sap_type": "CHAR(18)",
+        "key": false
+      }
+    ]
+  },
+  "AUFK": {
+    "description": "Order Master Data (PM/PP/Internal Orders)",
+    "module": "PM / PP / CO",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFNR",
+        "description": "Order Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "AUART",
+        "description": "Order Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KTEXT",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "AFIH": {
+    "description": "Maintenance Order Header (PM-specific)",
+    "module": "PM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFNR",
+        "description": "Order Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "ILART",
+        "description": "Maintenance Activity Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "EQUI": {
+    "description": "Equipment Master",
+    "module": "PM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "EQTYP",
+        "description": "Equipment Category",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "EQKTX",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "EQUZ": {
+    "description": "Equipment Usage/Installation History",
+    "module": "PM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "DATBI",
+        "description": "Valid To",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "DATAB",
+        "description": "Valid From",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "IWERK",
+        "description": "Maintenance Plant",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "BUT000": {
+    "description": "Business Partner: General Data",
+    "module": "Cross (Business Partner)",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PARTNER",
+        "description": "Business Partner Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "TYPE",
+        "description": "BP Category",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "NAME_ORG1",
+        "description": "Organization Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "BU_SORT1",
+        "description": "Search Term",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "BUT050": {
+    "description": "Business Partner Relationships",
+    "module": "Cross (Business Partner)",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "RELNR",
+        "description": "Relationship Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "PARTNER1",
+        "description": "BP 1",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "PARTNER2",
+        "description": "BP 2",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "RELTYP",
+        "description": "Relationship Category",
+        "sap_type": "CHAR(10)",
+        "key": false
+      }
+    ]
+  },
+  "KNVV": {
+    "description": "Customer Master: Sales Area Data",
+    "module": "SD",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KUNNR",
+        "description": "Customer",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "VKORG",
+        "description": "Sales Organization",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "VTWEG",
+        "description": "Distribution Channel",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "SPART",
+        "description": "Division",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "KDGRP",
+        "description": "Customer Group",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "QMEL": {
+    "description": "Notification Header (Quality/Service/Maintenance)",
+    "module": "CS / QM / PM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "QMNUM",
+        "description": "Notification Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "QMART",
+        "description": "Notification Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "QMTXT",
+        "description": "Short Text",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "ERDAT",
+        "description": "Created On",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "QMIH": {
+    "description": "Notification: Additional Data for Service (CS) Notification",
+    "module": "CS",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "QMNUM",
+        "description": "Notification Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment",
+        "sap_type": "CHAR(18)",
+        "key": false
+      }
+    ]
+  },
+  "PA0001": {
+    "description": "HR Infotype 0001: Organizational Assignment",
+    "module": "PA",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Subtype",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "ORGEH",
+        "description": "Organizational Unit",
+        "sap_type": "NUMC(8)",
+        "key": false
+      },
+      {
+        "field": "PLANS",
+        "description": "Position",
+        "sap_type": "NUMC(8)",
+        "key": false
+      }
+    ]
+  },
+  "PA0002": {
+    "description": "HR Infotype 0002: Personal Data",
+    "module": "PA",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "NACHN",
+        "description": "Last Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "VORNA",
+        "description": "First Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "GBDAT",
+        "description": "Date of Birth",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "PA0006": {
+    "description": "HR Infotype 0006: Addresses",
+    "module": "PA",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Address Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ORT01",
+        "description": "City",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "STRAS",
+        "description": "Street",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "PA0105": {
+    "description": "HR Infotype 0105: Communication",
+    "module": "PA",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Communication Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "USRID",
+        "description": "ID/Value (e.g. email)",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "PA0008": {
+    "description": "HR Infotype 0008: Basic Pay",
+    "module": "PY",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "TRFGR",
+        "description": "Pay Grade",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "BET01",
+        "description": "Wage Amount 1",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "PA0014": {
+    "description": "HR Infotype 0014: Recurring Payments/Deductions",
+    "module": "PY",
+    "type": "transaction (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Wage Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "BETRG",
+        "description": "Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "PA0015": {
+    "description": "HR Infotype 0015: Additional Payments",
+    "module": "PY",
+    "type": "transaction (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Wage Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "ZEIPU",
+        "description": "Payment Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "BETRG",
+        "description": "Amount",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "PA0003": {
+    "description": "HR Infotype 0003: Payroll Status",
+    "module": "PY",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "ABKRS",
+        "description": "Payroll Area",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "PAYTY",
+        "description": "Payroll Run Type",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "PA2001": {
+    "description": "HR Infotype 2001: Absences",
+    "module": "PA-Time",
+    "type": "transaction (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Absence Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ABWTG",
+        "description": "Number of Days",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "PA2006": {
+    "description": "HR Infotype 2006: Absence Quotas",
+    "module": "PA-Time",
+    "type": "transaction (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Quota Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ANZHL",
+        "description": "Quota Number/Days",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "PA2011": {
+    "description": "HR Infotype 2011: Time Events",
+    "module": "PA-Time",
+    "type": "transaction (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "UZEIT",
+        "description": "Time",
+        "sap_type": "TIMS",
+        "key": true
+      },
+      {
+        "field": "ARBDA",
+        "description": "Work Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "VORGA",
+        "description": "Time Event Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "CATSDB": {
+    "description": "Cross-Application Time Sheet (CATS) Records",
+    "module": "PA-Time / PS",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WORKDATE",
+        "description": "Work Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "COUNTER",
+        "description": "Line Counter",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "CATSHOURS",
+        "description": "Hours",
+        "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "PROJN",
+        "description": "WBS Element",
+        "sap_type": "CHAR(24)",
+        "key": false
+      }
+    ]
+  },
+  "T510": {
+    "description": "Pay Scale Groups",
+    "module": "PY",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "TRFAR",
+        "description": "Pay Scale Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "TRFGB",
+        "description": "Pay Scale Area",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "TRFGR",
+        "description": "Pay Scale Group",
+        "sap_type": "CHAR(8)",
+        "key": true
+      }
+    ]
+  },
+  "T512W": {
+    "description": "Wage Type Valuation / Catalog",
+    "module": "PY",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MOLGA",
+        "description": "Country Grouping",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "LGART",
+        "description": "Wage Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "LGGRP",
+        "description": "Wage Type Group",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "T508A": {
+    "description": "Work Schedule Rules",
+    "module": "PA-Time",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "SCHKZ",
+        "description": "Work Schedule Rule",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "MOTXT",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      }
+    ]
+  },
+  "T556A": {
+    "description": "Absence Quota Types",
+    "module": "PA-Time",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MOLGA",
+        "description": "Country Grouping",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "KVERB",
+        "description": "Quota Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      }
+    ]
+  },
+  "T569V": {
+    "description": "Payroll Control Record",
+    "module": "PY",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ABKRS",
+        "description": "Payroll Area",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "PABRJ",
+        "description": "Payroll Year",
+        "sap_type": "NUMC",
+        "key": false
+      },
+      {
+        "field": "PABRP",
+        "description": "Payroll Period",
+        "sap_type": "NUMC",
+        "key": false
+      },
+      {
+        "field": "SRTZA",
+        "description": "Payroll Status",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "T001P": {
+    "description": "Personnel Sub-areas / Factory Calendar Assignment",
+    "module": "PA",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Personnel Area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BTRTL",
+        "description": "Personnel Sub-area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      }
+    ]
+  },
+  "TFACS": {
+    "description": "Factory Calendar",
+    "module": "Cross-app (config)",
+    "type": "config",
+    "fields": [
+      {
+        "field": "IDENT",
+        "description": "Factory Calendar ID",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "KTEXT",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      }
+    ]
+  },
+  "HRP1000": {
+    "description": "Org Management: Infotype 1000 (Objects \u2014 Org Unit, Position, Job, Qualification, etc.)",
+    "module": "PA-OM / PA-PD",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PLVAR",
+        "description": "Plan Version",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "OTYPE",
+        "description": "Object Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "OBJID",
+        "description": "Object ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "STEXT",
+        "description": "Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "HRP1001": {
+    "description": "Org Management: Infotype 1001 (Relationships)",
+    "module": "PA-OM / PA-PD",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PLVAR",
+        "description": "Plan Version",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "OTYPE",
+        "description": "Object Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "OBJID",
+        "description": "Object ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Relationship",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "SOBID",
+        "description": "Related Object ID",
+        "sap_type": "NUMC(8)",
+        "key": false
+      }
+    ]
+  },
+  "PB0001": {
+    "description": "Applicant Infotype 0001: Applicant Actions",
+    "module": "PA-Recruitment",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Applicant Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "MASSN",
+        "description": "Applicant Action Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "PB0002": {
+    "description": "Applicant Infotype 0002: Applicant's Personal Data",
+    "module": "PA-Recruitment",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Applicant Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "NACHN",
+        "description": "Last Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "VORNA",
+        "description": "First Name",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "HAP_DOCUMENT": {
+    "description": "Appraisal Document Header (Performance Management)",
+    "module": "PA-EP",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "APP_ID",
+        "description": "Appraisal Document ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "CAT_ID",
+        "description": "Appraisal Category",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "STATUS",
+        "description": "Status",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "LAGP": {
+    "description": "Storage Bin Master (Warehouse Management)",
+    "module": "MM-WM/EWM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LGNUM",
+        "description": "Warehouse Number",
+        "sap_type": "CHAR(3)",
+        "key": true
+      },
+      {
+        "field": "LGTYP",
+        "description": "Storage Type",
+        "sap_type": "CHAR(3)",
+        "key": true
+      },
+      {
+        "field": "LGPLA",
+        "description": "Storage Bin",
+        "sap_type": "CHAR(10)",
+        "key": true
+      }
+    ]
+  },
+  "T134": {
+    "description": "Material Types",
+    "module": "MM",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MTART",
+        "description": "Material Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "MTBEZ",
+        "description": "Description",
+        "sap_type": "CHAR(25)",
+        "key": false
+      }
+    ]
+  },
+  "T006": {
+    "description": "Units of Measure",
+    "module": "MM",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MSEHI",
+        "description": "Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": true
+      },
+      {
+        "field": "MSEHT",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      }
+    ]
+  },
+  "T300": {
+    "description": "Warehouse Number Assignment",
+    "module": "MM-WM (config)",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LGNUM",
+        "description": "Warehouse Number",
+        "sap_type": "CHAR(3)",
+        "key": true
+      },
+      {
+        "field": "LNUMT",
+        "description": "Description",
+        "sap_type": "CHAR(30)",
+        "key": false
+      }
+    ]
+  },
+  "IKPF": {
+    "description": "Physical Inventory Document Header",
+    "module": "MM-IM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "IBLNR",
+        "description": "Physical Inventory Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "ISEG": {
+    "description": "Physical Inventory Document Items",
+    "module": "MM-IM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "IBLNR",
+        "description": "Physical Inventory Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "ZEILI",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "BSTAE",
+        "description": "Counted Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "MSEG": {
+    "description": "Material Document: Line Items",
+    "module": "MM-IM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MBLNR",
+        "description": "Material Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "MJAHR",
+        "description": "Material Doc Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "ZEILE",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "BWART",
+        "description": "Movement Type",
+        "sap_type": "CHAR(3)",
+        "key": false
+      },
+      {
+        "field": "MENGE",
+        "description": "Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "MKPF": {
+    "description": "Material Document: Header",
+    "module": "MM-IM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MBLNR",
+        "description": "Material Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "MJAHR",
+        "description": "Material Doc Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "BLDAT",
+        "description": "Document Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "BUDAT",
+        "description": "Posting Date",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "MARC": {
+    "description": "Material Master: Plant Data",
+    "module": "MM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "MINBE",
+        "description": "Reorder Point",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "DISMM",
+        "description": "MRP Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "MCHA": {
+    "description": "Batch Master (Plant Level)",
+    "module": "MM-Batch",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "CHARG",
+        "description": "Batch Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      }
+    ]
+  },
+  "MCH1": {
+    "description": "Batch Master (Material Level)",
+    "module": "MM-Batch",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "CHARG",
+        "description": "Batch Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "VFDAT",
+        "description": "Shelf Life Expiration Date",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "MCHB": {
+    "description": "Batch Stocks",
+    "module": "MM-Batch",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "CHARG",
+        "description": "Batch Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "CLABS",
+        "description": "Unrestricted Stock",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "SER01": {
+    "description": "Serial Number Master Link",
+    "module": "MM-Serial / PM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "SERNR",
+        "description": "Serial Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "EQUNR",
+        "description": "Equipment Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      }
+    ]
+  },
+  "MBEW": {
+    "description": "Material Valuation",
+    "module": "MM-Valuation",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "BWKEY",
+        "description": "Valuation Area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BWTAR",
+        "description": "Valuation Type",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "VPRSV",
+        "description": "Price Control Indicator",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "STPRS",
+        "description": "Standard Price",
+        "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "VERPR",
+        "description": "Moving Average Price",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "CKIS": {
+    "description": "Cost Estimate: Items",
+    "module": "CO-PC",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KALNR",
+        "description": "Costing Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "KADKY",
+        "description": "Costing Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      }
+    ]
+  },
+  "KEKO": {
+    "description": "Product Costing: Cost Estimate Header",
+    "module": "CO-PC",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KALNR",
+        "description": "Costing Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "KADKY",
+        "description": "Costing Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      }
+    ]
+  },
+  "MARA": {
+    "description": "Material Master: General Data",
+    "module": "MM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "MTART",
+        "description": "Material Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "MATKL",
+        "description": "Material Group",
+        "sap_type": "CHAR(9)",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Base Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
+      }
+    ]
+  },
+  "MARD": {
+    "description": "Storage Location Stock",
+    "module": "MM-IM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "LGORT",
+        "description": "Storage Location",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "LABST",
+        "description": "Unrestricted Stock",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "STKO": {
+    "description": "Bill of Material: Header",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "STLNR",
+        "description": "BOM Number",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "STLAL",
+        "description": "Alternative BOM",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "STLAN",
+        "description": "BOM Usage",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "STPO": {
+    "description": "Bill of Material: Item",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "STLNR",
+        "description": "BOM Number",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "STLKN",
+        "description": "BOM Item Node",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "IDNRK",
+        "description": "Component Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "MENGE",
+        "description": "Component Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "PLKO": {
+    "description": "Routing: Header",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PLNTY",
+        "description": "Task List Type",
+        "sap_type": "CHAR(1)",
+        "key": true
+      },
+      {
+        "field": "PLNNR",
+        "description": "Group",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "PLNAL",
+        "description": "Group Counter",
+        "sap_type": "CHAR(2)",
+        "key": true
+      }
+    ]
+  },
+  "PLPO": {
+    "description": "Routing: Operations",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PLNTY",
+        "description": "Task List Type",
+        "sap_type": "CHAR(1)",
+        "key": true
+      },
+      {
+        "field": "PLNNR",
+        "description": "Group",
+        "sap_type": "CHAR(8)",
+        "key": true
+      },
+      {
+        "field": "PLNKN",
+        "description": "Node Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "ARBPL",
+        "description": "Work Center",
+        "sap_type": "CHAR(8)",
+        "key": false
+      }
+    ]
+  },
+  "CRHD": {
+    "description": "Work Center Header",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "OBJTY",
+        "description": "Object Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "OBJID",
+        "description": "Object ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "ARBPL",
+        "description": "Work Center",
+        "sap_type": "CHAR(8)",
+        "key": false
+      },
+      {
+        "field": "KTEXT",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "KAKO": {
+    "description": "Capacity Header Segment",
+    "module": "PP",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "OBJID",
+        "description": "Capacity Object ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "KAPTAG",
+        "description": "Operating Time/Day",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "RESB": {
+    "description": "Reservation / Dependent Requirements",
+    "module": "PP-MRP",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "RSNUM",
+        "description": "Reservation Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "RSPOS",
+        "description": "Item Number",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "BDMNG",
+        "description": "Requirement Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "AFKO": {
+    "description": "Production/Process Order: Header",
+    "module": "PP",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFNR",
+        "description": "Order Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "GSTRP",
+        "description": "Basic Start Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "GLTRP",
+        "description": "Basic Finish Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "PLNBEZ",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      }
+    ]
+  },
+  "AFPO": {
+    "description": "Production Order: Item",
+    "module": "PP",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFNR",
+        "description": "Order Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "PSMNG",
+        "description": "Order Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "AFRU": {
+    "description": "Order Confirmations",
+    "module": "PP",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "RUECK",
+        "description": "Confirmation Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "RMZHL",
+        "description": "Counter",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "AUFNR",
+        "description": "Order Number",
+        "sap_type": "CHAR(12)",
+        "key": false
+      },
+      {
+        "field": "LMNGA",
+        "description": "Confirmed Yield Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "QALS": {
+    "description": "Inspection Lot Record",
+    "module": "QM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PRUEFLOS",
+        "description": "Inspection Lot Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "ART",
+        "description": "Inspection Type",
+        "sap_type": "CHAR(2)",
+        "key": false
+      }
+    ]
+  },
+  "QAMB": {
+    "description": "Inspection Lot: Sample-Drawing Data",
+    "module": "QM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PRUEFLOS",
+        "description": "Inspection Lot Number",
+        "sap_type": "CHAR(12)",
+        "key": true
+      },
+      {
+        "field": "VORGLFD",
+        "description": "Sequential Number",
+        "sap_type": "NUMC",
+        "key": true
+      }
+    ]
+  },
+  "COEP": {
+    "description": "CO Object: Line Items (Actual/Plan)",
+    "module": "CO",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KOKRS",
+        "description": "Controlling Area",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BELNR",
+        "description": "CO Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BUZEI",
+        "description": "Line Item",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "WRTTP",
+        "description": "Value Type (actual/plan)",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "OBJNR",
+        "description": "CO Object Number",
+        "sap_type": "CHAR(22)",
+        "key": false
+      },
+      {
+        "field": "WKGBTR",
+        "description": "Amount in Controlling Area Currency",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "PROJ": {
+    "description": "Project Definition",
+    "module": "PS",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PSPNR",
+        "description": "Project Internal ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "PSPID",
+        "description": "Project ID (external)",
+        "sap_type": "CHAR(24)",
+        "key": false
+      },
+      {
+        "field": "POST1",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "PRPS": {
+    "description": "WBS Element Master Data",
+    "module": "PS",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PSPNR",
+        "description": "WBS Element Internal ID",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "POSID",
+        "description": "WBS Element (external)",
+        "sap_type": "CHAR(24)",
+        "key": false
+      },
+      {
+        "field": "POST1",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "STUFE",
+        "description": "Hierarchy Level",
+        "sap_type": "NUMC",
+        "key": false
+      }
+    ]
+  },
+  "AFVC": {
+    "description": "Network/Order Activity (Operation within a Network)",
+    "module": "PS",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFPL",
+        "description": "Routing/Network Number",
+        "sap_type": "NUMC(10)",
+        "key": true
+      },
+      {
+        "field": "APLZL",
+        "description": "Activity Counter",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "VORNR",
+        "description": "Activity Number",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "LTXA1",
+        "description": "Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "AFVV": {
+    "description": "Network Activity: Quantities/Dates/Values",
+    "module": "PS",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "AUFPL",
+        "description": "Routing/Network Number",
+        "sap_type": "NUMC(10)",
+        "key": true
+      },
+      {
+        "field": "APLZL",
+        "description": "Activity Counter",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "ARBEI",
+        "description": "Work",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "BPGE": {
+    "description": "Budget: Total Values (Overall/Original)",
+    "module": "CO / PS (Budgeting)",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "OBJNR",
+        "description": "CO Object Number",
+        "sap_type": "CHAR(22)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "WRTTP",
+        "description": "Value Type",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "WTGXXX",
+        "description": "Total Value (year-dependent field)",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "BPJA": {
+    "description": "Budget: Annual Values",
+    "module": "CO / PS (Budgeting)",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "OBJNR",
+        "description": "CO Object Number",
+        "sap_type": "CHAR(22)",
+        "key": true
+      },
+      {
+        "field": "GJAHR",
+        "description": "Fiscal Year",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "WLJHR",
+        "description": "Annual Budget Value",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "UKM_BP": {
+    "description": "FSCM Credit Management: Business Partner Credit Data",
+    "module": "FI-FSCM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "PARTNER",
+        "description": "Business Partner",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "CREDIT_SEGMENT",
+        "description": "Credit Segment",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "CREDIT_LIMIT",
+        "description": "Credit Limit",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "LIKP": {
+    "description": "Delivery Header",
+    "module": "SD-Delivery",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Delivery Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "LFART",
+        "description": "Delivery Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KUNNR",
+        "description": "Ship-to Party",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "LFDAT",
+        "description": "Delivery Date",
+        "sap_type": "DATS",
+        "key": false
+      }
+    ]
+  },
+  "LIPS": {
+    "description": "Delivery Item",
+    "module": "SD-Delivery",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Delivery Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "LFIMG",
+        "description": "Delivery Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      }
+    ]
+  },
+  "VBAK": {
+    "description": "Sales Document: Header (Orders / Quotes / Contracts)",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "AUART",
+        "description": "Sales Document Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "VKORG",
+        "description": "Sales Organization",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KUNNR",
+        "description": "Sold-to Party",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "AUDAT",
+        "description": "Document Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "VDATU",
+        "description": "Requested Delivery Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "NETWR",
+        "description": "Net Value",
+        "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "WAERK",
+        "description": "SD Document Currency",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "MWSBK",
+        "description": "Tax Amount in Document Currency",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "VBAP": {
+    "description": "Sales Document: Item",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "ARKTX",
+        "description": "Short Text (Item)",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "VRKME",
+        "description": "Sales Unit",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "KWMENG",
+        "description": "Order Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "LGORT",
+        "description": "Storage Location",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "NETWR",
+        "description": "Net Value (Item)",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "KONP": {
+    "description": "Pricing Condition Records: Items",
+    "module": "SD-Pricing / MM-Pricing",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KNUMH",
+        "description": "Condition Record Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "KOPOS",
+        "description": "Condition Item",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "KSCHL",
+        "description": "Condition Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KBETR",
+        "description": "Condition Amount/Rate",
+        "sap_type": "DEC",
+        "key": false
+      }
+    ]
+  },
+  "KONV": {
+    "description": "Pricing: Transaction Data \u2014 conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",
+    "module": "SD-Pricing",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KNUMV",
+        "description": "Document Condition Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "KPOSN",
+        "description": "Condition Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "STUNR",
+        "description": "Condition Counter/Step",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "KSCHL",
+        "description": "Condition Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KWERT",
+        "description": "Condition Value",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "VBFA": {
+    "description": "Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELV",
+        "description": "Preceding Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNV",
+        "description": "Preceding Document Item",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Subsequent Document",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNN",
+        "description": "Subsequent Document Item",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "VBTYP_N",
+        "description": "Subsequent Document Category",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "VBPA": {
+    "description": "Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number (0 = header)",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "PARVW",
+        "description": "Partner Function",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "KUNNR",
+        "description": "Customer Number",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number (e.g. Salesperson)",
+        "sap_type": "NUMC(8)",
+        "key": false
+      }
+    ]
+  },
+  "VBKD": {
+    "description": "Sales Document: Business Data (payment terms, incoterms, currency at header/item)",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number (0 = header)",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "INCO1",
+        "description": "Incoterms Part 1",
+        "sap_type": "CHAR(3)",
+        "key": false
+      },
+      {
+        "field": "WAERK",
+        "description": "Currency",
+        "sap_type": "CUKY",
+        "key": false
+      }
+    ]
+  },
+  "VBUK": {
+    "description": "Sales Document: Header Status (overall/delivery/billing status)",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "GBSTK",
+        "description": "Overall Processing Status",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "LFSTK",
+        "description": "Delivery Status",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "FKSTK",
+        "description": "Billing Status",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "WBSTK",
+        "description": "Goods Movement Status",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "VBUP": {
+    "description": "Sales Document: Item Status",
+    "module": "SD",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VBELN",
+        "description": "Sales Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "POSNR",
+        "description": "Item Number",
+        "sap_type": "NUMC",
+        "key": true
+      },
+      {
+        "field": "GBSTA",
+        "description": "Overall Processing Status (Item)",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "LFSTA",
+        "description": "Delivery Status (Item)",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "FKSTA",
+        "description": "Billing Status (Item)",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "ADRC": {
+    "description": "Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",
+    "module": "Cross-app",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ADDRNUMBER",
+        "description": "Address Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "STREET",
+        "description": "Street",
+        "sap_type": "CHAR(60)",
+        "key": false
+      },
+      {
+        "field": "CITY1",
+        "description": "City",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "POST_CODE1",
+        "description": "Postal Code",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "COUNTRY",
+        "description": "Country",
+        "sap_type": "CHAR(3)",
+        "key": false
+      }
+    ]
+  },
+  "TVKO": {
+    "description": "Sales Organizations (and their assignment to a Company Code)",
+    "module": "SD (config)",
+    "type": "config",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "VKORG",
+        "description": "Sales Organization",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  }
+}
