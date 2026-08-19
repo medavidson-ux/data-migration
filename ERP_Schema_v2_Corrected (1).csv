@@ -1,0 +1,201 @@
+﻿#,Component,Module,Table Name,Table Category,Primary Key,Columns,FKs Out,Referenced By,Dependency Count,Cross-module Count,Complexity,Weight,Status in v2
+1,Assets,AS1 - Module AS1 - Asset Master,Asset Categories,Lookup Table,Asset_Category_ID,9,1,1,1,0,Normal complex,1.5,MODIFIED
+2,Assets,AS1 - Module AS1 - Asset Master,Asset Types,Lookup Table,Asset_Type_ID,7,1,1,1,0,Normal complex,1.5,MODIFIED
+3,Assets,AS1 - Module AS1 - Asset Master,Assets,Master Data Table,Asset_ID,21,6,17,6,4,Deep complex,2.5,MODIFIED
+4,Assets,AS1 - Module AS1 - Asset Master,Depreciation Methods,Lookup Table,Depreciation_Method_ID,5,0,3,0,0,Not complex,1,MODIFIED
+5,Assets,AS1 - Module AS1 - Asset Master,Locations,Dimension Table,Location_ID,9,1,5,1,1,Normal complex,1.5,MODIFIED
+6,Assets,AS2 - Module AS2 - Lifecycle,Acquisitions,Fact Table,Acquisition_ID,14,6,0,5,4,Deep complex,2.5,MODIFIED
+7,Assets,AS2 - Module AS2 - Lifecycle,Asset Disposals,Fact Table,Asset_Disposal_ID,15,4,0,3,2,Middle complex,2,NEW
+8,Assets,AS2 - Module AS2 - Lifecycle,Depreciation,Fact Table,Depreciation_ID,14,5,2,4,2,Middle complex,2,MODIFIED
+9,Assets,AS2 - Module AS2 - Lifecycle,Transfers,Fact Table,Transfer_ID,15,9,0,6,4,Deep complex,2.5,MODIFIED
+10,Assets,AS3 - Module AS3 - Maintenance,Maintenance Schedules,Reference Table,Maintenance_Schedule_ID,10,3,1,3,1,Middle complex,2,MODIFIED
+11,Assets,AS3 - Module AS3 - Maintenance,Maintenance Types,Lookup Table,Maintenance_Type_ID,6,0,4,0,0,Not complex,1,MODIFIED
+12,Assets,AS3 - Module AS3 - Maintenance,Maintenance Work Orders,Fact Table,Maintenance_Work_Order_ID,19,6,0,6,3,Deep complex,2.5,NEW
+13,Assets,AS3 - Module AS3 - Maintenance,Service History,Fact Table,Service_History_Entry_ID,14,5,0,5,4,Deep complex,2.5,MODIFIED
+14,Assets,AS4 - Module AS4 - Tracking,Assignments,Fact Table,Assignment_ID,13,5,1,4,3,Middle complex,2,MODIFIED
+15,Assets,AS4 - Module AS4 - Tracking,Audits,Fact Table,Audit_ID,13,6,0,5,3,Deep complex,2.5,MODIFIED
+16,Assets,AS4 - Module AS4 - Tracking,Checkouts,Fact Table,Checkout_ID,14,4,0,4,3,Middle complex,2,MODIFIED
+17,Assets,AS5 - Module AS5 - Analytics,Asset Valuation,Fact Table,Asset_Valuation_ID,15,5,0,4,2,Middle complex,2,MODIFIED
+18,Assets,AS5 - Module AS5 - Analytics,Replacement Forecasts,Fact Table,Replacement_Forecast_ID,16,6,0,5,3,Deep complex,2.5,MODIFIED
+19,Assets,AS5 - Module AS5 - Analytics,Utilization Reports,Fact Table,Utilization_Report_ID,13,4,0,4,2,Middle complex,2,MODIFIED
+20,CRM,C1 - Module C1 - Customer Data,Communication Logs,Fact Table,Communication_Log_ID,15,5,0,5,4,Deep complex,2.5,MODIFIED
+21,CRM,C1 - Module C1 - Customer Data,Contact Persons,Dimension Table,Contact_Person_ID,15,3,2,3,2,Middle complex,2,MODIFIED
+22,CRM,C1 - Module C1 - Customer Data,Customer Profiles,Master Data Table,Customer_Profile_ID,16,3,5,3,3,Middle complex,2,MODIFIED
+23,CRM,C1 - Module C1 - Customer Data,Customer Segments,Lookup Table,Customer_Segment_ID,9,2,2,2,1,Normal complex,1.5,MODIFIED
+24,CRM,C2 - Module C2 - Sales Pipeline,Leads,Master Data Table,Lead_ID,17,3,1,3,3,Middle complex,2,MODIFIED
+25,CRM,C2 - Module C2 - Sales Pipeline,Opportunities,Fact Table,Opportunity_ID,19,6,3,6,4,Deep complex,2.5,MODIFIED
+26,CRM,C2 - Module C2 - Sales Pipeline,Quotes,Fact Table,Quote_ID,15,5,0,5,4,Deep complex,2.5,DEPRECATED
+27,CRM,C2 - Module C2 - Sales Pipeline,Sales Activities,Fact Table,Sales_Activity_ID,15,4,1,4,3,Middle complex,2,MODIFIED
+28,CRM,C3 - Module C3 - Customer Service,Customer Feedback,Fact Table,Customer_Feedback_ID,18,5,0,5,4,Deep complex,2.5,MODIFIED
+29,CRM,C3 - Module C3 - Customer Service,Knowledge Base,Reference Table,KB_Article_ID,13,1,0,1,1,Normal complex,1.5,MODIFIED
+30,CRM,C3 - Module C3 - Customer Service,SLAs,Reference Table,SLA_ID,13,2,2,2,1,Normal complex,1.5,MODIFIED
+31,CRM,C3 - Module C3 - Customer Service,Service Tickets,Fact Table,Service_Ticket_ID,20,7,2,7,4,Deep complex,2.5,MODIFIED
+32,CRM,C4 - Module C4 - Marketing,Campaigns,Master Data Table,Campaign_ID,18,3,1,3,2,Middle complex,2,MODIFIED
+33,CRM,C4 - Module C4 - Marketing,Email Templates,Reference Table,Email_Template_ID,11,1,0,1,1,Normal complex,1.5,MODIFIED
+34,CRM,C4 - Module C4 - Marketing,Lead Sources,Lookup Table,Lead_Source_ID,7,0,0,0,0,Not complex,1,MODIFIED
+35,CRM,C4 - Module C4 - Marketing,Marketing ROI,Fact Table,Marketing_ROI_ID,18,4,0,4,2,Middle complex,2,MODIFIED
+36,CRM,C5 - Module C5 - Analytics,Churn Analysis,Fact Table,Churn_Analysis_ID,18,6,0,6,4,Deep complex,2.5,MODIFIED
+37,CRM,C5 - Module C5 - Analytics,Customer Lifetime Value,Fact Table,CLV_ID,17,5,0,5,4,Deep complex,2.5,MODIFIED
+38,CRM,C5 - Module C5 - Analytics,Sales Performance,Fact Table,Sales_Performance_ID,18,4,0,4,3,Middle complex,2,MODIFIED
+39,Finance,F1 - Module F1 - General Ledger,Accounting Periods,Reference Table,Accounting_Period_ID,10,1,7,1,1,Normal complex,1.5,MODIFIED
+40,Finance,F1 - Module F1 - General Ledger,Chart of Accounts,Master Data Table,Account_ID,14,3,7,2,2,Normal complex,1.5,MODIFIED
+41,Finance,F1 - Module F1 - General Ledger,General Ledger,Fact Table,GL_Line_ID,17,6,5,6,3,Deep complex,2.5,MODIFIED
+42,Finance,F1 - Module F1 - General Ledger,Journal Entries,Fact Table,Journal_Entry_ID,19,6,1,4,2,Middle complex,2,MODIFIED
+43,Finance,F1 - Module F1 - General Ledger,Trial Balance,Fact Table,Trial_Balance_Line_ID,14,5,1,5,2,Deep complex,2.5,MODIFIED
+44,Finance,F2 - Module F2 - Accounts Payable,Payments,Fact Table,Payment_ID,16,6,1,4,3,Middle complex,2,MODIFIED
+45,Finance,F2 - Module F2 - Accounts Payable,Vendor Invoice Lines,Fact Table,Vendor_Invoice_Line_ID,16,6,0,6,5,Deep complex,2.5,NEW
+46,Finance,F2 - Module F2 - Accounts Payable,Vendor Invoices,Fact Table,Vendor_Invoice_ID,17,4,3,4,4,Middle complex,2,MODIFIED
+47,Finance,F3 - Module F3 - Accounts Receivable,AR Aging Reports,Fact Table,AR_Aging_Report_ID,14,3,0,3,3,Middle complex,2,NEW
+48,Finance,F3 - Module F3 - Accounts Receivable,Aging Reports,Fact Table,Aging_Report_ID,16,3,0,3,2,Middle complex,2,MODIFIED
+49,Finance,F3 - Module F3 - Accounts Receivable,Customer Invoice Lines,Fact Table,Customer_Invoice_Line_ID,16,6,0,6,5,Deep complex,2.5,NEW
+50,Finance,F3 - Module F3 - Accounts Receivable,Customer Invoices,Fact Table,Customer_Invoice_ID,17,4,4,4,4,Middle complex,2,MODIFIED
+51,Finance,F3 - Module F3 - Accounts Receivable,Receipts,Fact Table,Receipt_ID,15,5,1,4,3,Middle complex,2,MODIFIED
+52,Finance,F4 - Module F4 - Fixed Assets,Asset Register,Master Data Table,Asset_Register_Entry_ID,15,4,2,4,4,Middle complex,2,MODIFIED
+53,Finance,F4 - Module F4 - Fixed Assets,Depreciation Schedules,Fact Table,Depreciation_Schedule_ID,13,4,0,4,3,Middle complex,2,MODIFIED
+54,Finance,F4 - Module F4 - Fixed Assets,Disposals,Fact Table,Disposal_ID,15,5,0,4,3,Middle complex,2,MODIFIED
+55,Finance,F5 - Module F5 - Financial Reporting,Balance Sheet,Fact Table,Balance_Sheet_Line_ID,15,6,0,6,2,Deep complex,2.5,MODIFIED
+56,Finance,F5 - Module F5 - Financial Reporting,Budget vs Actual,Fact Table,Budget_vs_Actual_Line_ID,16,6,0,6,3,Deep complex,2.5,MODIFIED
+57,Finance,F5 - Module F5 - Financial Reporting,Cash Flow,Fact Table,Cash_Flow_Line_ID,16,6,0,6,2,Deep complex,2.5,MODIFIED
+58,Finance,F5 - Module F5 - Financial Reporting,Income Statement,Fact Table,Income_Statement_Line_ID,14,5,0,5,2,Deep complex,2.5,MODIFIED
+59,Foundation,X0 - Module X0 - Foundation,Companies,Master Data Table,Company_ID,10,1,142,1,0,Normal complex,1.5,NEW
+60,Foundation,X0 - Module X0 - Foundation,Cost Centers,Dimension Table,Cost_Center_ID,7,3,1,3,2,Middle complex,2,NEW
+61,Foundation,X0 - Module X0 - Foundation,Currencies,Lookup Table,Currency_Code,5,0,3,0,0,Not complex,1,NEW
+62,Foundation,X0 - Module X0 - Foundation,Exchange Rates,Reference Table,Exchange_Rate_ID,6,2,0,1,0,Normal complex,1.5,NEW
+63,Foundation,X0 - Module X0 - Foundation,Number Sequences,Reference Table,Number_Sequence_ID,7,1,0,1,0,Normal complex,1.5,NEW
+64,Foundation,X0 - Module X0 - Foundation,Payment Terms,Lookup Table,Payment_Term_ID,7,0,0,0,0,Not complex,1,NEW
+65,Foundation,X0 - Module X0 - Foundation,Tax Codes,Lookup Table,Tax_Code_ID,7,1,8,1,1,Normal complex,1.5,NEW
+66,Foundation,X0 - Module X0 - Security,Audit Log,Fact Table,Audit_Log_ID,9,1,0,1,0,Normal complex,1.5,NEW
+67,Foundation,X0 - Module X0 - Security,Roles,Lookup Table,Role_ID,5,0,1,0,0,Not complex,1,NEW
+68,Foundation,X0 - Module X0 - Security,User Roles,Junction Table,User_Role_ID,5,3,0,2,0,Normal complex,1.5,NEW
+69,Foundation,X0 - Module X0 - Security,Users,Master Data Table,User_ID,12,3,183,2,1,Normal complex,1.5,NEW
+70,Foundation,X0 - Module X0 - Workflow,Approval Requests,Fact Table,Approval_Request_ID,13,4,5,3,1,Middle complex,2,NEW
+71,Foundation,X0 - Module X0 - Workflow,Approval Steps,Fact Table,Approval_Step_ID,11,4,0,3,0,Middle complex,2,NEW
+72,HR,A - Module A - Core HR,Approval Workflows,Reference Table,Approval_Workflow_ID,8,0,1,0,0,Not complex,1,MODIFIED
+73,HR,A - Module A - Core HR,Bonuses Type,Lookup Table,Bonus_Type_ID,7,0,0,0,0,Not complex,1,MODIFIED
+74,HR,A - Module A - Core HR,Calendars,Reference Table,Calendar_ID,8,0,1,0,0,Not complex,1,MODIFIED
+75,HR,A - Module A - Core HR,Company Policies,Reference Table,Company_Policy_ID,9,0,0,0,0,Not complex,1,MODIFIED
+76,HR,A - Module A - Core HR,Deduction Type,Lookup Table,Deduction_Type_ID,7,0,0,0,0,Not complex,1,MODIFIED
+77,HR,A - Module A - Core HR,Departments Types,Dimension Table,Department_Type_ID,9,2,11,2,1,Normal complex,1.5,MODIFIED
+78,HR,A - Module A - Core HR,Employee Absence,Fact Table,Employee_Absence_ID,17,8,0,7,3,Deep complex,2.5,MODIFIED
+79,HR,A - Module A - Core HR,Employees,Master Data Table,Employee_ID,29,7,62,6,2,Deep complex,2.5,MODIFIED
+80,HR,A - Module A - Core HR,Forms,Lookup Table,Form_ID,8,0,0,0,0,Not complex,1,MODIFIED
+81,HR,A - Module A - Core HR,HR Rules,Reference Table,HR_Rule_ID,8,0,0,0,0,Not complex,1,MODIFIED
+82,HR,A - Module A - Core HR,Hierarchy,Table with Hierarchy,Hierarchy_ID,7,1,1,0,0,Not complex,1,MODIFIED
+83,HR,A - Module A - Core HR,Marital Status,Lookup Table,Marital_Status_ID,5,0,1,0,0,Not complex,1,MODIFIED
+84,HR,A - Module A - Core HR,Sections,Table with Hierarchy,Section_ID,9,3,1,3,0,Middle complex,2,MODIFIED
+85,HR,B - Module B - Payroll,Bonuses,Fact Table,Bonus_ID,12,4,1,3,2,Middle complex,2,MODIFIED
+86,HR,B - Module B - Payroll,Deductions,Fact Table,Deduction_ID,12,3,1,3,2,Middle complex,2,MODIFIED
+87,HR,B - Module B - Payroll,Earning Types,Lookup Table,Earning_Type_ID,7,0,1,0,0,Not complex,1,MODIFIED
+88,HR,B - Module B - Payroll,Payroll,Fact Table,Payroll_ID,19,5,1,4,2,Middle complex,2,MODIFIED
+89,HR,B - Module B - Payroll,Payroll Runs,Fact Table,Payroll_Run_ID,15,4,1,3,2,Middle complex,2,NEW
+90,HR,B - Module B - Payroll,Payroll Status,Lookup Table,Payroll_Status_ID,6,0,1,0,0,Not complex,1,MODIFIED
+91,HR,B - Module B - Payroll,Payslips,Fact Table,Payslip_ID,15,8,0,8,2,Deep complex,2.5,MODIFIED
+92,HR,B - Module B - Payroll,Salary Grades,Lookup Table,Salary_Grade_ID,8,0,1,0,0,Not complex,1,MODIFIED
+93,HR,B - Module B - Payroll,Tax Rules,Reference Table,Tax_Rule_ID,10,0,1,0,0,Not complex,1,MODIFIED
+94,HR,C - Module C - Time & Attendance,Leave Balances,Fact Table,Leave_Balance_ID,13,4,1,4,2,Middle complex,2,MODIFIED
+95,HR,C - Module C - Time & Attendance,Leave Policies,Reference Table,Leave_Policy_ID,11,0,3,0,0,Not complex,1,MODIFIED
+96,HR,C - Module C - Time & Attendance,Leave Requests,Fact Table,Leave_Request_ID,19,8,0,7,3,Deep complex,2.5,MODIFIED
+97,HR,C - Module C - Time & Attendance,Shift Patterns,Reference Table,Shift_Pattern_ID,9,0,1,0,0,Not complex,1,MODIFIED
+98,HR,C - Module C - Time & Attendance,Time Logs,Fact Table,Time_Log_ID,15,4,2,4,2,Middle complex,2,MODIFIED
+99,HR,D - Module D - Recruitment,Applications,Fact Table,Application_ID,12,4,1,4,2,Middle complex,2,MODIFIED
+100,HR,D - Module D - Recruitment,Candidates,Master Data Table,Candidate_ID,17,2,1,2,2,Normal complex,1.5,MODIFIED
+101,HR,D - Module D - Recruitment,Evaluation Forms,Reference Table,Evaluation_Form_ID,8,0,1,0,0,Not complex,1,MODIFIED
+102,HR,D - Module D - Recruitment,Interviewers,Dimension Table,Interviewer_ID,8,2,1,2,1,Normal complex,1.5,MODIFIED
+103,HR,D - Module D - Recruitment,Interviews,Fact Table,Interview_ID,17,5,0,5,2,Deep complex,2.5,MODIFIED
+104,HR,D - Module D - Recruitment,Job Postings,Fact Table,Job_Posting_ID,18,3,1,3,2,Middle complex,2,MODIFIED
+105,HR,E - Module E - Performance,Appraisals,Fact Table,Appraisal_ID,21,9,0,8,2,Deep complex,2.5,MODIFIED
+106,HR,E - Module E - Performance,Competencies,Lookup Table,Competency_ID,7,0,1,0,0,Not complex,1,MODIFIED
+107,HR,E - Module E - Performance,Feedback Forms,Reference Table,Feedback_Form_ID,8,0,1,0,0,Not complex,1,MODIFIED
+108,HR,E - Module E - Performance,Goals,Fact Table,Goal_ID,14,4,1,4,2,Middle complex,2,MODIFIED
+109,HR,E - Module E - Performance,KPIs,Lookup Table,KPI_ID,10,1,2,1,0,Normal complex,1.5,MODIFIED
+110,HR,E - Module E - Performance,Review Cycles,Reference Table,Review_Cycle_ID,9,1,2,1,1,Normal complex,1.5,MODIFIED
+111,HR,F - Module F - Training,Courses,Master Data Table,Course_ID,15,2,2,2,2,Normal complex,1.5,MODIFIED
+112,HR,F - Module F - Training,Department Metrics,Fact Table,Department_Metric_ID,13,3,1,3,2,Middle complex,2,MODIFIED
+113,HR,F - Module F - Training,Enrollments,Fact Table,Enrollment_ID,13,4,1,4,2,Middle complex,2,MODIFIED
+114,HR,F - Module F - Training,Performance Indicators,Lookup Table,Performance_Indicator_ID,9,2,1,2,0,Normal complex,1.5,MODIFIED
+115,HR,F - Module F - Training,Training History,Fact Table,Training_History_Entry_ID,14,6,0,5,2,Deep complex,2.5,MODIFIED
+116,HR,H - Module H - Analytics,HR Reports,Fact Table,HR_Report_ID,16,6,1,5,2,Deep complex,2.5,MODIFIED
+117,HR,H - Module H - Analytics,Predictive Models,Fact Table,Predictive_Model_ID,13,3,0,3,2,Middle complex,2,MODIFIED
+118,Inventory,I1 - Module I1 - Inventory Master,Bins_Locations,Dimension Table,Bin_Location_ID,10,2,2,2,1,Normal complex,1.5,MODIFIED
+119,Inventory,I1 - Module I1 - Inventory Master,Item Categories,Lookup Table,Item_Category_ID,7,1,1,0,0,Not complex,1,MODIFIED
+120,Inventory,I1 - Module I1 - Inventory Master,Units of Measure,Lookup Table,UOM_ID,7,1,14,0,0,Not complex,1,MODIFIED
+121,Inventory,I1 - Module I1 - Inventory Master,Warehouses,Dimension Table,Warehouse_ID,11,2,16,2,2,Normal complex,1.5,MODIFIED
+122,Inventory,I2 - Module I2 - Inventory Control,Cycle Counts,Fact Table,Cycle_Count_ID,16,6,0,4,3,Middle complex,2,MODIFIED
+123,Inventory,I2 - Module I2 - Inventory Control,Inventory Adjustments,Fact Table,Inventory_Adjustment_ID,15,5,0,4,3,Middle complex,2,MODIFIED
+124,Inventory,I2 - Module I2 - Inventory Control,Reorder Points,Reference Table,Reorder_Point_ID,10,3,0,3,2,Middle complex,2,MODIFIED
+125,Inventory,I2 - Module I2 - Inventory Control,Stock Movements,Fact Table,Stock_Movement_ID,18,7,2,6,3,Deep complex,2.5,MODIFIED
+126,Inventory,I3 - Module I3 - Lot/Serial Tracking,Expiration Dates,Reference Table,Expiration_Record_ID,9,3,0,3,1,Middle complex,2,MODIFIED
+127,Inventory,I3 - Module I3 - Lot/Serial Tracking,Lot Numbers,Master Data Table,Lot_Number_ID,14,3,2,3,3,Middle complex,2,MODIFIED
+128,Inventory,I3 - Module I3 - Lot/Serial Tracking,Serial Numbers,Master Data Table,Serial_Number_ID,13,5,0,5,4,Deep complex,2.5,MODIFIED
+129,Inventory,I4 - Module I4 - Inventory Valuation,Cost Methods,Reference Table,Cost_Method_ID,6,0,1,0,0,Not complex,1,MODIFIED
+130,Inventory,I4 - Module I4 - Inventory Valuation,Inventory Valuation,Fact Table,Inventory_Valuation_ID,15,6,0,6,4,Deep complex,2.5,MODIFIED
+131,Inventory,I4 - Module I4 - Inventory Valuation,Item Costs,Fact Table,Item_Cost_ID,14,5,1,4,3,Middle complex,2,MODIFIED
+132,Inventory,I5 - Module I5 - Inventory Analytics,Inventory Forecasts,Fact Table,Inventory_Forecast_ID,16,6,0,6,4,Deep complex,2.5,MODIFIED
+133,Inventory,I5 - Module I5 - Inventory Analytics,Inventory Turnover,Fact Table,Inventory_Turnover_ID,13,4,1,4,3,Middle complex,2,MODIFIED
+134,Inventory,I5 - Module I5 - Inventory Analytics,Stock Aging,Fact Table,Stock_Aging_ID,16,5,0,5,3,Deep complex,2.5,MODIFIED
+135,Manufacturing,MF1 - Module MF1 - Product Definition,BOM,Reference Table,BOM_ID,9,3,3,3,2,Middle complex,2,MODIFIED
+136,Manufacturing,MF1 - Module MF1 - Product Definition,Product Catalog,Master Data Table,Product_ID,19,4,5,4,4,Middle complex,2,MODIFIED
+137,Manufacturing,MF1 - Module MF1 - Product Definition,Routing,Reference Table,Routing_ID,10,2,2,2,0,Normal complex,1.5,MODIFIED
+138,Manufacturing,MF1 - Module MF1 - Product Definition,Work Centers,Dimension Table,Work_Center_ID,11,2,4,2,2,Normal complex,1.5,MODIFIED
+139,Manufacturing,MF2 - Module MF2 - Planning,Capacity Plans,Fact Table,Capacity_Plan_ID,13,4,0,4,2,Middle complex,2,MODIFIED
+140,Manufacturing,MF2 - Module MF2 - Planning,Material Requirements,Fact Table,Material_Requirement_ID,14,6,0,6,4,Deep complex,2.5,MODIFIED
+141,Manufacturing,MF2 - Module MF2 - Planning,Production Orders,Fact Table,Production_Order_ID,18,4,3,4,2,Middle complex,2,MODIFIED
+142,Manufacturing,MF3 - Module MF3 - Execution,Material Issues,Fact Table,Material_Issue_ID,15,6,1,5,4,Deep complex,2.5,MODIFIED
+143,Manufacturing,MF3 - Module MF3 - Execution,Production Logs,Fact Table,Production_Log_ID,16,4,1,4,3,Middle complex,2,MODIFIED
+144,Manufacturing,MF3 - Module MF3 - Execution,Quality Checks,Fact Table,Quality_Check_ID,16,4,1,4,3,Middle complex,2,MODIFIED
+145,Manufacturing,MF3 - Module MF3 - Execution,Work Orders,Fact Table,Work_Order_ID,22,8,7,7,5,Deep complex,2.5,MODIFIED
+146,Manufacturing,MF4 - Module MF4 - Costing,Actual Costs,Fact Table,Actual_Cost_ID,16,5,1,4,2,Middle complex,2,MODIFIED
+147,Manufacturing,MF4 - Module MF4 - Costing,Standard Costs,Reference Table,Standard_Cost_ID,12,4,1,4,1,Middle complex,2,MODIFIED
+148,Manufacturing,MF4 - Module MF4 - Costing,Variance Analysis,Fact Table,Variance_Analysis_ID,16,5,0,4,2,Middle complex,2,MODIFIED
+149,Manufacturing,MF5 - Module MF5 - Analytics,Maintenance History,Fact Table,Maintenance_History_Entry_ID,17,6,1,6,4,Deep complex,2.5,MODIFIED
+150,Manufacturing,MF5 - Module MF5 - Analytics,OEE Metrics,Fact Table,OEE_Metric_ID,18,4,0,4,2,Middle complex,2,RENAMED
+151,Manufacturing,MF5 - Module MF5 - Analytics,Production Yield,Fact Table,Production_Yield_ID,15,4,0,4,2,Middle complex,2,MODIFIED
+152,Project Management,J1 - Module J1 - Project Setup,Project Templates,Reference Table,Project_Template_ID,8,1,0,1,0,Normal complex,1.5,MODIFIED
+153,Project Management,J1 - Module J1 - Project Setup,Project Types,Lookup Table,Project_Type_ID,6,0,2,0,0,Not complex,1,MODIFIED
+154,Project Management,J1 - Module J1 - Project Setup,Projects,Master Data Table,Project_ID,21,7,17,6,5,Deep complex,2.5,MODIFIED
+155,Project Management,J1 - Module J1 - Project Setup,Work Breakdown,Master Data Table,WBS_ID,14,4,1,3,2,Middle complex,2,MODIFIED
+156,Project Management,J2 - Module J2 - Planning,Milestones,Reference Table,Milestone_ID,10,3,0,3,1,Middle complex,2,MODIFIED
+157,Project Management,J2 - Module J2 - Planning,Phases,Dimension Table,Phase_ID,10,2,3,2,1,Normal complex,1.5,MODIFIED
+158,Project Management,J2 - Module J2 - Planning,Project Budgets,Fact Table,Project_Budget_ID,14,4,2,4,2,Middle complex,2,MODIFIED
+159,Project Management,J2 - Module J2 - Planning,Resource Allocation,Fact Table,Resource_Allocation_ID,15,5,0,5,3,Deep complex,2.5,MODIFIED
+160,Project Management,J2 - Module J2 - Planning,Tasks,Fact Table,Task_ID,18,6,8,6,3,Deep complex,2.5,MODIFIED
+161,Project Management,J3 - Module J3 - Execution,Change Requests,Fact Table,Change_Request_ID,17,6,0,5,3,Deep complex,2.5,MODIFIED
+162,Project Management,J3 - Module J3 - Execution,Deliverables,Fact Table,Deliverable_ID,15,6,1,6,3,Deep complex,2.5,MODIFIED
+163,Project Management,J3 - Module J3 - Execution,Expenses,Fact Table,Expense_ID,18,7,1,6,4,Deep complex,2.5,MODIFIED
+164,Project Management,J3 - Module J3 - Execution,Issues,Fact Table,Issue_ID,17,6,0,5,3,Deep complex,2.5,MODIFIED
+165,Project Management,J3 - Module J3 - Execution,Time Tracking,Fact Table,Time_Entry_ID,15,5,1,5,3,Deep complex,2.5,MODIFIED
+166,Project Management,J4 - Module J4 - Monitoring,Budget Variance,Fact Table,Budget_Variance_Line_ID,16,5,1,5,2,Deep complex,2.5,MODIFIED
+167,Project Management,J4 - Module J4 - Monitoring,Progress Reports,Fact Table,Progress_Report_ID,18,6,2,5,2,Deep complex,2.5,MODIFIED
+168,Project Management,J4 - Module J4 - Monitoring,Risk Register,Fact Table,Risk_ID,17,4,0,4,3,Middle complex,2,MODIFIED
+169,Project Management,J5 - Module J5 - Analytics,Lessons Learned,Fact Table,Lesson_Learned_ID,15,5,0,5,3,Deep complex,2.5,MODIFIED
+170,Project Management,J5 - Module J5 - Analytics,Portfolio Dashboard,Fact Table,Portfolio_Dashboard_Row_ID,18,4,0,4,2,Middle complex,2,MODIFIED
+171,Project Management,J5 - Module J5 - Analytics,Project KPIs,Fact Table,Project_KPI_ID,15,5,0,5,2,Deep complex,2.5,MODIFIED
+172,Purchasing,P1 - Module P1 - Vendor Management,Vendor Contracts,Reference Table,Vendor_Contract_ID,13,1,0,1,0,Normal complex,1.5,MODIFIED
+173,Purchasing,P1 - Module P1 - Vendor Management,Vendor Ratings,Fact Table,Vendor_Rating_ID,15,4,0,3,2,Middle complex,2,MODIFIED
+174,Purchasing,P1 - Module P1 - Vendor Management,Vendors,Master Data Table,Vendor_ID,20,2,11,2,2,Normal complex,1.5,MODIFIED
+175,Purchasing,P2 - Module P2 - Procurement,Goods Receipt Lines,Fact Table,Goods_Receipt_Line_ID,21,8,0,8,5,Deep complex,2.5,NEW
+176,Purchasing,P2 - Module P2 - Procurement,Goods Receipts,Fact Table,Goods_Receipt_ID,12,6,2,5,3,Deep complex,2.5,MODIFIED
+177,Purchasing,P2 - Module P2 - Procurement,Invoice Matching,Fact Table,Invoice_Match_ID,16,6,0,5,3,Deep complex,2.5,MODIFIED
+178,Purchasing,P2 - Module P2 - Procurement,Purchase Order Lines,Fact Table,Purchase_Order_Line_ID,18,6,1,6,4,Deep complex,2.5,NEW
+179,Purchasing,P2 - Module P2 - Procurement,Purchase Orders,Fact Table,Purchase_Order_ID,20,6,7,5,3,Deep complex,2.5,MODIFIED
+180,Purchasing,P2 - Module P2 - Procurement,Purchase Requisition Lines,Fact Table,Purchase_Requisition_Line_ID,16,6,0,6,4,Deep complex,2.5,NEW
+181,Purchasing,P2 - Module P2 - Procurement,Purchase Requisitions,Fact Table,Purchase_Requisition_ID,18,6,2,5,4,Deep complex,2.5,MODIFIED
+182,Purchasing,P3 - Module P3 - Inventory,Inventory Items,Master Data Table,Item_ID,18,4,29,4,4,Middle complex,2,MODIFIED
+183,Purchasing,P3 - Module P3 - Inventory,Inventory Transfers,Fact Table,Inventory_Transfer_ID,16,8,0,5,3,Deep complex,2.5,MODIFIED
+184,Purchasing,P3 - Module P3 - Inventory,Stock Levels,Fact Table,Stock_Level_ID,13,5,2,5,4,Deep complex,2.5,MODIFIED
+185,Purchasing,P4 - Module P4 - Analytics,Procurement Reports,Fact Table,Procurement_Report_ID,18,6,0,5,2,Deep complex,2.5,MODIFIED
+186,Sales,S1 - Module S1 - Customer Management,Credit Limits,Reference Table,Credit_Limit_ID,11,2,0,2,1,Normal complex,1.5,MODIFIED
+187,Sales,S1 - Module S1 - Customer Management,Customer Contracts,Reference Table,Customer_Contract_ID,12,1,1,1,0,Normal complex,1.5,MODIFIED
+188,Sales,S1 - Module S1 - Customer Management,Customers,Master Data Table,Customer_ID,20,3,21,3,3,Middle complex,2,MODIFIED
+189,Sales,S2 - Module S2 - Order Processing,Fulfillment Lines,Fact Table,Fulfillment_Line_ID,19,8,0,8,6,Deep complex,2.5,NEW
+190,Sales,S2 - Module S2 - Order Processing,Invoices,Fact Table,Invoice_ID,20,6,2,6,3,Deep complex,2.5,DEPRECATED
+191,Sales,S2 - Module S2 - Order Processing,Order Fulfillment,Fact Table,Fulfillment_ID,15,5,2,3,2,Middle complex,2,MODIFIED
+192,Sales,S2 - Module S2 - Order Processing,Sales Order Lines,Fact Table,Sales_Order_Line_ID,18,7,1,7,6,Deep complex,2.5,NEW
+193,Sales,S2 - Module S2 - Order Processing,Sales Orders,Fact Table,Sales_Order_ID,20,6,5,6,4,Deep complex,2.5,MODIFIED
+194,Sales,S2 - Module S2 - Order Processing,Sales Quote Lines,Fact Table,Sales_Quote_Line_ID,16,6,0,6,5,Deep complex,2.5,NEW
+195,Sales,S2 - Module S2 - Order Processing,Sales Quotes,Fact Table,Sales_Quote_ID,17,4,3,4,3,Middle complex,2,MODIFIED
+196,Sales,S3 - Module S3 - Pricing,Discounts,Reference Table,Discount_ID,13,2,1,2,0,Normal complex,1.5,MODIFIED
+197,Sales,S3 - Module S3 - Pricing,Price Lists,Reference Table,Price_List_ID,9,1,1,1,1,Normal complex,1.5,MODIFIED
+198,Sales,S4 - Module S4 - Analytics,Sales Forecasts,Fact Table,Sales_Forecast_ID,16,6,0,6,4,Deep complex,2.5,MODIFIED
+199,Sales,S4 - Module S4 - Analytics,Sales Reports,Fact Table,Sales_Report_ID,17,6,1,5,2,Deep complex,2.5,MODIFIED
+,,,TOTAL,,,2708,748,,,,avg weight →,1.94,

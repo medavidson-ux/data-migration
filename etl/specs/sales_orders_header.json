@@ -1,0 +1,62 @@
+{
+  "source_sheet": "Sales Orders",
+  "source_key": "Sales_Order_ID",
+  "targets": [
+    {
+      "table": "VBAK",
+      "notes": "Sales document header. Sales_Order_ID is carried verbatim as VBELN -- a real load assigns VBELN from a number range; this is a staging key only.",
+      "fields": [
+        {"target_field": "VBELN", "sap_description": "Sales Document Number (staging key)", "transform": "direct", "source": "Sales_Order_ID"},
+        {"target_field": "VKORG", "sap_description": "Sales Organization", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> Company Code -> TVKO Sales Org assignment"},
+        {"target_field": "KUNNR", "sap_description": "Sold-to Party", "transform": "lookup_passthrough", "source": "Customer_ID", "lookup_ref": "Sales>Customers / CRM>Customer Profiles -> Business Partner (BUT000)"},
+        {"target_field": "AUDAT", "sap_description": "Document Date", "transform": "date_yyyymmdd", "source": "Order_Date"},
+        {"target_field": "VDATU", "sap_description": "Requested Delivery Date", "transform": "date_yyyymmdd", "source": "Required_Delivery_Date"},
+        {"target_field": "NETWR", "sap_description": "Net Value (approximate carryover; a real load derives this from pricing conditions)", "transform": "direct", "source": "Total_Amount"},
+        {"target_field": "WAERK", "sap_description": "SD Document Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "MWSBK", "sap_description": "Tax Amount in Document Currency", "transform": "direct", "source": "Tax_Amount"}
+      ]
+    },
+    {
+      "table": "VBKD",
+      "notes": "Sales document business data (header-level, POSNR = '000000').",
+      "constants": {"POSNR": "000000"},
+      "fields": [
+        {"target_field": "VBELN", "sap_description": "Sales Document Number (staging key)", "transform": "direct", "source": "Sales_Order_ID"},
+        {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"},
+        {"target_field": "WAERK", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"}
+      ]
+    },
+    {
+      "table": "VBPA",
+      "notes": "Sales document partner -- Salesperson function.",
+      "constants": {"POSNR": "000000", "PARVW": "VE"},
+      "fields": [
+        {"target_field": "VBELN", "sap_description": "Sales Document Number (staging key)", "transform": "direct", "source": "Sales_Order_ID"},
+        {"target_field": "PERNR", "sap_description": "Salesperson (Personnel Number)", "transform": "lookup_passthrough", "source": "Sales_Rep_ID", "lookup_ref": "HR>Employees -> PERNR (see employees_field_mapping.csv / employees.json)"}
+      ]
+    },
+    {
+      "table": "VBFA",
+      "notes": "Sales document flow -- link back to the originating quotation. Only emitted when Quote_ID is present.",
+      "skip_row_if_null": "Quote_ID",
+      "constants": {"VBTYP_N": "C"},
+      "fields": [
+        {"target_field": "VBELV", "sap_description": "Preceding Document (the quotation, staging key)", "transform": "direct", "source": "Quote_ID"},
+        {"target_field": "VBELN", "sap_description": "Subsequent Document (this order, staging key)", "transform": "direct", "source": "Sales_Order_ID"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Order_Number", "reason": "external VBELN would require number-range configuration in the target system; kept only as the Sales_Order_ID staging key in this prototype"},
+    {"source": "Delivery_Address", "reason": "requires ship-to partner determination (VBPA) plus address decomposition (ADRC) -- flagged as a NEEDS_PARSE case for the AI mapping agent, not handled by this rule-based engine"},
+    {"source": "Subtotal", "reason": "derived from the pricing procedure's condition records (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Discount_Amount", "reason": "header discount condition record (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Status", "reason": "SAP tracks overall/delivery/billing status as separate indicators on VBUK, not a single field -- out of scope for this rule-based engine"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Approval_Request_ID", "reason": "release/approval rebuilt via SAP workflow configuration, not migrated as data"},
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

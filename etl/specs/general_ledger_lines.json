@@ -1,0 +1,46 @@
+{
+  "source_sheet": "General Ledger",
+  "source_key": "GL_Line_ID",
+  "validations": [
+    {
+      "type": "balanced_pair",
+      "group_by": "Journal_Entry_ID",
+      "debit_field": "Debit_Amount",
+      "credit_field": "Credit_Amount"
+    },
+    {
+      "type": "one_sided",
+      "debit_field": "Debit_Amount",
+      "credit_field": "Credit_Amount"
+    }
+  ],
+  "targets": [
+    {
+      "table": "ACDOCA",
+      "notes": "Universal Journal line item. Company code, posting date, and reference are repeated per line by ACDOCA's own design -- not deduplicated against the BKPF header.",
+      "fields": [
+        {"target_field": "BELNR", "sap_description": "Document Number (staging key, must match the header)", "transform": "direct", "source": "Journal_Entry_ID"},
+        {"target_field": "DOCLN", "sap_description": "Journal Entry Item", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 1, "width": 6},
+        {"target_field": "RBUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS (repeated per line per S/4 design)"},
+        {"target_field": "RACCT", "sap_description": "GL Account", "transform": "lookup_passthrough", "source": "Account_ID", "lookup_ref": "Finance>Chart of Accounts -> SKA1/SKB1"},
+        {"target_field": "GJAHR", "sap_description": "Fiscal Year", "transform": "lookup_passthrough", "source": "Period_ID", "lookup_ref": "Foundation>Accounting Periods -> fiscal year"},
+        {"target_field": "POPER", "sap_description": "Posting Period", "transform": "lookup_passthrough", "source": "Period_ID", "lookup_ref": "Foundation>Accounting Periods -> posting period"},
+        {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Transaction_Date"},
+        {"target_field": ["HSL", "DRCRK"], "sap_description": "Amount in Company Code Currency (signed) / Debit-Credit Indicator", "transform": "signed_amount_pair", "debit_source": "Debit_Amount", "credit_source": "Credit_Amount"},
+        {"target_field": "RWCUR", "sap_description": "Transaction Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "SGTXT", "sap_description": "Line Item Text", "transform": "truncate", "source": "Description", "max_len": 50},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "Reference", "max_len": 16},
+        {"target_field": "KOSTL", "sap_description": "Cost Center", "transform": "lookup_passthrough", "source": "Cost_Center_ID", "lookup_ref": "Foundation>Cost Centers -> CSKS/CSKT"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Running_Balance", "reason": "not stored anywhere in ACDOCA -- balances are calculated on demand from posted line items, the same reason Trial Balance/Balance Sheet are NOT_MIGRATED elsewhere"},
+    {"source": "GL_Line_ID", "reason": "SAP's own key is the ACDOCA composite (client/ledger/company/fiscal year/document/DOCLN); kept only as an informal source row identifier, not loaded"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on posting"},
+    {"source": "Updated_At", "reason": "posted line items are normally immutable"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

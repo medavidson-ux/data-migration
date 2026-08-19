@@ -1,0 +1,34 @@
+{
+  "source_sheet": "Sales Order Lines",
+  "source_key": "Sales_Order_Line_ID",
+  "targets": [
+    {
+      "table": "VBAP",
+      "notes": "Sales document item. POSNR follows SAP convention (Line_Number x10, zero-padded) to leave room for later insertions.",
+      "fields": [
+        {"target_field": "VBELN", "sap_description": "Sales Document Number (staging key, must match the header)", "transform": "direct", "source": "Sales_Order_ID"},
+        {"target_field": "POSNR", "sap_description": "Item Number", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 10, "width": 6},
+        {"target_field": "MATNR", "sap_description": "Material", "transform": "lookup_passthrough", "source": "Item_ID", "lookup_ref": "Purchasing>Inventory Items / Manufacturing>Product Catalog -> MARA"},
+        {"target_field": "ARKTX", "sap_description": "Short Text (Item)", "transform": "direct", "source": "Description"},
+        {"target_field": "VRKME", "sap_description": "Sales Unit", "transform": "lookup_passthrough", "source": "UOM_ID", "lookup_ref": "Inventory>Units of Measure -> T006"},
+        {"target_field": "KWMENG", "sap_description": "Order Quantity", "transform": "direct", "source": "Quantity"},
+        {"target_field": "LGORT", "sap_description": "Storage Location", "transform": "lookup_passthrough", "source": "Warehouse_ID", "lookup_ref": "Inventory>Warehouses -> T300"},
+        {"target_field": "NETWR", "sap_description": "Net Value (Item)", "transform": "direct", "source": "Line_Total"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Sales_Order_Line_ID", "reason": "SAP's own key is VBAP-POSNR; kept only as an informal source row identifier, not loaded"},
+    {"source": "Company_ID", "reason": "redundant/denormalized in the source -- VBAP has no company code field, it is inherited from the header via the sales-organization assignment"},
+    {"source": "Unit_Price", "reason": "pricing is fully condition-driven in standard SD (KONV/PRCD_ELEMENTS); no flat VBAP field"},
+    {"source": "Discount_Percent", "reason": "item-level discount condition record (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Tax_Code_ID", "reason": "resolves to a tax condition record (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Tax_Amount", "reason": "tax condition record result (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Quantity_Delivered", "reason": "derived by summing linked delivery item quantities (LIPS-LFIMG) via document flow (VBFA), not stored directly on VBAP"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

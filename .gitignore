@@ -1,0 +1,11 @@
+# Secrets -- never commit a real .env, only .env.example
+.env
+etl/agent/.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Agent-generated artifacts (regenerate by running the scripts)
+etl/output/
+etl/agent/mapping_decisions.csv

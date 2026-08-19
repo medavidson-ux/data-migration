@@ -1,0 +1,35 @@
+{
+  "source_sheet": "Journal Entries",
+  "source_key": "Journal_Entry_ID",
+  "targets": [
+    {
+      "table": "BKPF",
+      "notes": "Accounting document header. Journal_Entry_ID is carried verbatim as BELNR -- a real load assigns BELNR from a number range; this is a staging key only.",
+      "fields": [
+        {"target_field": "BELNR", "sap_description": "Document Number (staging key)", "transform": "direct", "source": "Journal_Entry_ID"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "BLDAT", "sap_description": "Document Date", "transform": "date_yyyymmdd", "source": "Entry_Date"},
+        {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Posted_At"},
+        {"target_field": "MONAT", "sap_description": "Fiscal Period", "transform": "lookup_passthrough", "source": "Period_ID", "lookup_ref": "Foundation>Accounting Periods -> fiscal year/period"},
+        {"target_field": "BLART", "sap_description": "Document Type", "transform": "lookup_passthrough", "source": "Entry_Type", "lookup_ref": "Document Type config (BLART), per source Entry_Type (System-Generated/Recurring/Manual)"},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "Reference", "max_len": 16},
+        {"target_field": "BKTXT", "sap_description": "Document Header Text", "transform": "truncate", "source": "Description", "max_len": 25},
+        {"target_field": "WAERS", "sap_description": "Currency Key", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "USNAM", "sap_description": "User Name (entered by)", "transform": "lookup_passthrough", "source": "Prepared_By_User_ID", "lookup_ref": "legacy user ID -> SAP username cross-reference (not a migrated master-data object -- see Foundation>Users)"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Account_ID", "reason": "verified redundant against the General Ledger lines: this header value always equals the account on that entry's own first line. No single-account header field exists in BKPF/ACDOCA -- the real per-line accounts are captured by general_ledger_lines.json"},
+    {"source": "Debit_Total", "reason": "not a stored field -- a balanced document's total debit equals total credit by construction; derivable by summing the General Ledger lines, validated by general_ledger_lines.json's balanced_pair check"},
+    {"source": "Credit_Total", "reason": "same as Debit_Total -- derived, not stored"},
+    {"source": "Entry_Number", "reason": "external BELNR would require number-range configuration in the target system; kept only as the Journal_Entry_ID staging key in this prototype"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Approved_By_User_ID", "reason": "document release/approval is rebuilt via SAP workflow configuration, not carried as a flat field"},
+    {"source": "Status", "reason": "structural in SAP -- which table the document lives in (BKPF once posted, VBKPF if only parked) IS the status, not a field value"},
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "posted FI documents are normally immutable; system-generated where change is even possible"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user; likely redundant with Prepared_By_User_ID -- confirm with the business which is authoritative"}
+  ]
+}

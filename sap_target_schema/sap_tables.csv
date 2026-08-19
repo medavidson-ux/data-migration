@@ -1,0 +1,621 @@
+﻿sap_table,description,module,type,field,field_description,sap_data_type,is_key
+T001,Company Codes,FI,config,MANDT,Client,CLNT,Y
+T001,Company Codes,FI,config,BUKRS,Company Code,CHAR(4),Y
+T001,Company Codes,FI,config,BUTXT,Company Name,CHAR(25),N
+T001,Company Codes,FI,config,WAERS,Currency,CUKY,N
+T001,Company Codes,FI,config,LAND1,Country Key,CHAR(3),N
+CSKS,Cost Center Master Data,CO,master,MANDT,Client,CLNT,Y
+CSKS,Cost Center Master Data,CO,master,KOKRS,Controlling Area,CHAR(4),Y
+CSKS,Cost Center Master Data,CO,master,KOSTL,Cost Center,CHAR(10),Y
+CSKS,Cost Center Master Data,CO,master,DATBI,Valid To,DATS,Y
+CSKS,Cost Center Master Data,CO,master,DATAB,Valid From,DATS,N
+CSKS,Cost Center Master Data,CO,master,BUKRS,Company Code,CHAR(4),N
+CSKT,Cost Center Texts,CO,master,MANDT,Client,CLNT,Y
+CSKT,Cost Center Texts,CO,master,SPRAS,Language,LANG,Y
+CSKT,Cost Center Texts,CO,master,KOKRS,Controlling Area,CHAR(4),Y
+CSKT,Cost Center Texts,CO,master,KOSTL,Cost Center,CHAR(10),Y
+CSKT,Cost Center Texts,CO,master,DATBI,Valid To,DATS,Y
+CSKT,Cost Center Texts,CO,master,KTEXT,Name,CHAR(20),N
+TCURC,Currency Codes,FI,config,MANDT,Client,CLNT,Y
+TCURC,Currency Codes,FI,config,WAERS,Currency Key,CUKY,Y
+TCURC,Currency Codes,FI,config,LTEXT,Long Text,CHAR(40),N
+TCURR,Exchange Rates,FI,config,MANDT,Client,CLNT,Y
+TCURR,Exchange Rates,FI,config,KURST,Exchange Rate Type,CHAR(4),Y
+TCURR,Exchange Rates,FI,config,FCURR,From Currency,CUKY,Y
+TCURR,Exchange Rates,FI,config,TCURR,To Currency,CUKY,Y
+TCURR,Exchange Rates,FI,config,GDATU,Valid From,DATS,Y
+TCURR,Exchange Rates,FI,config,UKURS,Exchange Rate,DEC,N
+NRIV,Number Range Intervals,Cross-app,config,MANDT,Client,CLNT,Y
+NRIV,Number Range Intervals,Cross-app,config,OBJECT,Number Range Object,CHAR(10),Y
+NRIV,Number Range Intervals,Cross-app,config,NRRANGENR,Range Number,CHAR(2),Y
+NRIV,Number Range Intervals,Cross-app,config,FROMNUMBER,From Number,CHAR(20),N
+NRIV,Number Range Intervals,Cross-app,config,TONUMBER,To Number,CHAR(20),N
+T052,Terms of Payment,FI,config,MANDT,Client,CLNT,Y
+T052,Terms of Payment,FI,config,ZTERM,Payment Terms Key,CHAR(4),Y
+T052,Terms of Payment,FI,config,TEXT1,Description,CHAR(30),N
+T052,Terms of Payment,FI,config,ZTAG1,Days 1,DEC,N
+T052,Terms of Payment,FI,config,ZPRZ1,Percentage 1,DEC,N
+T007A,Tax Codes (Processing),FI,config,MANDT,Client,CLNT,Y
+T007A,Tax Codes (Processing),FI,config,KALSM,Tax Procedure,CHAR(6),Y
+T007A,Tax Codes (Processing),FI,config,MWSKZ,Tax Code,CHAR(2),Y
+T007A,Tax Codes (Processing),FI,config,TEXT1,Description,CHAR(50),N
+T007S,Tax Code Descriptions,FI,config,MANDT,Client,CLNT,Y
+T007S,Tax Code Descriptions,FI,config,SPRAS,Language,LANG,Y
+T007S,Tax Code Descriptions,FI,config,KALSM,Tax Procedure,CHAR(6),Y
+T007S,Tax Code Descriptions,FI,config,MWSKZ,Tax Code,CHAR(2),Y
+T007S,Tax Code Descriptions,FI,config,TEXT1,Description,CHAR(50),N
+T009,Fiscal Year Variants,FI,config,PERIV,Fiscal Year Variant,CHAR(2),Y
+T009,Fiscal Year Variants,FI,config,BUTXT,Description,CHAR(20),N
+T009,Fiscal Year Variants,FI,config,ANZBP,Number of Periods,DEC,N
+T009B,Fiscal Year Period Texts,FI,config,PERIV,Fiscal Year Variant,CHAR(2),Y
+T009B,Fiscal Year Period Texts,FI,config,SPRAS,Language,LANG,Y
+T009B,Fiscal Year Period Texts,FI,config,POPER,Posting Period,NUMC,Y
+T009B,Fiscal Year Period Texts,FI,config,MONAT,Month Text,CHAR(20),N
+SKA1,GL Account Master (Chart of Accounts),FI,master,MANDT,Client,CLNT,Y
+SKA1,GL Account Master (Chart of Accounts),FI,master,KTOPL,Chart of Accounts,CHAR(4),Y
+SKA1,GL Account Master (Chart of Accounts),FI,master,SAKNR,GL Account Number,CHAR(10),Y
+SKA1,GL Account Master (Chart of Accounts),FI,master,KTOKS,Account Group,CHAR(4),N
+SKA1,GL Account Master (Chart of Accounts),FI,master,XBILK,Balance Sheet Account Indicator,CHAR(1),N
+SKB1,GL Account Master (Company Code Segment),FI,master,MANDT,Client,CLNT,Y
+SKB1,GL Account Master (Company Code Segment),FI,master,BUKRS,Company Code,CHAR(4),Y
+SKB1,GL Account Master (Company Code Segment),FI,master,SAKNR,GL Account Number,CHAR(10),Y
+SKB1,GL Account Master (Company Code Segment),FI,master,WAERS,Account Currency,CUKY,N
+SKB1,GL Account Master (Company Code Segment),FI,master,MITKZ,Reconciliation Account Type,CHAR(1),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RCLNT,Client,CLNT,Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RLDNR,Ledger,CHAR(2),Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RBUKRS,Company Code,CHAR(4),Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,GJAHR,Fiscal Year,NUMC,Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,BELNR,Document Number,CHAR(10),Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,DOCLN,Journal Entry Item,NUMC,Y
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RACCT,GL Account,CHAR(10),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,KOSTL,Cost Center,CHAR(10),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,POPER,Posting Period,NUMC,N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,BUDAT,Posting Date,DATS,N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,SGTXT,Line Item Text,CHAR(50),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,XBLNR,Reference Document Number,CHAR(16),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RWCUR,Transaction Currency,CUKY,N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,HSL,Amount in Company Code Currency (signed),CURR,N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,DRCRK,"Debit/Credit Indicator ('S'=Debit, 'H'=Credit)",CHAR(1),N
+BKPF,Accounting Document Header,FI,transaction,MANDT,Client,CLNT,Y
+BKPF,Accounting Document Header,FI,transaction,BUKRS,Company Code,CHAR(4),Y
+BKPF,Accounting Document Header,FI,transaction,BELNR,Document Number,CHAR(10),Y
+BKPF,Accounting Document Header,FI,transaction,GJAHR,Fiscal Year,NUMC,Y
+BKPF,Accounting Document Header,FI,transaction,BLDAT,Document Date,DATS,N
+BKPF,Accounting Document Header,FI,transaction,BUDAT,Posting Date,DATS,N
+BKPF,Accounting Document Header,FI,transaction,BLART,Document Type,CHAR(2),N
+BKPF,Accounting Document Header,FI,transaction,MONAT,Fiscal Period,NUMC,N
+BKPF,Accounting Document Header,FI,transaction,XBLNR,Reference Document Number,CHAR(16),N
+BKPF,Accounting Document Header,FI,transaction,BKTXT,Document Header Text,CHAR(25),N
+BKPF,Accounting Document Header,FI,transaction,WAERS,Currency Key,CUKY,N
+BKPF,Accounting Document Header,FI,transaction,USNAM,User Name (entered by),CHAR(12),N
+VBKPF,Document Header for Parked Documents (pre-posting holding area),FI,transaction,MANDT,Client,CLNT,Y
+VBKPF,Document Header for Parked Documents (pre-posting holding area),FI,transaction,BUKRS,Company Code,CHAR(4),Y
+VBKPF,Document Header for Parked Documents (pre-posting holding area),FI,transaction,BELNR,Document Number,CHAR(10),Y
+VBKPF,Document Header for Parked Documents (pre-posting holding area),FI,transaction,GJAHR,Fiscal Year,NUMC,Y
+VBKPF,Document Header for Parked Documents (pre-posting holding area),FI,transaction,STATUS_ALL,Overall Status of Parked Document,CHAR(1),N
+REGUH,Payment Program: Payment Header,FI,transaction,MANDT,Client,CLNT,Y
+REGUH,Payment Program: Payment Header,FI,transaction,LAUFD,Run Date,DATS,Y
+REGUH,Payment Program: Payment Header,FI,transaction,LAUFI,Run ID,CHAR(6),Y
+REGUH,Payment Program: Payment Header,FI,transaction,ZBUKR,Company Code,CHAR(4),Y
+REGUH,Payment Program: Payment Header,FI,transaction,LIFNR,Vendor,CHAR(10),N
+REGUH,Payment Program: Payment Header,FI,transaction,KUNNR,Customer,CHAR(10),N
+REGUH,Payment Program: Payment Header,FI,transaction,RZAWE,Payment Method,CHAR(1),N
+REGUH,Payment Program: Payment Header,FI,transaction,RWBTR,Payment Amount,CURR,N
+REGUP,Payment Program: Payment Line Items,FI,transaction,MANDT,Client,CLNT,Y
+REGUP,Payment Program: Payment Line Items,FI,transaction,LAUFD,Run Date,DATS,Y
+REGUP,Payment Program: Payment Line Items,FI,transaction,LAUFI,Run ID,CHAR(6),Y
+REGUP,Payment Program: Payment Line Items,FI,transaction,XVORL,Payment Proposal Flag,CHAR(1),Y
+REGUP,Payment Program: Payment Line Items,FI,transaction,VBLNR,Payment Document,CHAR(10),Y
+REGUP,Payment Program: Payment Line Items,FI,transaction,BELNR,Cleared Document Number,CHAR(10),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,MANDT,Client,CLNT,Y
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,BELNR,Invoice Document Number,CHAR(10),Y
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,GJAHR,Fiscal Year,NUMC,Y
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,BUZEI,Item Number,NUMC,Y
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,EBELN,Purchase Order,CHAR(10),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,EBELP,PO Item,NUMC,N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,WRBTR,Amount,CURR,N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,MANDT,Client,CLNT,Y
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,BELNR,Invoice Document Number,CHAR(10),Y
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,GJAHR,Fiscal Year,NUMC,Y
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,LIFNR,Vendor,CHAR(10),N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,BLDAT,Document Date,DATS,N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,RMWWR,Gross Amount,CURR,N
+VBRK,Billing Document Header,SD-Billing,transaction,MANDT,Client,CLNT,Y
+VBRK,Billing Document Header,SD-Billing,transaction,VBELN,Billing Document,CHAR(10),Y
+VBRK,Billing Document Header,SD-Billing,transaction,FKART,Billing Type,CHAR(4),N
+VBRK,Billing Document Header,SD-Billing,transaction,KUNAG,Sold-to Party,CHAR(10),N
+VBRK,Billing Document Header,SD-Billing,transaction,FKDAT,Billing Date,DATS,N
+VBRK,Billing Document Header,SD-Billing,transaction,NETWR,Net Value,CURR,N
+VBRP,Billing Document Item,SD-Billing,transaction,MANDT,Client,CLNT,Y
+VBRP,Billing Document Item,SD-Billing,transaction,VBELN,Billing Document,CHAR(10),Y
+VBRP,Billing Document Item,SD-Billing,transaction,POSNR,Item Number,NUMC,Y
+VBRP,Billing Document Item,SD-Billing,transaction,MATNR,Material,CHAR(18),N
+VBRP,Billing Document Item,SD-Billing,transaction,FKIMG,Billed Quantity,QUAN,N
+VBRP,Billing Document Item,SD-Billing,transaction,NETWR,Net Value,CURR,N
+ANKA,Asset Class: General Data,FI-AA,master,MANDT,Client,CLNT,Y
+ANKA,Asset Class: General Data,FI-AA,master,ANLKL,Asset Class,CHAR(8),Y
+ANKA,Asset Class: General Data,FI-AA,master,KTOPL,Chart of Accounts,CHAR(4),N
+ANKT,Asset Class Descriptions,FI-AA,master,MANDT,Client,CLNT,Y
+ANKT,Asset Class Descriptions,FI-AA,master,SPRAS,Language,LANG,Y
+ANKT,Asset Class Descriptions,FI-AA,master,ANLKL,Asset Class,CHAR(8),Y
+ANKT,Asset Class Descriptions,FI-AA,master,TXK50,Description,CHAR(50),N
+ANLA,Asset Master: General Data,FI-AA,master,MANDT,Client,CLNT,Y
+ANLA,Asset Master: General Data,FI-AA,master,BUKRS,Company Code,CHAR(4),Y
+ANLA,Asset Master: General Data,FI-AA,master,ANLN1,Asset Number,CHAR(12),Y
+ANLA,Asset Master: General Data,FI-AA,master,ANLN2,Asset Sub-number,CHAR(4),Y
+ANLA,Asset Master: General Data,FI-AA,master,ANLKL,Asset Class,CHAR(8),N
+ANLA,Asset Master: General Data,FI-AA,master,TXT50,Description,CHAR(50),N
+ANLA,Asset Master: General Data,FI-AA,master,AKTIV,Capitalization Date,DATS,N
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,MANDT,Client,CLNT,Y
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,BUKRS,Company Code,CHAR(4),Y
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,ANLN1,Asset Number,CHAR(12),Y
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,ANLN2,Asset Sub-number,CHAR(4),Y
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,BDATU,Valid To,DATS,Y
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,KOSTL,Cost Center,CHAR(10),N
+ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,STORT,Location,CHAR(10),N
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,MANDT,Client,CLNT,Y
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,BUKRS,Company Code,CHAR(4),Y
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,ANLN1,Asset Number,CHAR(12),Y
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,ANLN2,Asset Sub-number,CHAR(4),Y
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,AFABE,Depreciation Area,CHAR(2),Y
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,AFASL,Depreciation Key,CHAR(4),N
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,NDJAR,Planned Useful Life (Years),DEC,N
+AFAMA,Depreciation Key,FI-AA,config,MANDT,Client,CLNT,Y
+AFAMA,Depreciation Key,FI-AA,config,AFAPL,Chart of Depreciation,CHAR(4),Y
+AFAMA,Depreciation Key,FI-AA,config,AFASL,Depreciation Key,CHAR(4),Y
+T499S,Location (Plant Location Groups),FI-AA,config,MANDT,Client,CLNT,Y
+T499S,Location (Plant Location Groups),FI-AA,config,WERKS,Plant,CHAR(4),Y
+T499S,Location (Plant Location Groups),FI-AA,config,STORT,Location,CHAR(10),Y
+T499S,Location (Plant Location Groups),FI-AA,config,STLTX,Description,CHAR(30),N
+ANEK,Asset Posting Document Header,FI-AA,transaction,MANDT,Client,CLNT,Y
+ANEK,Asset Posting Document Header,FI-AA,transaction,BUKRS,Company Code,CHAR(4),Y
+ANEK,Asset Posting Document Header,FI-AA,transaction,ANLN1,Asset Number,CHAR(12),N
+ANEK,Asset Posting Document Header,FI-AA,transaction,BELNR,Document Number,CHAR(12),Y
+ANEK,Asset Posting Document Header,FI-AA,transaction,GJAHR,Fiscal Year,NUMC,Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,MANDT,Client,CLNT,Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,BUKRS,Company Code,CHAR(4),Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,ANLN1,Asset Number,CHAR(12),Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,ANLN2,Asset Sub-number,CHAR(4),Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,GJAHR,Fiscal Year,NUMC,Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,LNRAN,Sequence Number,NUMC,Y
+ANEP,Asset Posting Line Items,FI-AA,transaction,BWASL,Transaction Type,CHAR(3),N
+ANEP,Asset Posting Line Items,FI-AA,transaction,ANBTR,Posting Amount,CURR,N
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,MANDT,Client,CLNT,Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,BUKRS,Company Code,CHAR(4),Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,ANLN1,Asset Number,CHAR(12),Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,ANLN2,Asset Sub-number,CHAR(4),Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,GJAHR,Fiscal Year,NUMC,Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,AFABER,Depreciation Area,CHAR(2),Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,PERAF,Period,NUMC,Y
+ANLP,Asset Periodic Values (Planned Depreciation),FI-AA,transaction,NAFAP,Planned Depreciation,CURR,N
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,MANDT,Client,CLNT,Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,BUKRS,Company Code,CHAR(4),Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,ANLN1,Asset Number,CHAR(12),Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,ANLN2,Asset Sub-number,CHAR(4),Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,GJAHR,Fiscal Year,NUMC,Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,AFABER,Depreciation Area,CHAR(2),Y
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,KANSW,Cumulative Acquisition Value,CURR,N
+ANLC,Asset Value Fields (Accumulated Values),FI-AA,transaction,KNAFA,Accumulated Depreciation,CURR,N
+MPLA,Maintenance Plan Header,PM,master,MANDT,Client,CLNT,Y
+MPLA,Maintenance Plan Header,PM,master,WARPL,Maintenance Plan,CHAR(12),Y
+MPLA,Maintenance Plan Header,PM,master,WPTXT,Description,CHAR(40),N
+MPOS,Maintenance Item,PM,master,MANDT,Client,CLNT,Y
+MPOS,Maintenance Item,PM,master,WAPOS,Maintenance Item,CHAR(12),Y
+MPOS,Maintenance Item,PM,master,EQUNR,Equipment,CHAR(18),N
+AUFK,Order Master Data (PM/PP/Internal Orders),PM / PP / CO,master,MANDT,Client,CLNT,Y
+AUFK,Order Master Data (PM/PP/Internal Orders),PM / PP / CO,master,AUFNR,Order Number,CHAR(12),Y
+AUFK,Order Master Data (PM/PP/Internal Orders),PM / PP / CO,master,AUART,Order Type,CHAR(4),N
+AUFK,Order Master Data (PM/PP/Internal Orders),PM / PP / CO,master,KTEXT,Description,CHAR(40),N
+AUFK,Order Master Data (PM/PP/Internal Orders),PM / PP / CO,master,WERKS,Plant,CHAR(4),N
+AFIH,Maintenance Order Header (PM-specific),PM,transaction,MANDT,Client,CLNT,Y
+AFIH,Maintenance Order Header (PM-specific),PM,transaction,AUFNR,Order Number,CHAR(12),Y
+AFIH,Maintenance Order Header (PM-specific),PM,transaction,EQUNR,Equipment,CHAR(18),N
+AFIH,Maintenance Order Header (PM-specific),PM,transaction,ILART,Maintenance Activity Type,CHAR(2),N
+EQUI,Equipment Master,PM,master,MANDT,Client,CLNT,Y
+EQUI,Equipment Master,PM,master,EQUNR,Equipment Number,CHAR(18),Y
+EQUI,Equipment Master,PM,master,EQTYP,Equipment Category,CHAR(1),N
+EQUI,Equipment Master,PM,master,EQKTX,Description,CHAR(40),N
+EQUZ,Equipment Usage/Installation History,PM,transaction,MANDT,Client,CLNT,Y
+EQUZ,Equipment Usage/Installation History,PM,transaction,EQUNR,Equipment Number,CHAR(18),Y
+EQUZ,Equipment Usage/Installation History,PM,transaction,DATBI,Valid To,DATS,Y
+EQUZ,Equipment Usage/Installation History,PM,transaction,DATAB,Valid From,DATS,N
+EQUZ,Equipment Usage/Installation History,PM,transaction,IWERK,Maintenance Plant,CHAR(4),N
+BUT000,Business Partner: General Data,Cross (Business Partner),master,CLIENT,Client,CLNT,Y
+BUT000,Business Partner: General Data,Cross (Business Partner),master,PARTNER,Business Partner Number,CHAR(10),Y
+BUT000,Business Partner: General Data,Cross (Business Partner),master,TYPE,BP Category,CHAR(1),N
+BUT000,Business Partner: General Data,Cross (Business Partner),master,NAME_ORG1,Organization Name,CHAR(40),N
+BUT000,Business Partner: General Data,Cross (Business Partner),master,BU_SORT1,Search Term,CHAR(20),N
+BUT050,Business Partner Relationships,Cross (Business Partner),master,CLIENT,Client,CLNT,Y
+BUT050,Business Partner Relationships,Cross (Business Partner),master,RELNR,Relationship Number,CHAR(12),Y
+BUT050,Business Partner Relationships,Cross (Business Partner),master,PARTNER1,BP 1,CHAR(10),N
+BUT050,Business Partner Relationships,Cross (Business Partner),master,PARTNER2,BP 2,CHAR(10),N
+BUT050,Business Partner Relationships,Cross (Business Partner),master,RELTYP,Relationship Category,CHAR(10),N
+KNVV,Customer Master: Sales Area Data,SD,master,MANDT,Client,CLNT,Y
+KNVV,Customer Master: Sales Area Data,SD,master,KUNNR,Customer,CHAR(10),Y
+KNVV,Customer Master: Sales Area Data,SD,master,VKORG,Sales Organization,CHAR(4),Y
+KNVV,Customer Master: Sales Area Data,SD,master,VTWEG,Distribution Channel,CHAR(2),Y
+KNVV,Customer Master: Sales Area Data,SD,master,SPART,Division,CHAR(2),Y
+KNVV,Customer Master: Sales Area Data,SD,master,KDGRP,Customer Group,CHAR(2),N
+QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,MANDT,Client,CLNT,Y
+QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,QMNUM,Notification Number,CHAR(12),Y
+QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,QMART,Notification Type,CHAR(2),N
+QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,QMTXT,Short Text,CHAR(40),N
+QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,ERDAT,Created On,DATS,N
+QMIH,Notification: Additional Data for Service (CS) Notification,CS,transaction,MANDT,Client,CLNT,Y
+QMIH,Notification: Additional Data for Service (CS) Notification,CS,transaction,QMNUM,Notification Number,CHAR(12),Y
+QMIH,Notification: Additional Data for Service (CS) Notification,CS,transaction,EQUNR,Equipment,CHAR(18),N
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),MANDT,Client,CLNT,Y
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),SUBTY,Subtype,CHAR(4),Y
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),BEGDA,Start Date,DATS,Y
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),ENDDA,End Date,DATS,Y
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),BUKRS,Company Code,CHAR(4),N
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),ORGEH,Organizational Unit,NUMC(8),N
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),PLANS,Position,NUMC(8),N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),MANDT,Client,CLNT,Y
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),BEGDA,Start Date,DATS,Y
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),ENDDA,End Date,DATS,Y
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),NACHN,Last Name,CHAR(40),N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),VORNA,First Name,CHAR(40),N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),GBDAT,Date of Birth,DATS,N
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),MANDT,Client,CLNT,Y
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),SUBTY,Address Type,CHAR(4),Y
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),BEGDA,Start Date,DATS,Y
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),ENDDA,End Date,DATS,Y
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),ORT01,City,CHAR(40),N
+PA0006,HR Infotype 0006: Addresses,PA,master (infotype),STRAS,Street,CHAR(40),N
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),MANDT,Client,CLNT,Y
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),SUBTY,Communication Type,CHAR(4),Y
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),BEGDA,Start Date,DATS,Y
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),ENDDA,End Date,DATS,Y
+PA0105,HR Infotype 0105: Communication,PA,master (infotype),USRID,ID/Value (e.g. email),CHAR(40),N
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),MANDT,Client,CLNT,Y
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),BEGDA,Start Date,DATS,Y
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),ENDDA,End Date,DATS,Y
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),TRFGR,Pay Grade,CHAR(2),N
+PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),BET01,Wage Amount 1,CURR,N
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),MANDT,Client,CLNT,Y
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),SUBTY,Wage Type,CHAR(4),Y
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),BEGDA,Start Date,DATS,Y
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),ENDDA,End Date,DATS,Y
+PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),BETRG,Amount,CURR,N
+PA0015,HR Infotype 0015: Additional Payments,PY,transaction (infotype),MANDT,Client,CLNT,Y
+PA0015,HR Infotype 0015: Additional Payments,PY,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0015,HR Infotype 0015: Additional Payments,PY,transaction (infotype),SUBTY,Wage Type,CHAR(4),Y
+PA0015,HR Infotype 0015: Additional Payments,PY,transaction (infotype),ZEIPU,Payment Date,DATS,Y
+PA0015,HR Infotype 0015: Additional Payments,PY,transaction (infotype),BETRG,Amount,CURR,N
+PA0003,HR Infotype 0003: Payroll Status,PY,master (infotype),MANDT,Client,CLNT,Y
+PA0003,HR Infotype 0003: Payroll Status,PY,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0003,HR Infotype 0003: Payroll Status,PY,master (infotype),ABKRS,Payroll Area,CHAR(2),N
+PA0003,HR Infotype 0003: Payroll Status,PY,master (infotype),PAYTY,Payroll Run Type,CHAR(1),N
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),MANDT,Client,CLNT,Y
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),SUBTY,Absence Type,CHAR(4),Y
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),BEGDA,Start Date,DATS,Y
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),ENDDA,End Date,DATS,Y
+PA2001,HR Infotype 2001: Absences,PA-Time,transaction (infotype),ABWTG,Number of Days,DEC,N
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),MANDT,Client,CLNT,Y
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),SUBTY,Quota Type,CHAR(4),Y
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),BEGDA,Start Date,DATS,Y
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),ENDDA,End Date,DATS,Y
+PA2006,HR Infotype 2006: Absence Quotas,PA-Time,transaction (infotype),ANZHL,Quota Number/Days,DEC,N
+PA2011,HR Infotype 2011: Time Events,PA-Time,transaction (infotype),MANDT,Client,CLNT,Y
+PA2011,HR Infotype 2011: Time Events,PA-Time,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA2011,HR Infotype 2011: Time Events,PA-Time,transaction (infotype),UZEIT,Time,TIMS,Y
+PA2011,HR Infotype 2011: Time Events,PA-Time,transaction (infotype),ARBDA,Work Date,DATS,Y
+PA2011,HR Infotype 2011: Time Events,PA-Time,transaction (infotype),VORGA,Time Event Type,CHAR(4),N
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,MANDT,Client,CLNT,Y
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,WORKDATE,Work Date,DATS,Y
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,PERNR,Personnel Number,NUMC(8),Y
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,COUNTER,Line Counter,NUMC,Y
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,CATSHOURS,Hours,DEC,N
+CATSDB,Cross-Application Time Sheet (CATS) Records,PA-Time / PS,transaction,PROJN,WBS Element,CHAR(24),N
+T510,Pay Scale Groups,PY,config,MANDT,Client,CLNT,Y
+T510,Pay Scale Groups,PY,config,TRFAR,Pay Scale Type,CHAR(2),Y
+T510,Pay Scale Groups,PY,config,TRFGB,Pay Scale Area,CHAR(2),Y
+T510,Pay Scale Groups,PY,config,TRFGR,Pay Scale Group,CHAR(8),Y
+T512W,Wage Type Valuation / Catalog,PY,config,MANDT,Client,CLNT,Y
+T512W,Wage Type Valuation / Catalog,PY,config,MOLGA,Country Grouping,CHAR(2),Y
+T512W,Wage Type Valuation / Catalog,PY,config,LGART,Wage Type,CHAR(4),Y
+T512W,Wage Type Valuation / Catalog,PY,config,LGGRP,Wage Type Group,CHAR(4),N
+T508A,Work Schedule Rules,PA-Time,config,MANDT,Client,CLNT,Y
+T508A,Work Schedule Rules,PA-Time,config,SCHKZ,Work Schedule Rule,CHAR(8),Y
+T508A,Work Schedule Rules,PA-Time,config,MOTXT,Description,CHAR(30),N
+T556A,Absence Quota Types,PA-Time,config,MANDT,Client,CLNT,Y
+T556A,Absence Quota Types,PA-Time,config,MOLGA,Country Grouping,CHAR(2),Y
+T556A,Absence Quota Types,PA-Time,config,KVERB,Quota Type,CHAR(2),Y
+T569V,Payroll Control Record,PY,transaction,MANDT,Client,CLNT,Y
+T569V,Payroll Control Record,PY,transaction,ABKRS,Payroll Area,CHAR(2),Y
+T569V,Payroll Control Record,PY,transaction,PABRJ,Payroll Year,NUMC,N
+T569V,Payroll Control Record,PY,transaction,PABRP,Payroll Period,NUMC,N
+T569V,Payroll Control Record,PY,transaction,SRTZA,Payroll Status,CHAR(1),N
+T001P,Personnel Sub-areas / Factory Calendar Assignment,PA,config,MANDT,Client,CLNT,Y
+T001P,Personnel Sub-areas / Factory Calendar Assignment,PA,config,WERKS,Personnel Area,CHAR(4),Y
+T001P,Personnel Sub-areas / Factory Calendar Assignment,PA,config,BTRTL,Personnel Sub-area,CHAR(4),Y
+TFACS,Factory Calendar,Cross-app (config),config,IDENT,Factory Calendar ID,CHAR(2),Y
+TFACS,Factory Calendar,Cross-app (config),config,KTEXT,Description,CHAR(30),N
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,MANDT,Client,CLNT,Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,PLVAR,Plan Version,CHAR(2),Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,OTYPE,Object Type,CHAR(2),Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,OBJID,Object ID,NUMC(8),Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,BEGDA,Start Date,DATS,Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,ENDDA,End Date,DATS,Y
+HRP1000,"Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",PA-OM / PA-PD,master,STEXT,Name,CHAR(40),N
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,MANDT,Client,CLNT,Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,PLVAR,Plan Version,CHAR(2),Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,OTYPE,Object Type,CHAR(2),Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,OBJID,Object ID,NUMC(8),Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,SUBTY,Relationship,CHAR(4),Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,BEGDA,Start Date,DATS,Y
+HRP1001,Org Management: Infotype 1001 (Relationships),PA-OM / PA-PD,master,SOBID,Related Object ID,NUMC(8),N
+PB0001,Applicant Infotype 0001: Applicant Actions,PA-Recruitment,master (infotype),MANDT,Client,CLNT,Y
+PB0001,Applicant Infotype 0001: Applicant Actions,PA-Recruitment,master (infotype),PERNR,Applicant Number,NUMC(8),Y
+PB0001,Applicant Infotype 0001: Applicant Actions,PA-Recruitment,master (infotype),BEGDA,Start Date,DATS,Y
+PB0001,Applicant Infotype 0001: Applicant Actions,PA-Recruitment,master (infotype),MASSN,Applicant Action Type,CHAR(2),N
+PB0002,Applicant Infotype 0002: Applicant's Personal Data,PA-Recruitment,master (infotype),MANDT,Client,CLNT,Y
+PB0002,Applicant Infotype 0002: Applicant's Personal Data,PA-Recruitment,master (infotype),PERNR,Applicant Number,NUMC(8),Y
+PB0002,Applicant Infotype 0002: Applicant's Personal Data,PA-Recruitment,master (infotype),NACHN,Last Name,CHAR(40),N
+PB0002,Applicant Infotype 0002: Applicant's Personal Data,PA-Recruitment,master (infotype),VORNA,First Name,CHAR(40),N
+HAP_DOCUMENT,Appraisal Document Header (Performance Management),PA-EP,transaction,MANDT,Client,CLNT,Y
+HAP_DOCUMENT,Appraisal Document Header (Performance Management),PA-EP,transaction,APP_ID,Appraisal Document ID,NUMC(8),Y
+HAP_DOCUMENT,Appraisal Document Header (Performance Management),PA-EP,transaction,CAT_ID,Appraisal Category,CHAR(2),N
+HAP_DOCUMENT,Appraisal Document Header (Performance Management),PA-EP,transaction,STATUS,Status,CHAR(2),N
+LAGP,Storage Bin Master (Warehouse Management),MM-WM/EWM,master,MANDT,Client,CLNT,Y
+LAGP,Storage Bin Master (Warehouse Management),MM-WM/EWM,master,LGNUM,Warehouse Number,CHAR(3),Y
+LAGP,Storage Bin Master (Warehouse Management),MM-WM/EWM,master,LGTYP,Storage Type,CHAR(3),Y
+LAGP,Storage Bin Master (Warehouse Management),MM-WM/EWM,master,LGPLA,Storage Bin,CHAR(10),Y
+T134,Material Types,MM,config,MANDT,Client,CLNT,Y
+T134,Material Types,MM,config,MTART,Material Type,CHAR(4),Y
+T134,Material Types,MM,config,MTBEZ,Description,CHAR(25),N
+T006,Units of Measure,MM,config,MANDT,Client,CLNT,Y
+T006,Units of Measure,MM,config,MSEHI,Unit of Measure,UNIT(3),Y
+T006,Units of Measure,MM,config,MSEHT,Description,CHAR(30),N
+T300,Warehouse Number Assignment,MM-WM (config),config,MANDT,Client,CLNT,Y
+T300,Warehouse Number Assignment,MM-WM (config),config,LGNUM,Warehouse Number,CHAR(3),Y
+T300,Warehouse Number Assignment,MM-WM (config),config,LNUMT,Description,CHAR(30),N
+IKPF,Physical Inventory Document Header,MM-IM,transaction,MANDT,Client,CLNT,Y
+IKPF,Physical Inventory Document Header,MM-IM,transaction,IBLNR,Physical Inventory Document,CHAR(10),Y
+IKPF,Physical Inventory Document Header,MM-IM,transaction,GJAHR,Fiscal Year,NUMC,Y
+IKPF,Physical Inventory Document Header,MM-IM,transaction,WERKS,Plant,CHAR(4),N
+ISEG,Physical Inventory Document Items,MM-IM,transaction,MANDT,Client,CLNT,Y
+ISEG,Physical Inventory Document Items,MM-IM,transaction,IBLNR,Physical Inventory Document,CHAR(10),Y
+ISEG,Physical Inventory Document Items,MM-IM,transaction,GJAHR,Fiscal Year,NUMC,Y
+ISEG,Physical Inventory Document Items,MM-IM,transaction,ZEILI,Item Number,NUMC,Y
+ISEG,Physical Inventory Document Items,MM-IM,transaction,MATNR,Material,CHAR(18),N
+ISEG,Physical Inventory Document Items,MM-IM,transaction,BSTAE,Counted Quantity,QUAN,N
+MSEG,Material Document: Line Items,MM-IM,transaction,MANDT,Client,CLNT,Y
+MSEG,Material Document: Line Items,MM-IM,transaction,MBLNR,Material Document Number,CHAR(10),Y
+MSEG,Material Document: Line Items,MM-IM,transaction,MJAHR,Material Doc Year,NUMC,Y
+MSEG,Material Document: Line Items,MM-IM,transaction,ZEILE,Item Number,NUMC,Y
+MSEG,Material Document: Line Items,MM-IM,transaction,MATNR,Material,CHAR(18),N
+MSEG,Material Document: Line Items,MM-IM,transaction,WERKS,Plant,CHAR(4),N
+MSEG,Material Document: Line Items,MM-IM,transaction,BWART,Movement Type,CHAR(3),N
+MSEG,Material Document: Line Items,MM-IM,transaction,MENGE,Quantity,QUAN,N
+MKPF,Material Document: Header,MM-IM,transaction,MANDT,Client,CLNT,Y
+MKPF,Material Document: Header,MM-IM,transaction,MBLNR,Material Document Number,CHAR(10),Y
+MKPF,Material Document: Header,MM-IM,transaction,MJAHR,Material Doc Year,NUMC,Y
+MKPF,Material Document: Header,MM-IM,transaction,BLDAT,Document Date,DATS,N
+MKPF,Material Document: Header,MM-IM,transaction,BUDAT,Posting Date,DATS,N
+MARC,Material Master: Plant Data,MM,master,MANDT,Client,CLNT,Y
+MARC,Material Master: Plant Data,MM,master,MATNR,Material Number,CHAR(18),Y
+MARC,Material Master: Plant Data,MM,master,WERKS,Plant,CHAR(4),Y
+MARC,Material Master: Plant Data,MM,master,MINBE,Reorder Point,QUAN,N
+MARC,Material Master: Plant Data,MM,master,DISMM,MRP Type,CHAR(2),N
+MCHA,Batch Master (Plant Level),MM-Batch,master,MANDT,Client,CLNT,Y
+MCHA,Batch Master (Plant Level),MM-Batch,master,MATNR,Material Number,CHAR(18),Y
+MCHA,Batch Master (Plant Level),MM-Batch,master,WERKS,Plant,CHAR(4),Y
+MCHA,Batch Master (Plant Level),MM-Batch,master,CHARG,Batch Number,CHAR(10),Y
+MCH1,Batch Master (Material Level),MM-Batch,master,MANDT,Client,CLNT,Y
+MCH1,Batch Master (Material Level),MM-Batch,master,MATNR,Material Number,CHAR(18),Y
+MCH1,Batch Master (Material Level),MM-Batch,master,CHARG,Batch Number,CHAR(10),Y
+MCH1,Batch Master (Material Level),MM-Batch,master,VFDAT,Shelf Life Expiration Date,DATS,N
+MCHB,Batch Stocks,MM-Batch,transaction,MANDT,Client,CLNT,Y
+MCHB,Batch Stocks,MM-Batch,transaction,MATNR,Material Number,CHAR(18),Y
+MCHB,Batch Stocks,MM-Batch,transaction,WERKS,Plant,CHAR(4),Y
+MCHB,Batch Stocks,MM-Batch,transaction,CHARG,Batch Number,CHAR(10),Y
+MCHB,Batch Stocks,MM-Batch,transaction,CLABS,Unrestricted Stock,QUAN,N
+SER01,Serial Number Master Link,MM-Serial / PM,master,MANDT,Client,CLNT,Y
+SER01,Serial Number Master Link,MM-Serial / PM,master,MATNR,Material Number,CHAR(18),Y
+SER01,Serial Number Master Link,MM-Serial / PM,master,SERNR,Serial Number,CHAR(18),Y
+SER01,Serial Number Master Link,MM-Serial / PM,master,EQUNR,Equipment Number,CHAR(18),N
+MBEW,Material Valuation,MM-Valuation,master,MANDT,Client,CLNT,Y
+MBEW,Material Valuation,MM-Valuation,master,MATNR,Material Number,CHAR(18),Y
+MBEW,Material Valuation,MM-Valuation,master,BWKEY,Valuation Area,CHAR(4),Y
+MBEW,Material Valuation,MM-Valuation,master,BWTAR,Valuation Type,CHAR(10),Y
+MBEW,Material Valuation,MM-Valuation,master,VPRSV,Price Control Indicator,CHAR(1),N
+MBEW,Material Valuation,MM-Valuation,master,STPRS,Standard Price,CURR,N
+MBEW,Material Valuation,MM-Valuation,master,VERPR,Moving Average Price,CURR,N
+CKIS,Cost Estimate: Items,CO-PC,transaction,MANDT,Client,CLNT,Y
+CKIS,Cost Estimate: Items,CO-PC,transaction,KALNR,Costing Number,CHAR(12),Y
+CKIS,Cost Estimate: Items,CO-PC,transaction,KADKY,Costing Date,DATS,Y
+CKIS,Cost Estimate: Items,CO-PC,transaction,POSNR,Item Number,NUMC,Y
+KEKO,Product Costing: Cost Estimate Header,CO-PC,transaction,MANDT,Client,CLNT,Y
+KEKO,Product Costing: Cost Estimate Header,CO-PC,transaction,KALNR,Costing Number,CHAR(12),Y
+KEKO,Product Costing: Cost Estimate Header,CO-PC,transaction,KADKY,Costing Date,DATS,Y
+KEKO,Product Costing: Cost Estimate Header,CO-PC,transaction,MATNR,Material Number,CHAR(18),N
+MARA,Material Master: General Data,MM,master,MANDT,Client,CLNT,Y
+MARA,Material Master: General Data,MM,master,MATNR,Material Number,CHAR(18),Y
+MARA,Material Master: General Data,MM,master,MTART,Material Type,CHAR(4),N
+MARA,Material Master: General Data,MM,master,MATKL,Material Group,CHAR(9),N
+MARA,Material Master: General Data,MM,master,MEINS,Base Unit of Measure,UNIT(3),N
+MARD,Storage Location Stock,MM-IM,transaction,MANDT,Client,CLNT,Y
+MARD,Storage Location Stock,MM-IM,transaction,MATNR,Material Number,CHAR(18),Y
+MARD,Storage Location Stock,MM-IM,transaction,WERKS,Plant,CHAR(4),Y
+MARD,Storage Location Stock,MM-IM,transaction,LGORT,Storage Location,CHAR(4),Y
+MARD,Storage Location Stock,MM-IM,transaction,LABST,Unrestricted Stock,QUAN,N
+STKO,Bill of Material: Header,PP,master,MANDT,Client,CLNT,Y
+STKO,Bill of Material: Header,PP,master,STLNR,BOM Number,CHAR(8),Y
+STKO,Bill of Material: Header,PP,master,STLAL,Alternative BOM,CHAR(2),Y
+STKO,Bill of Material: Header,PP,master,STLAN,BOM Usage,CHAR(1),N
+STPO,Bill of Material: Item,PP,master,MANDT,Client,CLNT,Y
+STPO,Bill of Material: Item,PP,master,STLNR,BOM Number,CHAR(8),Y
+STPO,Bill of Material: Item,PP,master,STLKN,BOM Item Node,CHAR(8),Y
+STPO,Bill of Material: Item,PP,master,IDNRK,Component Material,CHAR(18),N
+STPO,Bill of Material: Item,PP,master,MENGE,Component Quantity,QUAN,N
+PLKO,Routing: Header,PP,master,MANDT,Client,CLNT,Y
+PLKO,Routing: Header,PP,master,PLNTY,Task List Type,CHAR(1),Y
+PLKO,Routing: Header,PP,master,PLNNR,Group,CHAR(8),Y
+PLKO,Routing: Header,PP,master,PLNAL,Group Counter,CHAR(2),Y
+PLPO,Routing: Operations,PP,master,MANDT,Client,CLNT,Y
+PLPO,Routing: Operations,PP,master,PLNTY,Task List Type,CHAR(1),Y
+PLPO,Routing: Operations,PP,master,PLNNR,Group,CHAR(8),Y
+PLPO,Routing: Operations,PP,master,PLNKN,Node Number,NUMC,Y
+PLPO,Routing: Operations,PP,master,ARBPL,Work Center,CHAR(8),N
+CRHD,Work Center Header,PP,master,MANDT,Client,CLNT,Y
+CRHD,Work Center Header,PP,master,OBJTY,Object Type,CHAR(2),Y
+CRHD,Work Center Header,PP,master,OBJID,Object ID,NUMC(8),Y
+CRHD,Work Center Header,PP,master,ARBPL,Work Center,CHAR(8),N
+CRHD,Work Center Header,PP,master,KTEXT,Description,CHAR(40),N
+KAKO,Capacity Header Segment,PP,master,MANDT,Client,CLNT,Y
+KAKO,Capacity Header Segment,PP,master,OBJID,Capacity Object ID,NUMC(8),Y
+KAKO,Capacity Header Segment,PP,master,KAPTAG,Operating Time/Day,DEC,N
+RESB,Reservation / Dependent Requirements,PP-MRP,transaction,MANDT,Client,CLNT,Y
+RESB,Reservation / Dependent Requirements,PP-MRP,transaction,RSNUM,Reservation Number,CHAR(10),Y
+RESB,Reservation / Dependent Requirements,PP-MRP,transaction,RSPOS,Item Number,CHAR(4),Y
+RESB,Reservation / Dependent Requirements,PP-MRP,transaction,MATNR,Material Number,CHAR(18),N
+RESB,Reservation / Dependent Requirements,PP-MRP,transaction,BDMNG,Requirement Quantity,QUAN,N
+AFKO,Production/Process Order: Header,PP,transaction,MANDT,Client,CLNT,Y
+AFKO,Production/Process Order: Header,PP,transaction,AUFNR,Order Number,CHAR(12),Y
+AFKO,Production/Process Order: Header,PP,transaction,GSTRP,Basic Start Date,DATS,N
+AFKO,Production/Process Order: Header,PP,transaction,GLTRP,Basic Finish Date,DATS,N
+AFKO,Production/Process Order: Header,PP,transaction,PLNBEZ,Material,CHAR(18),N
+AFPO,Production Order: Item,PP,transaction,MANDT,Client,CLNT,Y
+AFPO,Production Order: Item,PP,transaction,AUFNR,Order Number,CHAR(12),Y
+AFPO,Production Order: Item,PP,transaction,POSNR,Item Number,NUMC,Y
+AFPO,Production Order: Item,PP,transaction,MATNR,Material Number,CHAR(18),N
+AFPO,Production Order: Item,PP,transaction,PSMNG,Order Quantity,QUAN,N
+AFRU,Order Confirmations,PP,transaction,MANDT,Client,CLNT,Y
+AFRU,Order Confirmations,PP,transaction,RUECK,Confirmation Number,CHAR(10),Y
+AFRU,Order Confirmations,PP,transaction,RMZHL,Counter,NUMC,Y
+AFRU,Order Confirmations,PP,transaction,AUFNR,Order Number,CHAR(12),N
+AFRU,Order Confirmations,PP,transaction,LMNGA,Confirmed Yield Quantity,QUAN,N
+QALS,Inspection Lot Record,QM,transaction,MANDT,Client,CLNT,Y
+QALS,Inspection Lot Record,QM,transaction,PRUEFLOS,Inspection Lot Number,CHAR(12),Y
+QALS,Inspection Lot Record,QM,transaction,MATNR,Material Number,CHAR(18),N
+QALS,Inspection Lot Record,QM,transaction,ART,Inspection Type,CHAR(2),N
+QAMB,Inspection Lot: Sample-Drawing Data,QM,transaction,MANDT,Client,CLNT,Y
+QAMB,Inspection Lot: Sample-Drawing Data,QM,transaction,PRUEFLOS,Inspection Lot Number,CHAR(12),Y
+QAMB,Inspection Lot: Sample-Drawing Data,QM,transaction,VORGLFD,Sequential Number,NUMC,Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,MANDT,Client,CLNT,Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,KOKRS,Controlling Area,CHAR(4),Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,BELNR,CO Document Number,CHAR(10),Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,BUZEI,Line Item,NUMC,Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,GJAHR,Fiscal Year,NUMC,Y
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,WRTTP,Value Type (actual/plan),CHAR(2),N
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,OBJNR,CO Object Number,CHAR(22),N
+COEP,CO Object: Line Items (Actual/Plan),CO,transaction,WKGBTR,Amount in Controlling Area Currency,CURR,N
+PROJ,Project Definition,PS,master,MANDT,Client,CLNT,Y
+PROJ,Project Definition,PS,master,PSPNR,Project Internal ID,NUMC(8),Y
+PROJ,Project Definition,PS,master,PSPID,Project ID (external),CHAR(24),N
+PROJ,Project Definition,PS,master,POST1,Description,CHAR(40),N
+PRPS,WBS Element Master Data,PS,master,MANDT,Client,CLNT,Y
+PRPS,WBS Element Master Data,PS,master,PSPNR,WBS Element Internal ID,NUMC(8),Y
+PRPS,WBS Element Master Data,PS,master,POSID,WBS Element (external),CHAR(24),N
+PRPS,WBS Element Master Data,PS,master,POST1,Description,CHAR(40),N
+PRPS,WBS Element Master Data,PS,master,STUFE,Hierarchy Level,NUMC,N
+AFVC,Network/Order Activity (Operation within a Network),PS,transaction,MANDT,Client,CLNT,Y
+AFVC,Network/Order Activity (Operation within a Network),PS,transaction,AUFPL,Routing/Network Number,NUMC(10),Y
+AFVC,Network/Order Activity (Operation within a Network),PS,transaction,APLZL,Activity Counter,NUMC,Y
+AFVC,Network/Order Activity (Operation within a Network),PS,transaction,VORNR,Activity Number,CHAR(4),N
+AFVC,Network/Order Activity (Operation within a Network),PS,transaction,LTXA1,Description,CHAR(40),N
+AFVV,Network Activity: Quantities/Dates/Values,PS,transaction,MANDT,Client,CLNT,Y
+AFVV,Network Activity: Quantities/Dates/Values,PS,transaction,AUFPL,Routing/Network Number,NUMC(10),Y
+AFVV,Network Activity: Quantities/Dates/Values,PS,transaction,APLZL,Activity Counter,NUMC,Y
+AFVV,Network Activity: Quantities/Dates/Values,PS,transaction,ARBEI,Work,DEC,N
+BPGE,Budget: Total Values (Overall/Original),CO / PS (Budgeting),transaction,MANDT,Client,CLNT,Y
+BPGE,Budget: Total Values (Overall/Original),CO / PS (Budgeting),transaction,OBJNR,CO Object Number,CHAR(22),Y
+BPGE,Budget: Total Values (Overall/Original),CO / PS (Budgeting),transaction,GJAHR,Fiscal Year,NUMC,Y
+BPGE,Budget: Total Values (Overall/Original),CO / PS (Budgeting),transaction,WRTTP,Value Type,CHAR(2),Y
+BPGE,Budget: Total Values (Overall/Original),CO / PS (Budgeting),transaction,WTGXXX,Total Value (year-dependent field),CURR,N
+BPJA,Budget: Annual Values,CO / PS (Budgeting),transaction,MANDT,Client,CLNT,Y
+BPJA,Budget: Annual Values,CO / PS (Budgeting),transaction,OBJNR,CO Object Number,CHAR(22),Y
+BPJA,Budget: Annual Values,CO / PS (Budgeting),transaction,GJAHR,Fiscal Year,NUMC,Y
+BPJA,Budget: Annual Values,CO / PS (Budgeting),transaction,WLJHR,Annual Budget Value,CURR,N
+UKM_BP,FSCM Credit Management: Business Partner Credit Data,FI-FSCM,master,PARTNER,Business Partner,CHAR(10),Y
+UKM_BP,FSCM Credit Management: Business Partner Credit Data,FI-FSCM,master,CREDIT_SEGMENT,Credit Segment,CHAR(4),Y
+UKM_BP,FSCM Credit Management: Business Partner Credit Data,FI-FSCM,master,CREDIT_LIMIT,Credit Limit,CURR,N
+LIKP,Delivery Header,SD-Delivery,transaction,MANDT,Client,CLNT,Y
+LIKP,Delivery Header,SD-Delivery,transaction,VBELN,Delivery Number,CHAR(10),Y
+LIKP,Delivery Header,SD-Delivery,transaction,LFART,Delivery Type,CHAR(4),N
+LIKP,Delivery Header,SD-Delivery,transaction,KUNNR,Ship-to Party,CHAR(10),N
+LIKP,Delivery Header,SD-Delivery,transaction,LFDAT,Delivery Date,DATS,N
+LIPS,Delivery Item,SD-Delivery,transaction,MANDT,Client,CLNT,Y
+LIPS,Delivery Item,SD-Delivery,transaction,VBELN,Delivery Number,CHAR(10),Y
+LIPS,Delivery Item,SD-Delivery,transaction,POSNR,Item Number,NUMC,Y
+LIPS,Delivery Item,SD-Delivery,transaction,MATNR,Material,CHAR(18),N
+LIPS,Delivery Item,SD-Delivery,transaction,LFIMG,Delivery Quantity,QUAN,N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,MANDT,Client,CLNT,Y
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,AUART,Sales Document Type,CHAR(4),N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,VKORG,Sales Organization,CHAR(4),N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,KUNNR,Sold-to Party,CHAR(10),N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,AUDAT,Document Date,DATS,N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,VDATU,Requested Delivery Date,DATS,N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,NETWR,Net Value,CURR,N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,WAERK,SD Document Currency,CUKY,N
+VBAK,Sales Document: Header (Orders / Quotes / Contracts),SD,transaction,MWSBK,Tax Amount in Document Currency,CURR,N
+VBAP,Sales Document: Item,SD,transaction,MANDT,Client,CLNT,Y
+VBAP,Sales Document: Item,SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBAP,Sales Document: Item,SD,transaction,POSNR,Item Number,NUMC,Y
+VBAP,Sales Document: Item,SD,transaction,MATNR,Material,CHAR(18),N
+VBAP,Sales Document: Item,SD,transaction,ARKTX,Short Text (Item),CHAR(40),N
+VBAP,Sales Document: Item,SD,transaction,VRKME,Sales Unit,UNIT(3),N
+VBAP,Sales Document: Item,SD,transaction,KWMENG,Order Quantity,QUAN,N
+VBAP,Sales Document: Item,SD,transaction,LGORT,Storage Location,CHAR(4),N
+VBAP,Sales Document: Item,SD,transaction,NETWR,Net Value (Item),CURR,N
+KONP,Pricing Condition Records: Items,SD-Pricing / MM-Pricing,master,MANDT,Client,CLNT,Y
+KONP,Pricing Condition Records: Items,SD-Pricing / MM-Pricing,master,KNUMH,Condition Record Number,CHAR(10),Y
+KONP,Pricing Condition Records: Items,SD-Pricing / MM-Pricing,master,KOPOS,Condition Item,NUMC,Y
+KONP,Pricing Condition Records: Items,SD-Pricing / MM-Pricing,master,KSCHL,Condition Type,CHAR(4),N
+KONP,Pricing Condition Records: Items,SD-Pricing / MM-Pricing,master,KBETR,Condition Amount/Rate,DEC,N
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,MANDT,Client,CLNT,Y
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,KNUMV,Document Condition Number,CHAR(10),Y
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,KPOSN,Condition Item Number,NUMC,Y
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,STUNR,Condition Counter/Step,NUMC,Y
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,KSCHL,Condition Type,CHAR(4),N
+KONV,"Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",SD-Pricing,transaction,KWERT,Condition Value,CURR,N
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,MANDT,Client,CLNT,Y
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,VBELV,Preceding Document,CHAR(10),Y
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,POSNV,Preceding Document Item,NUMC,Y
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,VBELN,Subsequent Document,CHAR(10),Y
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,POSNN,Subsequent Document Item,NUMC,Y
+VBFA,"Sales Document Flow (links preceding/subsequent documents, e.g. Quote -> Order -> Delivery -> Billing)",SD,transaction,VBTYP_N,Subsequent Document Category,CHAR(1),N
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,MANDT,Client,CLNT,Y
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,POSNR,Item Number (0 = header),NUMC,Y
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,PARVW,Partner Function,CHAR(2),Y
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,KUNNR,Customer Number,CHAR(10),N
+VBPA,"Sales Document: Partners (Sold-to, Ship-to, Salesperson, etc.)",SD,transaction,PERNR,Personnel Number (e.g. Salesperson),NUMC(8),N
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,MANDT,Client,CLNT,Y
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,POSNR,Item Number (0 = header),NUMC,Y
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,ZTERM,Terms of Payment Key,CHAR(4),N
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,INCO1,Incoterms Part 1,CHAR(3),N
+VBKD,"Sales Document: Business Data (payment terms, incoterms, currency at header/item)",SD,transaction,WAERK,Currency,CUKY,N
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,MANDT,Client,CLNT,Y
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,GBSTK,Overall Processing Status,CHAR(1),N
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,LFSTK,Delivery Status,CHAR(1),N
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,FKSTK,Billing Status,CHAR(1),N
+VBUK,Sales Document: Header Status (overall/delivery/billing status),SD,transaction,WBSTK,Goods Movement Status,CHAR(1),N
+VBUP,Sales Document: Item Status,SD,transaction,MANDT,Client,CLNT,Y
+VBUP,Sales Document: Item Status,SD,transaction,VBELN,Sales Document Number,CHAR(10),Y
+VBUP,Sales Document: Item Status,SD,transaction,POSNR,Item Number,NUMC,Y
+VBUP,Sales Document: Item Status,SD,transaction,GBSTA,Overall Processing Status (Item),CHAR(1),N
+VBUP,Sales Document: Item Status,SD,transaction,LFSTA,Delivery Status (Item),CHAR(1),N
+VBUP,Sales Document: Item Status,SD,transaction,FKSTA,Billing Status (Item),CHAR(1),N
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,CLIENT,Client,CLNT,Y
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,ADDRNUMBER,Address Number,CHAR(10),Y
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,STREET,Street,CHAR(60),N
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,CITY1,City,CHAR(40),N
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,POST_CODE1,Postal Code,CHAR(10),N
+ADRC,"Business Address Services: Addresses (central address table used across BP, customer, vendor, etc.)",Cross-app,master,COUNTRY,Country,CHAR(3),N
+TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,MANDT,Client,CLNT,Y
+TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,VKORG,Sales Organization,CHAR(4),Y
+TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,BUKRS,Company Code,CHAR(4),N

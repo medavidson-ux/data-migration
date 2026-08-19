@@ -1,0 +1,110 @@
+{
+  "source_sheet": "Employees",
+  "source_key": "Employee_ID",
+  "targets": [
+    {
+      "table": "PA0001",
+      "notes": "Org Assignment. Employee_ID is carried verbatim as PERNR -- a real load assigns PERNR from a number range or via external numbering; this is a staging key only.",
+      "constants": {"ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "ORGEH", "sap_description": "Organizational Unit", "transform": "lookup_passthrough", "source": "Department_Type_ID", "lookup_ref": "HR>Departments Types -> HRP1000 Org Unit"},
+        {"target_field": "PERSK", "sap_description": "Employee Subgroup", "transform": "lookup_passthrough", "source": "Employment_Type", "lookup_ref": "Employee Subgroup domain (PERSK), configured per Full-time/Part-time/Contract"},
+        {"target_field": "PLANS", "sap_description": "Position", "transform": "lookup_passthrough", "source": "Job_Title", "lookup_ref": "Org Management Position catalog (HRP1000 type S), built from distinct Job_Title values"}
+      ]
+    },
+    {
+      "table": "PA0002",
+      "notes": "Personal Data.",
+      "constants": {"ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "VORNA", "sap_description": "First Name", "transform": "direct", "source": "First_Name"},
+        {"target_field": "NACHN", "sap_description": "Last Name", "transform": "direct", "source": "Last_Name"},
+        {"target_field": "GBDAT", "sap_description": "Date of Birth", "transform": "date_yyyymmdd", "source": "Date_Of_Birth"},
+        {"target_field": "GESCH", "sap_description": "Gender Key", "transform": "lookup_passthrough", "source": "Gender", "lookup_ref": "Gender key domain (GESCH): Male/Female -> 1/2"},
+        {"target_field": "NATIO", "sap_description": "Nationality", "transform": "lookup_passthrough", "source": "Nationality", "lookup_ref": "Nationality key domain (NATIO), ISO-based"},
+        {"target_field": "FAMST", "sap_description": "Marital Status", "transform": "lookup_passthrough", "source": "Marital_Status_ID", "lookup_ref": "HR>Marital Status -> FAMST domain"}
+      ]
+    },
+    {
+      "table": "PA0008",
+      "notes": "Basic Pay.",
+      "constants": {"ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "TRFGR", "sap_description": "Pay Scale Group", "transform": "lookup_passthrough", "source": "Salary_Grade_ID", "lookup_ref": "HR>Salary Grades -> T510"}
+      ]
+    },
+    {
+      "table": "PA0009",
+      "notes": "Bank Details.",
+      "constants": {"ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "BANKN", "sap_description": "Bank Account Number", "transform": "direct", "source": "Bank_Account_Number"},
+        {"target_field": "IBAN", "sap_description": "IBAN", "transform": "direct", "source": "IBAN"}
+      ]
+    },
+    {
+      "table": "PA0105",
+      "notes": "Communication -- phone subtype. One row per employee, if Phone_Number is present.",
+      "constants": {"ENDDA": "99991231", "SUBTY": "CELL"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "USRID", "sap_description": "Communication ID/Value", "transform": "direct", "source": "Phone_Number"}
+      ]
+    },
+    {
+      "table": "PA0105",
+      "notes": "Communication -- e-mail subtype. Same target table as the phone block above; the two are separate rows distinguished by SUBTY.",
+      "constants": {"ENDDA": "99991231", "SUBTY": "MAIL"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "USRID", "sap_description": "Communication ID/Value", "transform": "direct", "source": "Email"}
+      ]
+    },
+    {
+      "table": "PA0185",
+      "notes": "Personal IDs -- National ID. Subtype (which country-specific ID this is) is not modeled in this prototype.",
+      "constants": {"ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "PERNR", "sap_description": "Personnel Number (staging key)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"},
+        {"target_field": "ICNUM", "sap_description": "Personal ID Number", "transform": "direct", "source": "National_ID"}
+      ]
+    },
+    {
+      "table": "HRP1001",
+      "notes": "Org Management relationship -- 'reports to'. Modeled here as a Person-to-Person edge (OTYPE 'P') for prototype simplicity; the standard SAP model is Position-to-Position. Only emitted when Manager_ID is present.",
+      "skip_row_if_null": "Manager_ID",
+      "constants": {"PLVAR": "01", "OTYPE": "P", "SUBTY": "A002", "ENDDA": "99991231"},
+      "fields": [
+        {"target_field": "OBJID", "sap_description": "Object ID (the employee)", "transform": "direct", "source": "Employee_ID"},
+        {"target_field": "SOBID", "sap_description": "Related Object ID (the manager)", "transform": "direct", "source": "Manager_ID"},
+        {"target_field": "BEGDA", "sap_description": "Start Date", "transform": "date_yyyymmdd", "source": "Hire_Date"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Section_ID", "reason": "modeled as a child org unit under Department in the HRP1000/HRP1001 hierarchy -- structural org-unit modeling out of scope for this field-level prototype"},
+    {"source": "Employee_Code", "reason": "external PERNR would require number-range configuration in the target system; kept only as the Employee_ID staging key in this prototype"},
+    {"source": "Address", "reason": "free-text address needs decomposition into STRAS/ORT01/PSTLZ/LAND1 -- flagged as a NEEDS_PARSE case for the AI mapping agent, not handled by this rule-based engine"},
+    {"source": "Employment_Status", "reason": "derived from the latest PA0000 personnel action, not a standalone field -- action-history modeling out of scope for this prototype"},
+    {"source": "Termination_Date", "reason": "becomes the BEGDA of a PA0000 'Leaving' action and drives ENDDA on other infotypes -- action-history modeling out of scope for this prototype"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Profile_Photo_URL", "reason": "SAP stores photos as an ArchiveLink attachment, not a URL field"},
+    {"source": "Notes", "reason": "no standard free-text HR infotype for general notes"},
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

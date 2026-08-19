@@ -1,0 +1,200 @@
+﻿component,legacy_table,status,sap_target,sap_module,confidence,notes
+Foundation,Companies,MIGRATE,T001,FI (Client/Org),HIGH,Company code master
+Foundation,Cost Centers,MIGRATE,CSKS / CSKT,CO,HIGH,Cost center master + text
+Foundation,Currencies,MIGRATE,TCURC,FI (config),HIGH,Currency code catalog
+Foundation,Exchange Rates,MIGRATE,TCURR,FI (config),HIGH,Exchange rate table
+Foundation,Number Sequences,MIGRATE,NRIV,Cross-app (config),HIGH,"Number range intervals; usually reconfigured, not data-loaded"
+Foundation,Payment Terms,MIGRATE,T052,FI (config),HIGH,Terms of payment
+Foundation,Tax Codes,MIGRATE,T007A / T007S,FI (config),HIGH,Tax code + description
+Foundation,Audit Log,NOT_MIGRATED,,,,"SAP generates change docs natively (CDHDR/CDPOS); legacy audit history is not loaded, only referenced for compliance archival"
+Foundation,Roles,NOT_MIGRATED,,,,"SAP authorization roles are rebuilt in PFCG, not migrated as data"
+Foundation,User Roles,NOT_MIGRATED,,,,"Rebuilt as PFCG role assignments during security design, not migrated"
+Foundation,Users,NOT_MIGRATED,,,,"SAP user master (SU01) is provisioned via IAM/security workstream, not a data migration object"
+Foundation,Approval Requests,NOT_MIGRATED,,,,"Rebuilt as SAP Business Workflow; only genuinely open requests need a one-time manual re-creation, not a bulk load"
+Foundation,Approval Steps,NOT_MIGRATED,,,,"Workflow step config, rebuilt not migrated"
+Assets,Asset Categories,MIGRATE,ANKA / ANKT,FI-AA,HIGH,Asset class general data + text
+Assets,Asset Types,MIGRATE,ANLA (GRUPPE/eval. group fields),FI-AA,APPROX,No dedicated 'asset type' table; typically an evaluation group or asset class subgroup on ANLA
+Assets,Assets,MIGRATE,ANLA / ANLZ / ANLB,FI-AA,HIGH,"Asset master: general data / time-dependent data (cost center, location) / depreciation terms"
+Assets,Depreciation Methods,MIGRATE,AFAMA,FI-AA (config),HIGH,Depreciation key
+Assets,Locations,MIGRATE,T499S + ANLZ-STORT,FI-AA,HIGH,Location catalog + asset time-dependent location field
+Assets,Acquisitions,MIGRATE,ANEK / ANEP (txn type 1xx),FI-AA,HIGH,"Asset posting document header/line items, acquisition transaction types"
+Assets,Asset Disposals,MIGRATE,ANEK / ANEP (txn type 2xx),FI-AA,HIGH,Retirement transaction types
+Assets,Depreciation,MIGRATE,ANLP + ACDOCA,FI-AA,HIGH,Planned periodic values (ANLP); posted depreciation lands in the Universal Journal in S/4
+Assets,Transfers,MIGRATE,ANEK / ANEP (txn type 3xx),FI-AA,HIGH,Intra-/inter-company transfer transaction types
+Assets,Maintenance Schedules,MIGRATE,MPLA / MPOS,PM,HIGH,Maintenance plan header/item (cross-module into Plant Maintenance)
+Assets,Maintenance Types,MIGRATE,T353O / T350 (order type config),PM (config),APPROX,Maintenance/PM order type customizing
+Assets,Maintenance Work Orders,MIGRATE,AUFK / AFIH,PM,HIGH,PM order master + PM-specific header
+Assets,Service History,MIGRATE,EQUZ,PM,APPROX,Equipment usage/installation history; overlaps with Work Orders and Notifications depending on granularity
+Assets,Assignments,MIGRATE,EQUI (assigned-to fields),PM,APPROX,"No standard 'asset checked out to employee' table; Equipment master assignment fields are the closest fit, often extended with a Z-field"
+Assets,Audits,NOT_MIGRATED,,,,No standard S/4 table for physical asset audit/count; typically a custom (Z) table or EAM/barcode add-on
+Assets,Checkouts,NOT_MIGRATED,,,,Asset loan/checkout tracking has no core SAP equivalent; usually a bolt-on EAM tool or Z-table
+Assets,Asset Valuation,MIGRATE,ANLC,FI-AA,HIGH,Asset accumulated values by depreciation area
+Assets,Replacement Forecasts,NOT_MIGRATED,,,,"Forecast/analytics output, not a source record; recreated via reporting once ANLA/ANLC history is loaded"
+Assets,Utilization Reports,NOT_MIGRATED,,,,"Derived analytics, not migrated"
+CRM,Communication Logs,NOT_MIGRATED,,,,"Front-office activity log; belongs to SAP Sales/Service Cloud (CX), not core S/4"
+CRM,Contact Persons,MIGRATE,BUT050 (BP relationship) + BUT000,SD / Cross (Business Partner),HIGH,Contact person modeled as a BP with a 'has contact person' relationship in S/4's unified Business Partner model
+CRM,Customer Profiles,MIGRATE,BUT000 + customer roles (KNA1/KNB1/KNVV data folded into BP),SD / FI (Business Partner),HIGH,S/4 retires standalone customer master; Business Partner with Customer role is the single target object
+CRM,Customer Segments,MIGRATE,KNVV-KDGRP (Customer Group),SD (config),APPROX,Closest standard classification field; true 'segment' concepts usually live in CX/Marketing Cloud
+CRM,Leads,NOT_MIGRATED,,,,"Lead management is a SAP Sales Cloud (C4C) object, not part of core S/4HANA"
+CRM,Opportunities,NOT_MIGRATED,,,,Opportunity is a SAP Sales Cloud (C4C) / CRM object; no standard core S/4 table
+CRM,Quotes,NOT_MIGRATED,,,,"Marked DEPRECATED in source and duplicates Sales > Sales Quotes, which IS migrated to VBAK/VBAP"
+CRM,Sales Activities,NOT_MIGRATED,,,,Front-office activity tracking; SAP Sales Cloud (C4C) object
+CRM,Customer Feedback,NOT_MIGRATED,,,,No core S/4 table; typically Qualtrics/CX Feedback Cloud
+CRM,Knowledge Base,NOT_MIGRATED,,,,No standard SAP table; knowledge/article management sits outside core S/4
+CRM,SLAs,NOT_MIGRATED,,,,"Modeled in SAP Service Cloud / Customer Service response profiles, not a single core standard table"
+CRM,Service Tickets,MIGRATE,QMEL / QMIH,CS (Customer Service),APPROX,Service Notification header + additional data; SAP Service Cloud is the modern alternative target
+CRM,Campaigns,NOT_MIGRATED,,,,"SAP Marketing Cloud object, not core S/4"
+CRM,Email Templates,NOT_MIGRATED,,,,"CX/Marketing construct, no core S/4 table"
+CRM,Lead Sources,NOT_MIGRATED,,,,"Supports Leads, which is out of core S/4 scope"
+CRM,Marketing ROI,NOT_MIGRATED,,,,Analytics output
+CRM,Churn Analysis,NOT_MIGRATED,,,,Analytics/predictive output
+CRM,Customer Lifetime Value,NOT_MIGRATED,,,,Analytics output
+CRM,Sales Performance,NOT_MIGRATED,,,,Analytics output
+Finance,Accounting Periods,MIGRATE,T009 / T009B,FI (config),HIGH,Fiscal year variant + period control
+Finance,Chart of Accounts,MIGRATE,SKA1 / SKB1,FI,HIGH,GL account: chart-of-accounts segment + company code segment
+Finance,General Ledger,MIGRATE,ACDOCA,FI (Universal Journal),HIGH,"S/4's single source of truth for all GL/CO/AA/ML postings, replacing BSEG/BSIS/BSAS/COEP as separate tables"
+Finance,Journal Entries,MIGRATE,BKPF + ACDOCA,FI,HIGH,Document header + universal journal line items
+Finance,Trial Balance,NOT_MIGRATED,,,,"Derived report from ACDOCA (e.g. via CDS view), not a stored source table"
+Finance,Payments,MIGRATE,REGUH / REGUP + ACDOCA,FI,HIGH,Payment program header/items; posting reflected in the universal journal
+Finance,Vendor Invoice Lines,MIGRATE,RSEG,MM-IV,HIGH,Invoice Verification line items
+Finance,Vendor Invoices,MIGRATE,RBKP + BKPF,MM-IV / FI,HIGH,Invoice Verification header + FI document header
+Finance,AR Aging Reports,NOT_MIGRATED,,,,Derived report from open AR items in ACDOCA
+Finance,Aging Reports,NOT_MIGRATED,,,,"Derived report, duplicate of AR Aging Reports"
+Finance,Customer Invoice Lines,MIGRATE,VBRP,SD-Billing,HIGH,Billing document item; also posts to ACDOCA
+Finance,Customer Invoices,MIGRATE,VBRK + BKPF,SD-Billing / FI,HIGH,Billing document header + FI document header
+Finance,Receipts,MIGRATE,ACDOCA / BSEG (incoming payment postings),FI,APPROX,Incoming payment clearing postings; no standalone 'receipt' table
+Finance,Asset Register,MIGRATE,ANLA,FI-AA,HIGH,Duplicate of Assets > Assets — consolidate before load
+Finance,Depreciation Schedules,MIGRATE,ANLP,FI-AA,HIGH,Duplicate of Assets > Depreciation — consolidate before load
+Finance,Disposals,MIGRATE,ANEK / ANEP (txn type 2xx),FI-AA,HIGH,Duplicate of Assets > Asset Disposals — consolidate before load
+Finance,Balance Sheet,NOT_MIGRATED,,,,"Derived financial statement (FSV / reporting), not stored data"
+Finance,Budget vs Actual,NOT_MIGRATED,,,,"Derived comparison report; source actuals (ACDOCA) and budgets (CO/FM budget tables) are migrated, the comparison itself is not"
+Finance,Cash Flow,NOT_MIGRATED,,,,"Derived report/statement, not stored data"
+Finance,Income Statement,NOT_MIGRATED,,,,"Derived financial statement, not stored data"
+HR,Approval Workflows,NOT_MIGRATED,,,,Rebuilt as SAP Business Workflow config
+HR,Bonuses Type,MIGRATE,T512W,PY (config),APPROX,Modeled as wage type catalog entries
+HR,Calendars,MIGRATE,T001P / TFACS,PA (config),HIGH,Factory/public holiday calendar
+HR,Company Policies,NOT_MIGRATED,,,,"Document content, not structured HR data"
+HR,Deduction Type,MIGRATE,T512W,PY (config),APPROX,Deduction wage types
+HR,Departments Types,MIGRATE,HRP1000 (Org unit),PA-OM,APPROX,Organizational Management object type
+HR,Employee Absence,MIGRATE,PA2001,PA-Time,HIGH,Absences infotype
+HR,Employees,MIGRATE,PA0001 / PA0002 / PA0006 / PA0105,PA,HIGH,"Employee master split across infotypes: org assignment, personal data, addresses, communication"
+HR,Forms,NOT_MIGRATED,,,,"UI form templates, not data"
+HR,HR Rules,NOT_MIGRATED,,,,"Payroll schema/PCR configuration, technical config not migrated data"
+HR,Hierarchy,MIGRATE,HRP1000 / HRP1001,PA-OM,HIGH,Org Management objects + relationships
+HR,Marital Status,MIGRATE,PA0002-FAMST domain,PA (config),HIGH,Standard fixed-value domain
+HR,Sections,MIGRATE,HRP1000 (Org unit subtype),PA-OM,APPROX,Duplicate structural concept with Departments Types
+HR,Bonuses,MIGRATE,PA0015,PY,HIGH,Additional Payments infotype
+HR,Deductions,MIGRATE,PA0014,PY,HIGH,Recurring Payments/Deductions infotype
+HR,Earning Types,MIGRATE,T512W,PY (config),APPROX,Earning wage types
+HR,Payroll,MIGRATE,"Payroll results cluster (PCL2, table RT)",PY,APPROX,"Payroll results are stored in cluster tables, not flat relational tables — extraction needs payroll function modules, not direct SQL"
+HR,Payroll Runs,MIGRATE,T569V (payroll control record),PY,HIGH,Payroll area control record / run status
+HR,Payroll Status,MIGRATE,PA0003,PY,HIGH,Payroll Status infotype
+HR,Payslips,NOT_MIGRATED,,,,"Generated output document from the payroll results cluster, not itself migrated source data"
+HR,Salary Grades,MIGRATE,T510,PY (config),HIGH,Pay scale group/type
+HR,Tax Rules,MIGRATE,Country-specific tax config (e.g. T5UTM for US),PY (config),APPROX,Highly country-dependent; confirm against target country tax configuration
+HR,Leave Balances,MIGRATE,PA2006,PA-Time,HIGH,Absence Quotas infotype
+HR,Leave Policies,MIGRATE,T556A,PA-Time (config),HIGH,Absence quota type customizing
+HR,Leave Requests,MIGRATE,PA2001,PA-Time,HIGH,Absences infotype; consolidate with Employee Absence before load
+HR,Shift Patterns,MIGRATE,T508A,PA-Time (config),HIGH,Work schedule rule
+HR,Time Logs,MIGRATE,PA2011 / CATSDB,PA-Time,HIGH,"Time Events infotype or Cross-Application Time Sheet, depending on source granularity"
+HR,Applications,MIGRATE,PB0001 / PB0002 (Applicant infotypes),PA-Recruitment,APPROX,Classic on-prem target; modern equivalent is SAP SuccessFactors Recruiting Candidate Application
+HR,Candidates,MIGRATE,PB0001 / PB0002,PA-Recruitment,APPROX,Same caveat as Applications — SF Recruiting Candidate is the modern cloud target
+HR,Evaluation Forms,NOT_MIGRATED,,,,"Form template, not data"
+HR,Interviewers,NOT_MIGRATED,,,,No standard master table on-prem; SF Recruiting models this in the cloud
+HR,Interviews,NOT_MIGRATED,,,,No standard on-prem HCM table; SF Recruiting Interview object is the modern target
+HR,Job Postings,MIGRATE,Requisition (PBAA) / SF Recruiting Job Requisition,PA-Recruitment,APPROX,Modern target is SuccessFactors Recruiting
+HR,Appraisals,MIGRATE,HAP_DOCUMENT (+ HRHAP* cluster),PA-EP (Performance),APPROX,Appraisal document; modern target is SuccessFactors Performance & Goals
+HR,Competencies,MIGRATE,Qualification catalog (HRP1000 type Q),PA-PD (config),HIGH,Personnel Development qualification objects
+HR,Feedback Forms,NOT_MIGRATED,,,,"Form template, not data"
+HR,Goals,MIGRATE,HAP_DOCUMENT (goal section),PA-EP,APPROX,"Modeled inside the appraisal document, not a separate table"
+HR,KPIs,NOT_MIGRATED,,,,Custom/analytics metric definitions
+HR,Review Cycles,MIGRATE,Appraisal template period (config),PA-EP (config),APPROX,HAP catalog / appraisal model period
+HR,Courses,MIGRATE,HRP1000 (Business Event object type D),PA-Training,HIGH,Training & Event Management business event
+HR,Department Metrics,NOT_MIGRATED,,,,Analytics output
+HR,Enrollments,MIGRATE,HRP1001 (attendance relationship) / PSVR,PA-Training,APPROX,Business event attendance booking
+HR,Performance Indicators,NOT_MIGRATED,,,,Analytics/custom metric definitions
+HR,Training History,MIGRATE,HRP1001 (attendance history),PA-Training,APPROX,Overlaps with Enrollments — consolidate before load
+HR,HR Reports,NOT_MIGRATED,,,,Analytics output
+HR,Predictive Models,NOT_MIGRATED,,,,Analytics/ML output
+Inventory,Bins_Locations,MIGRATE,LAGP,MM-WM/EWM,HIGH,Storage bin master
+Inventory,Item Categories,MIGRATE,T134 (Material Type),MM (config),APPROX,"Closest standard classification; SD item category (T-VOV7) is a different concept, don't conflate"
+Inventory,Units of Measure,MIGRATE,T006,MM (config),HIGH,Units of measure
+Inventory,Warehouses,MIGRATE,T300,MM-WM (config),HIGH,Warehouse number assignment
+Inventory,Cycle Counts,MIGRATE,IKPF / ISEG,MM-IM,HIGH,Physical inventory document header/items
+Inventory,Inventory Adjustments,MIGRATE,MSEG (movement type 701/702),MM-IM,HIGH,"Material document line items, inventory adjustment movement types"
+Inventory,Reorder Points,MIGRATE,MARC-MINBE,MM (Plant data),HIGH,"Field on the plant segment of the material master, not a separate table"
+Inventory,Stock Movements,MIGRATE,MSEG + MKPF,MM-IM,HIGH,Material document line items + header
+Inventory,Expiration Dates,MIGRATE,MCH1 / MCHB (VFDAT field),MM-Batch,HIGH,Shelf-life expiration date on the batch master
+Inventory,Lot Numbers,MIGRATE,MCHA / MCH1,MM-Batch,HIGH,Batch master
+Inventory,Serial Numbers,MIGRATE,EQUI / SER01,MM-Serial (PM),HIGH,Serial number master (Equipment-based)
+Inventory,Cost Methods,MIGRATE,MBEW-VPRSV,MM-Valuation (config),HIGH,Price control indicator on the material valuation segment
+Inventory,Inventory Valuation,MIGRATE,MBEW,MM-Valuation,HIGH,Material valuation
+Inventory,Item Costs,MIGRATE,MBEW / CKIS,MM-Valuation / CO-PC,APPROX,"Valuation price plus, where available, cost estimate item detail"
+Inventory,Inventory Forecasts,NOT_MIGRATED,,,,"Analytics/demand-planning output (SAP IBP), not a core S/4 stored table"
+Inventory,Inventory Turnover,NOT_MIGRATED,,,,"Analytics/KPI, derived"
+Inventory,Stock Aging,NOT_MIGRATED,,,,Derived analytics report built from MARD/MSEG history
+Manufacturing,BOM,MIGRATE,STKO / STPO,PP,HIGH,Bill of Material header/item
+Manufacturing,Product Catalog,MIGRATE,MARA / MARC / MBEW,MM / PP,HIGH,Material master; duplicate of Purchasing > Inventory Items — consolidate before load
+Manufacturing,Routing,MIGRATE,PLKO / PLPO,PP,HIGH,Routing header/operations
+Manufacturing,Work Centers,MIGRATE,CRHD,PP,HIGH,Work center header
+Manufacturing,Capacity Plans,MIGRATE,KAKO (capacity header),PP,APPROX,Work center capacity header; exact detail tables vary by capacity category
+Manufacturing,Material Requirements,MIGRATE,RESB,PP-MRP,HIGH,Reservation / dependent requirements
+Manufacturing,Production Orders,MIGRATE,AFKO / AFPO,PP,HIGH,Production order header/item
+Manufacturing,Material Issues,MIGRATE,MSEG (movement type 261),MM-IM,HIGH,Goods issue to order; duplicate concept with Inventory > Stock Movements
+Manufacturing,Production Logs,MIGRATE,AFRU,PP,HIGH,Order confirmation
+Manufacturing,Quality Checks,MIGRATE,QALS / QAMB,QM,HIGH,Inspection lot
+Manufacturing,Work Orders,MIGRATE,AUFK / AFKO / AFPO,PP,APPROX,Likely overlaps with Production Orders — clarify the distinct business meaning before consolidating
+Manufacturing,Actual Costs,MIGRATE,COEP,CO-PC,HIGH,"CO line items, actual value type"
+Manufacturing,Standard Costs,MIGRATE,CKIS / KEKO,CO-PC,HIGH,Cost estimate header/items
+Manufacturing,Variance Analysis,NOT_MIGRATED,,,,"Derived report; underlying actual/standard costs (COEP/CKIS) are migrated, the variance calculation is not"
+Manufacturing,Maintenance History,MIGRATE,AFIH / QMEL,PM,APPROX,Duplicate of Assets > Service History; consolidate before load
+Manufacturing,OEE Metrics,NOT_MIGRATED,,,,"Analytics/KPI, typically MES/PP-PEO integration output, not a core S/4 table"
+Manufacturing,Production Yield,NOT_MIGRATED,,,,"Derived from order confirmations (AFRU), analytics not source data"
+Project Management,Project Templates,MIGRATE,Standard project (STPROJ config),PS (config),HIGH,Standard project template
+Project Management,Project Types,MIGRATE,PROJ-PSPRO / project profile config,PS (config),APPROX,Project profile / project type classification
+Project Management,Projects,MIGRATE,PROJ,PS,HIGH,Project definition
+Project Management,Work Breakdown,MIGRATE,PRPS,PS,HIGH,WBS element
+Project Management,Milestones,MIGRATE,Milestone table (network/WBS milestones),PS,APPROX,Exact table name varies by release; verify via SE11 (transaction CN11/CJ20N milestone objects)
+Project Management,Phases,MIGRATE,PRPS (hierarchy level),PS,APPROX,"Modeled as WBS hierarchy levels, not a separate table"
+Project Management,Project Budgets,MIGRATE,BPGE / BPJA,PS / CO (Budgeting),HIGH,Budget line items / annual budget
+Project Management,Resource Allocation,MIGRATE,AFVC / CRHD (capacity assignment),PS,APPROX,Network activity resource assignment
+Project Management,Tasks,MIGRATE,AFVC / AFVV,PS,HIGH,Network activity / activity elements
+Project Management,Change Requests,NOT_MIGRATED,,,,No standard PS change-control table; typically custom or a separate change management tool
+Project Management,Deliverables,NOT_MIGRATED,,,,No standard PS deliverable-tracking table; often represented informally via milestones
+Project Management,Expenses,MIGRATE,COEP,CO / PS,APPROX,Project-related actual costs posted against the WBS element
+Project Management,Issues,NOT_MIGRATED,,,,No standard PS issue-tracking table; usually an external tool or Quality Notification workaround
+Project Management,Time Tracking,MIGRATE,CATSDB,PS (CATS),HIGH,Cross-Application Time Sheet
+Project Management,Budget Variance,NOT_MIGRATED,,,,Derived report from BPGE/BPJA vs COEP
+Project Management,Progress Reports,NOT_MIGRATED,,,,Derived status report
+Project Management,Risk Register,NOT_MIGRATED,,,,"SAP Risk Management (GRC) is a separate module, not core PS; no standard PS table"
+Project Management,Lessons Learned,NOT_MIGRATED,,,,No standard table; typically a document/knowledge management artifact
+Project Management,Portfolio Dashboard,NOT_MIGRATED,,,,Analytics output
+Project Management,Project KPIs,NOT_MIGRATED,,,,Analytics output
+Purchasing,Vendor Contracts,MIGRATE,EKKO (doc category 'Contract'),MM-PUR,HIGH,"Purchasing document header, outline agreement"
+Purchasing,Vendor Ratings,MIGRATE,Vendor Evaluation scores,MM-PUR,APPROX,Vendor Evaluation main criteria scoring; canonical table varies by release — verify via SE11
+Purchasing,Vendors,MIGRATE,BUT000 + Vendor role (LFA1/LFB1 folded into BP),MM / FI (Business Partner),HIGH,S/4 retires standalone vendor master; Business Partner with Vendor role is the target object
+Purchasing,Goods Receipt Lines,MIGRATE,MSEG (movement type 101),MM-IM,HIGH,"Material document line items, goods receipt"
+Purchasing,Goods Receipts,MIGRATE,MKPF,MM-IM,HIGH,Material document header
+Purchasing,Invoice Matching,MIGRATE,RBKP / RSEG,MM-IV,HIGH,Duplicate of Finance > Vendor Invoices — consolidate before load
+Purchasing,Purchase Order Lines,MIGRATE,EKPO,MM-PUR,HIGH,Purchase order item
+Purchasing,Purchase Orders,MIGRATE,EKKO,MM-PUR,HIGH,Purchase order header
+Purchasing,Purchase Requisition Lines,MIGRATE,EBAN,MM-PUR,HIGH,EBAN is itself item-level; header fields are repeated per item (no separate header table)
+Purchasing,Purchase Requisitions,MIGRATE,EBAN,MM-PUR,HIGH,Same table as line items — see note above
+Purchasing,Inventory Items,MIGRATE,MARA / MARC / MBEW,MM,HIGH,Material master; duplicate of Manufacturing > Product Catalog — consolidate before load
+Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,Stock transfer movement types
+Purchasing,Stock Levels,MIGRATE,MARD / MCHB,MM-IM,HIGH,Storage location stock / batch stock
+Purchasing,Procurement Reports,NOT_MIGRATED,,,,Analytics output
+Sales,Credit Limits,MIGRATE,UKM_BP (FSCM Credit Mgmt) / FD32 classic,FI-FSCM,HIGH,Credit management master data by Business Partner
+Sales,Customer Contracts,MIGRATE,VBAK (doc category 'Contract'),SD,HIGH,"Sales document header, contract document type"
+Sales,Customers,MIGRATE,BUT000 + Customer role,SD (Business Partner),HIGH,Duplicate of CRM > Customer Profiles — consolidate before load
+Sales,Fulfillment Lines,MIGRATE,LIPS,SD-Delivery,APPROX,Delivery item; 'fulfillment' maps to the SD delivery process
+Sales,Invoices,MIGRATE,VBRK / VBRP,SD-Billing,HIGH,Marked DEPRECATED in source; duplicates Finance > Customer Invoices — confirm which is authoritative before load
+Sales,Order Fulfillment,MIGRATE,LIKP,SD-Delivery,HIGH,Delivery header
+Sales,Sales Order Lines,MIGRATE,VBAP,SD,HIGH,Sales document item
+Sales,Sales Orders,MIGRATE,VBAK,SD,HIGH,Sales document header
+Sales,Sales Quote Lines,MIGRATE,VBAP (doc type QT),SD,HIGH,Quotation item
+Sales,Sales Quotes,MIGRATE,VBAK (doc type QT),SD,HIGH,Quotation header
+Sales,Discounts,MIGRATE,KONP / condition table (e.g. A004),SD-Pricing,HIGH,Pricing condition records
+Sales,Price Lists,MIGRATE,KONP / condition table (e.g. A304),SD-Pricing,HIGH,Pricing condition records
+Sales,Sales Forecasts,NOT_MIGRATED,,,,"Demand planning output (SAP IBP), not a core S/4 stored table"
+Sales,Sales Reports,NOT_MIGRATED,,,,Analytics output

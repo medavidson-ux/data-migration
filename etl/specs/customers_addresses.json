@@ -1,0 +1,57 @@
+{
+  "source_sheet": "Customers",
+  "source_key": "Customer_ID",
+  "notes": "Address-only slice of Customers, decided via the AI mapping agent (see etl/agent/mapping_decisions.csv for the full back-and-forth, including the rejected COUNTRY = legacy Country column option). The rest of Customers (Customer_Name, Email, Tax_ID, etc. -> BUT000/KNVV fields) has not been through that process yet and is intentionally NOT covered here -- see sap_target_schema/legacy_to_sap_mapping.csv for the table-level routing (Customers -> MIGRATE -> BUT000 + Customer role).",
+  "targets": [
+    {
+      "table": "ADRC",
+      "notes": "Billing address -> even-numbered ADDRNUMBER series.",
+      "fields": [
+        {"target_field": "ADDRNUMBER", "sap_description": "Address Number (staging key, billing series)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0, "width": 10},
+        {"target_field": "STREET", "sap_description": "Street", "transform": "split_delimiter", "source": "Billing_Address", "delimiter": ",", "part_index": 0},
+        {"target_field": "CITY1", "sap_description": "City", "transform": "split_delimiter", "source": "Billing_Address", "delimiter": ",", "part_index": 1},
+        {
+          "target_field": "COUNTRY",
+          "sap_description": "Country Key (ISO 3166-1 alpha-2, T005 convention)",
+          "transform": "value_map",
+          "source": "Billing_Address",
+          "delimiter": ",",
+          "part_index": 1,
+          "mapping": {
+            "Amman": "JO", "Aqaba": "JO", "Irbid": "JO", "Jerash": "JO", "Karak": "JO",
+            "Madaba": "JO", "Mafraq": "JO", "Salt": "JO", "Zarqa": "JO",
+            "Doha": "QA", "Dubai": "AE", "Riyadh": "SA"
+          }
+        }
+      ]
+    },
+    {
+      "table": "ADRC",
+      "notes": "Shipping address -> odd-numbered ADDRNUMBER series, disjoint from billing by construction.",
+      "fields": [
+        {"target_field": "ADDRNUMBER", "sap_description": "Address Number (staging key, shipping series)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 1, "width": 10},
+        {"target_field": "STREET", "sap_description": "Street", "transform": "split_delimiter", "source": "Shipping_Address", "delimiter": ",", "part_index": 0},
+        {"target_field": "CITY1", "sap_description": "City", "transform": "split_delimiter", "source": "Shipping_Address", "delimiter": ",", "part_index": 1},
+        {
+          "target_field": "COUNTRY",
+          "sap_description": "Country Key (ISO 3166-1 alpha-2, T005 convention)",
+          "transform": "value_map",
+          "source": "Shipping_Address",
+          "delimiter": ",",
+          "part_index": 1,
+          "mapping": {
+            "Amman": "JO", "Aqaba": "JO", "Irbid": "JO", "Jerash": "JO", "Karak": "JO",
+            "Madaba": "JO", "Mafraq": "JO", "Salt": "JO", "Zarqa": "JO",
+            "Doha": "QA", "Dubai": "AE", "Riyadh": "SA"
+          }
+        }
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {
+      "source": "Country",
+      "reason": "Investigated before mapping: disagrees with the address-parsed city on 20/40 billing rows (50%) and 21/40 shipping rows (52.5%). Currency (100% JOD) and Phone_Number country code (100% +962) are constant across all 40 rows regardless of stated Country, so they can't corroborate it either way. Tax_ID (checked as a follow-up) is also uninformative -- 9-digit values with no prefix pattern separating Jordan-city rows from Gulf-city rows. 6 of 9 customers with 'Jordan' literally in the company name have a non-Jordan Country value (e.g. 'Jordan Ahli Bank' -> Country=UAE). Conclusion: Country is uncorrelated noise, not a reliable signal; ADRC-COUNTRY is derived from the address-parsed city instead (see the COUNTRY fields above), which is drawn from a small, real, internally consistent set of actual city names. Full investigation and agent conversation: etl/agent/mapping_decisions.csv."
+    }
+  ]
+}
