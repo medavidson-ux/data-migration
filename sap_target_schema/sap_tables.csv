@@ -283,6 +283,7 @@ PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),ENDDA,En
 PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),BUKRS,Company Code,CHAR(4),N
 PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),ORGEH,Organizational Unit,NUMC(8),N
 PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),PLANS,Position,NUMC(8),N
+PA0001,HR Infotype 0001: Organizational Assignment,PA,master (infotype),PERSK,Employee Subgroup,CHAR(2),N
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),MANDT,Client,CLNT,Y
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),BEGDA,Start Date,DATS,Y
@@ -290,6 +291,9 @@ PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),ENDDA,End Date,DATS,
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),NACHN,Last Name,CHAR(40),N
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),VORNA,First Name,CHAR(40),N
 PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),GBDAT,Date of Birth,DATS,N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),GESCH,Gender Key,CHAR(1),N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),NATIO,Nationality,CHAR(3),N
+PA0002,HR Infotype 0002: Personal Data,PA,master (infotype),FAMST,Marital Status,CHAR(1),N
 PA0006,HR Infotype 0006: Addresses,PA,master (infotype),MANDT,Client,CLNT,Y
 PA0006,HR Infotype 0006: Addresses,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
 PA0006,HR Infotype 0006: Addresses,PA,master (infotype),SUBTY,Address Type,CHAR(4),Y
@@ -309,6 +313,19 @@ PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),BEGDA,Start Date,DATS,Y
 PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),ENDDA,End Date,DATS,Y
 PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),TRFGR,Pay Grade,CHAR(2),N
 PA0008,HR Infotype 0008: Basic Pay,PY,master (infotype),BET01,Wage Amount 1,CURR,N
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),MANDT,Client,CLNT,Y
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),SUBTY,Bank Details Type,CHAR(4),Y
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),BEGDA,Start Date,DATS,Y
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),ENDDA,End Date,DATS,Y
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),BANKN,Bank Account Number,CHAR(18),N
+PA0009,HR Infotype 0009: Bank Details,PY,master (infotype),IBAN,IBAN,CHAR(34),N
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),MANDT,Client,CLNT,Y
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),PERNR,Personnel Number,NUMC(8),Y
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),SUBTY,ID Type (country-specific),CHAR(4),Y
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),BEGDA,Start Date,DATS,Y
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),ENDDA,End Date,DATS,Y
+PA0185,HR Infotype 0185: Personal IDs,PA,master (infotype),ICNUM,ID Number,CHAR(20),N
 PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),MANDT,Client,CLNT,Y
 PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),PERNR,Personnel Number,NUMC(8),Y
 PA0014,HR Infotype 0014: Recurring Payments/Deductions,PY,transaction (infotype),SUBTY,Wage Type,CHAR(4),Y

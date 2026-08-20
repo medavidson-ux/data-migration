@@ -2050,6 +2050,12 @@
         "description": "Position",
         "sap_type": "NUMC(8)",
         "key": false
+      },
+      {
+        "field": "PERSK",
+        "description": "Employee Subgroup",
+        "sap_type": "CHAR(2)",
+        "key": false
       }
     ]
   },
@@ -2098,6 +2104,24 @@
         "field": "GBDAT",
         "description": "Date of Birth",
         "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "GESCH",
+        "description": "Gender Key",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "NATIO",
+        "description": "Nationality",
+        "sap_type": "CHAR(3)",
+        "key": false
+      },
+      {
+        "field": "FAMST",
+        "description": "Marital Status",
+        "sap_type": "CHAR(1)",
         "key": false
       }
     ]
@@ -2233,6 +2257,98 @@
         "field": "BET01",
         "description": "Wage Amount 1",
         "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "PA0009": {
+    "description": "HR Infotype 0009: Bank Details",
+    "module": "PY",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "Bank Details Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "BANKN",
+        "description": "Bank Account Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "IBAN",
+        "description": "IBAN",
+        "sap_type": "CHAR(34)",
+        "key": false
+      }
+    ]
+  },
+  "PA0185": {
+    "description": "HR Infotype 0185: Personal IDs",
+    "module": "PA",
+    "type": "master (infotype)",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PERNR",
+        "description": "Personnel Number",
+        "sap_type": "NUMC(8)",
+        "key": true
+      },
+      {
+        "field": "SUBTY",
+        "description": "ID Type (country-specific)",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "BEGDA",
+        "description": "Start Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ENDDA",
+        "description": "End Date",
+        "sap_type": "DATS",
+        "key": true
+      },
+      {
+        "field": "ICNUM",
+        "description": "ID Number",
+        "sap_type": "CHAR(20)",
         "key": false
       }
     ]

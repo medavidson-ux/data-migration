@@ -88,3 +88,14 @@ the real seed data and produces SAP-shaped staging tables, and `etl/agent/` is a
 interactive Claude-powered agent that extends the same patterns to new tables, grounded in
 this schema catalog and tested against real data rather than recalled from memory. See
 `etl/README.md`.
+
+## Quality control: `DATA_QUALITY_FINDINGS.md`
+
+Two different questions, checked separately: `etl/qc_check.py` verifies the mapping
+artifacts in this folder are internally consistent with each other and the seed data;
+`etl/data_quality_check.py` profiles whether the *legacy data itself* is trustworthy,
+systematically across all 199 sheets rather than only the tables this project happened to
+map by hand. See [`DATA_QUALITY_FINDINGS.md`](./DATA_QUALITY_FINDINGS.md) for the write-up —
+headline results: referential integrity is genuinely strong (zero orphaned FKs across 353
+checked relationships), but ~70 sheets have `Updated_At` timestamps that precede their own
+`Created_At`, and the dataset is single-company throughout.
