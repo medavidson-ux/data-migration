@@ -266,3 +266,51 @@ needs. The five tools above are exactly the lookups a human doing this work by
 hand would do (check the catalog, check what's already decided, look at real
 data, test before committing); the agent doesn't get any capability the worked
 examples in this project weren't already built with.
+
+---
+
+## 3. Quality control
+
+Two scripts, checking two different questions, both meant to be re-run after
+every future change rather than treated as one-off checks:
+
+### `qc_check.py` — are the mapping artifacts internally consistent?
+
+```
+python qc_check.py
+```
+
+Checks the project's own output against itself: every example CSV parses
+cleanly, every spec is valid JSON whose `source_sheet`/`source` columns are
+real columns in the seed workbook (a wrong column name doesn't error at
+runtime, it just quietly produces nulls — this is the check that would catch
+that), every table/field a spec writes to is actually documented in
+`sap_tables.json`, `legacy_to_sap_mapping.csv` has no duplicate rows and every
+`MIGRATE` table matches a real sheet, every `see X.json`/`see Y.md`
+cross-reference in a doc actually points at a file that exists, and the engine
+itself still runs clean with all validation rules passing. Built after
+`employees.json` turned out to reference two SAP tables (`PA0009`, `PA0185`)
+and several fields (`PA0001-PERSK`, `PA0002-GESCH`/`NATIO`/`FAMST`) that had
+never actually been added to the catalog — real gaps from early in this
+project, before this check existed, found and fixed by the first run.
+
+### `data_quality_check.py` — is the underlying legacy data itself trustworthy?
+
+```
+python data_quality_check.py
+```
+
+A different question: not "did we map it right" but "should it be trusted in
+the first place." Profiles all 199 sheets in the seed workbook for duplicate
+primary keys, fully-duplicate rows, null rates, constant (zero-information)
+columns, foreign-key referential integrity (name-matched against every other
+sheet's own primary key — 353 relationships / 34,670 values checked clean,
+with an honestly-reported gap for the 40 `_ID` columns no name match could
+resolve), and date-pair ordering (`Start`/`End`, `Created`/`Updated`). Full
+findings, written up in prose rather than left as a raw CSV: see
+`sap_target_schema/DATA_QUALITY_FINDINGS.md` — the headline result is that
+structural integrity is genuinely strong (zero duplicate keys, zero orphaned
+FKs), but ~70 sheets have `Updated_At` timestamps that precede their own
+`Created_At`, a real defect that happens not to matter yet only because every
+`Created_At`/`Updated_At` pair in this project's specs is already
+`NOT_MIGRATED`.
