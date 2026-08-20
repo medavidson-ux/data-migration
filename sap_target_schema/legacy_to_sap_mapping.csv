@@ -16,10 +16,10 @@ Assets,Asset Categories,MIGRATE,ANKA / ANKT,FI-AA,HIGH,Asset class general data 
 Assets,Asset Types,MIGRATE,ANLA (GRUPPE/eval. group fields),FI-AA,APPROX,No dedicated 'asset type' table; typically an evaluation group or asset class subgroup on ANLA
 Assets,Assets,MIGRATE,ANLA / ANLZ / ANLB,FI-AA,HIGH,"Asset master: general data / time-dependent data (cost center, location) / depreciation terms"
 Assets,Depreciation Methods,MIGRATE,AFAMA,FI-AA (config),HIGH,Depreciation key
-Assets,Locations,MIGRATE,T499S + ANLZ-STORT,FI-AA,HIGH,Location catalog + asset time-dependent location field
+Assets,Locations,MIGRATE,T499S + ANLZ-STORT,FI-AA,APPROX,"Location catalog + asset time-dependent location field. CHECKED after the Customers>Country lesson: the free-text Address field's own embedded city disagrees with the declared City column on 9/10 rows -- but here City is the one corroborated by a third, independent field (Location_Name, e.g. 'Zarqa Plant — Line A' with City='Zarqa'), agreeing on 10/10 rows. Opposite conclusion from Customers>Country: here the standalone classification field is the reliable one and the free-text address is the noisy one -- use City, not an address-derived parse, for country/city determination."
 Assets,Acquisitions,MIGRATE,ANEK / ANEP (txn type 1xx),FI-AA,HIGH,"Asset posting document header/line items, acquisition transaction types"
 Assets,Asset Disposals,MIGRATE,ANEK / ANEP (txn type 2xx),FI-AA,HIGH,Retirement transaction types
-Assets,Depreciation,MIGRATE,ANLP + ACDOCA,FI-AA,HIGH,Planned periodic values (ANLP); posted depreciation lands in the Universal Journal in S/4
+Assets,Depreciation,MIGRATE,ACDOCA (+ ANLC for the accumulated balance),FI-AA,HIGH,"CORRECTED after checking real data: this table is monthly, has GL_Journal_Reference/Posted_By_User_ID/Posted_At -- it is the ACTUAL POSTED depreciation, not planned values. Originally (wrongly) called 'planned periodic values (ANLP)' before verifying; that description actually fits Finance>Depreciation Schedules instead (see that row). Not a duplicate of Depreciation Schedules despite both existing in the same domain -- verified different grain (318 monthly actual rows vs. 293 annual planned rows) and the monthly actuals reconcile to the annual planned figures within rounding."
 Assets,Transfers,MIGRATE,ANEK / ANEP (txn type 3xx),FI-AA,HIGH,Intra-/inter-company transfer transaction types
 Assets,Maintenance Schedules,MIGRATE,MPLA / MPOS,PM,HIGH,Maintenance plan header/item (cross-module into Plant Maintenance)
 Assets,Maintenance Types,MIGRATE,T353O / T350 (order type config),PM (config),APPROX,Maintenance/PM order type customizing
@@ -63,9 +63,9 @@ Finance,Aging Reports,NOT_MIGRATED,,,,"Derived report, duplicate of AR Aging Rep
 Finance,Customer Invoice Lines,MIGRATE,VBRP,SD-Billing,HIGH,Billing document item; also posts to ACDOCA
 Finance,Customer Invoices,MIGRATE,VBRK + BKPF,SD-Billing / FI,HIGH,Billing document header + FI document header
 Finance,Receipts,MIGRATE,ACDOCA / BSEG (incoming payment postings),FI,APPROX,Incoming payment clearing postings; no standalone 'receipt' table
-Finance,Asset Register,MIGRATE,ANLA,FI-AA,HIGH,Duplicate of Assets > Assets — consolidate before load
-Finance,Depreciation Schedules,MIGRATE,ANLP,FI-AA,HIGH,Duplicate of Assets > Depreciation — consolidate before load
-Finance,Disposals,MIGRATE,ANEK / ANEP (txn type 2xx),FI-AA,HIGH,Duplicate of Assets > Asset Disposals — consolidate before load
+Finance,Asset Register,MIGRATE,ANLA,FI-AA,HIGH,"CONFIRMED duplicate of Assets > Assets: joined on Asset_ID and checked every overlapping field (code, cost, useful life, residual value, NBV, acquisition date) against all 60 rows -- 60/60 match on every field. Unlike the Materials false-alarm, this duplicate flag holds up under verification. Consolidate before load; don't migrate a second time."
+Finance,Depreciation Schedules,MIGRATE,ANLP,FI-AA,HIGH,"CORRECTED after checking real data: NOT a duplicate of Assets > Depreciation. This table (293 rows, one per asset per fiscal year, Opening/Closing NBV, Is_Posted flag) is the ANNUAL PLANNED depreciation schedule -- genuinely different grain from Assets > Depreciation's 318 monthly ACTUAL POSTED rows. Both need migrating, to different targets: this one to ANLP (planned periodic values), the other primarily to ACDOCA. Verified: the annual planned figure for an asset reconciles to the sum of its monthly actuals within rounding."
+Finance,Disposals,MIGRATE,ANEK / ANEP (txn type 2xx),FI-AA,APPROX,"CHECKED: duplicate of Assets > Asset Disposals on every quantitative field (date, NBV at disposal, gain/loss, proceeds -- 4/4 match), so consolidate the amounts from one source. But the classification fields do NOT match -- Disposal_Type/Reason here use a different vocabulary than Asset Disposals' Disposal_Method/Disposal_Reason for the same events (e.g. one row: 'Scrap'/'Beyond economic repair' vs. 'Trade-in'/'Sold to third party' for the same Asset_ID). Don't silently pick one; the classification/reason text needs a business decision on which vocabulary is authoritative before load."
 Finance,Balance Sheet,NOT_MIGRATED,,,,"Derived financial statement (FSV / reporting), not stored data"
 Finance,Budget vs Actual,NOT_MIGRATED,,,,"Derived comparison report; source actuals (ACDOCA) and budgets (CO/FM budget tables) are migrated, the comparison itself is not"
 Finance,Cash Flow,NOT_MIGRATED,,,,"Derived report/statement, not stored data"
@@ -122,7 +122,7 @@ Inventory,Units of Measure,MIGRATE,T006,MM (config),HIGH,Units of measure
 Inventory,Warehouses,MIGRATE,T300,MM-WM (config),HIGH,Warehouse number assignment
 Inventory,Cycle Counts,MIGRATE,IKPF / ISEG,MM-IM,HIGH,Physical inventory document header/items
 Inventory,Inventory Adjustments,MIGRATE,MSEG (movement type 701/702),MM-IM,HIGH,"Material document line items, inventory adjustment movement types"
-Inventory,Reorder Points,MIGRATE,MARC-MINBE,MM (Plant data),HIGH,"Field on the plant segment of the material master, not a separate table"
+Inventory,Reorder Points,MIGRATE,MARC-MINBE (approximate) or a custom per-warehouse table,MM (Plant data),APPROX,"CORRECTED after checking real data: this is per-(Item, Warehouse), not per-item -- 100 rows across only 59 distinct items (90 distinct item+warehouse combos), and its values disagree with Purchasing>Inventory Items' own single per-item Reorder_Point field on essentially all overlapping rows. Standard MARC-MINBE is per-plant, not per-warehouse/storage-location, so this table is actually MORE granular than MARC supports directly -- if warehouses don't map 1:1 to plants in the target org structure, this may need a custom (Z) table or MRP area-level configuration instead. Originally miscategorized as a plain duplicate of Purchasing>Inventory Items' own Reorder_Point column before verifying against real data; it is not."
 Inventory,Stock Movements,MIGRATE,MSEG + MKPF,MM-IM,HIGH,Material document line items + header
 Inventory,Expiration Dates,MIGRATE,MCH1 / MCHB (VFDAT field),MM-Batch,HIGH,Shelf-life expiration date on the batch master
 Inventory,Lot Numbers,MIGRATE,MCHA / MCH1,MM-Batch,HIGH,Batch master
@@ -134,7 +134,7 @@ Inventory,Inventory Forecasts,NOT_MIGRATED,,,,"Analytics/demand-planning output 
 Inventory,Inventory Turnover,NOT_MIGRATED,,,,"Analytics/KPI, derived"
 Inventory,Stock Aging,NOT_MIGRATED,,,,Derived analytics report built from MARD/MSEG history
 Manufacturing,BOM,MIGRATE,STKO / STPO,PP,HIGH,Bill of Material header/item
-Manufacturing,Product Catalog,MIGRATE,MARA / MARC / MBEW,MM / PP,HIGH,Material master; duplicate of Purchasing > Inventory Items — consolidate before load
+Manufacturing,Product Catalog,MIGRATE,MVKE,SD (Sales view of the material master),HIGH,"CORRECTED after checking real data: NOT a duplicate of Purchasing>Inventory Items. It has an explicit Item_ID foreign key into that table (15 of Inventory Items' 100 rows have a Product Catalog extension) and adds genuinely sales-specific attributes (list price, sellable/purchasable flags) -- a real MARA-vs-MVKE (base material vs. sales view) split, not redundant data. Product_Name and Standard_Cost are confirmed exact duplicates of Inventory Items' Item_Name/Unit_Cost (verified on all 15 rows) and should be dropped, not migrated a second time; see sap_target_schema/examples/materials_worked_example.md."
 Manufacturing,Routing,MIGRATE,PLKO / PLPO,PP,HIGH,Routing header/operations
 Manufacturing,Work Centers,MIGRATE,CRHD,PP,HIGH,Work center header
 Manufacturing,Capacity Plans,MIGRATE,KAKO (capacity header),PP,APPROX,Work center capacity header; exact detail tables vary by capacity category
@@ -180,7 +180,7 @@ Purchasing,Purchase Order Lines,MIGRATE,EKPO,MM-PUR,HIGH,Purchase order item
 Purchasing,Purchase Orders,MIGRATE,EKKO,MM-PUR,HIGH,Purchase order header
 Purchasing,Purchase Requisition Lines,MIGRATE,EBAN,MM-PUR,HIGH,EBAN is itself item-level; header fields are repeated per item (no separate header table)
 Purchasing,Purchase Requisitions,MIGRATE,EBAN,MM-PUR,HIGH,Same table as line items — see note above
-Purchasing,Inventory Items,MIGRATE,MARA / MARC / MBEW,MM,HIGH,Material master; duplicate of Manufacturing > Product Catalog — consolidate before load
+Purchasing,Inventory Items,MIGRATE,MARA / MAKT / MARC / MBEW,MM,HIGH,"The base material master (100 rows, all materials) -- Manufacturing>Product Catalog is a sales-view *extension* keyed off this table's Item_ID for the 15 sellable items, not a duplicate; see sap_target_schema/examples/materials_worked_example.md for the corrected relationship."
 Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,Stock transfer movement types
 Purchasing,Stock Levels,MIGRATE,MARD / MCHB,MM-IM,HIGH,Storage location stock / batch stock
 Purchasing,Procurement Reports,NOT_MIGRATED,,,,Analytics output

@@ -42,10 +42,11 @@ Reads every `*.json` file in `specs/`, applies it to the matching sheet in
 
 ### What it currently covers
 
-Five of the six specs in `specs/` are the executable encoding of the three worked
-examples in `sap_target_schema/examples/`; the sixth (`customers_addresses.json`)
-came out of a live session with the agent below — see § "A real session, not a
-demo" for how it got there:
+Five of the eleven specs in `specs/` are the executable encoding of the first
+three worked examples in `sap_target_schema/examples/`; the rest cover the 4th,
+5th, and 6th examples — `Customers`, the Material Master, and `Assets` — the
+`Customers` address half came out of a live session with the agent below, see
+§ "A real session, not a demo" for how it got there:
 
 | Spec | Source sheet(s) | Target tables |
 |---|---|---|
@@ -54,13 +55,53 @@ demo" for how it got there:
 | `sales_order_lines.json` | Sales Order Lines | `VBAP` |
 | `journal_entries_header.json` | Journal Entries | `BKPF` |
 | `general_ledger_lines.json` | General Ledger | `ACDOCA` |
-| `customers_addresses.json` | Customers (address fields only) | `ADRC` (×2 rows per customer — billing + shipping) |
+| `customers_addresses.json` | Customers (address fields) | `ADRC` (×2 rows per customer — billing + shipping) |
+| `customers_core.json` | Customers (identity/company/sales-area fields) | `BUT000`, `KNB1`, `KNVV`, `BUT0ID`, `BUT0TX` |
+| `inventory_items.json` | Inventory Items | `MARA`, `MAKT`, `MARC`, `MBEW` |
+| `locations.json` | Locations | `T499S`, `ADRC` |
+| `assets.json` | Assets | `ANLA`, `ANLZ`, `ANLB` |
+| `depreciation.json` | Depreciation | `ACDOCA` (one leg only — see notes below) |
 
-Run against the real seed data, this produces 15 output tables from 1,282 source
-rows, all 257 journal entries validate as balanced, every one of the 80 `ADRC`
-rows resolves a non-null `COUNTRY` with no `ADDRNUMBER` collisions, and every
-dropped/deferred field is accounted for in `_skipped_fields.csv` — see
-`output/_run_log.txt` after running it yourself for the exact numbers.
+Together the two `customers_*.json` specs are the executable side of the 4th
+worked example, `sap_target_schema/examples/customers_field_mapping.csv` — see
+§ "A real session, not a demo" below for how the address half came from a live
+agent session, and note that a few fields on `Customers` (`Email`,
+`Phone_Number`, `Is_Active`, `Account_Manager_ID`) are deliberately *not*
+encoded in either spec because the mapping decision itself is still open, not
+just an unresolved lookup — see `customers_core.json`'s `dropped_fields` and the
+worked example for why.
+
+`inventory_items.json` is the 5th worked example's only spec — its sibling
+sheet, `Product Catalog`, is fully documented in
+`sap_target_schema/examples/product_catalog_field_mapping.csv` but deliberately
+**not** encoded as a runnable spec: its real target key needs a Distribution
+Channel, and there's no source data for that at all, not even an unresolved
+lookup. This is also the example that corrected a wrong assumption baked into
+the original schema catalog — `Product Catalog` and `Inventory Items` were
+flagged as duplicate tables before any real data had been checked; they aren't.
+See `materials_worked_example.md` for what checking actually found.
+
+`locations.json`/`assets.json`/`depreciation.json` are the 6th worked
+example's specs (config-only `asset_config_field_mapping.csv` isn't
+encoded — it's almost entirely customizing linkages, not flat fields). This
+example checked three more "duplicate" flags the original catalog carried
+into `Finance` and got a different answer for each: one confirmed exactly
+right (`Asset Register`), one confirmed on amounts but not on classification
+text (`Disposals`), and one **backwards** — `Depreciation Schedules` and
+`Assets > Depreciation` are actually planned-vs-actual, not duplicates at
+all, and the original catalog had even mislabeled *which one* was "planned."
+`depreciation.json` also carries a known incompleteness in its own `notes`
+field: it produces only one leg of what should be a balanced two-line
+posting, because the engine has no "expand one row into a balanced
+multi-line document" capability yet — flagged rather than worked around,
+same as the `Weight_KG` gap in the Materials example.
+
+Run against the real seed data, this produces 28 output tables from 1,770
+distinct source rows, all 257 journal entries validate as balanced, every one
+of the 90 `ADRC` rows resolves a non-null `COUNTRY` with no `ADDRNUMBER`
+collisions, and every dropped/deferred field is accounted for in
+`_skipped_fields.csv` — see `output/_run_log.txt` after running it yourself for
+the exact numbers.
 
 ### Extending it to the other ~130 `MIGRATE` tables
 

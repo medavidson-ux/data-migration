@@ -1,0 +1,54 @@
+{
+  "source_sheet": "Inventory Items",
+  "source_key": "Item_ID",
+  "notes": "Base material master. Product Catalog (the sales-view extension, MVKE) is deliberately NOT encoded as a runnable spec yet -- its real primary key needs Sales Organization + Distribution Channel, and there is no source data for Distribution Channel at all, not even an unresolved lookup. See sap_target_schema/examples/materials_worked_example.md and product_catalog_field_mapping.csv for the full documented mapping.",
+  "targets": [
+    {
+      "table": "MARA",
+      "fields": [
+        {"target_field": "MATNR", "sap_description": "Material Number (staging key)", "transform": "direct", "source": "Item_ID"},
+        {"target_field": "BISMT", "sap_description": "Old Material Number", "transform": "direct", "source": "Item_Code"},
+        {"target_field": "MTART", "sap_description": "Material Type", "transform": "lookup_passthrough", "source": "Item_Category_ID", "lookup_ref": "Inventory>Item Categories -> T134 (verify MTART vs. MATKL is the right target before load)"},
+        {"target_field": "MEINS", "sap_description": "Base Unit of Measure", "transform": "lookup_passthrough", "source": "UOM_ID", "lookup_ref": "Inventory>Units of Measure -> T006"},
+        {"target_field": "EAN11", "sap_description": "International Article Number", "transform": "direct", "source": "Barcode"}
+      ]
+    },
+    {
+      "table": "MAKT",
+      "constants": {"SPRAS": "EN"},
+      "fields": [
+        {"target_field": "MATNR", "sap_description": "Material Number (staging key)", "transform": "direct", "source": "Item_ID"},
+        {"target_field": "MAKTX", "sap_description": "Material Description", "transform": "direct", "source": "Item_Name"}
+      ]
+    },
+    {
+      "table": "MARC",
+      "fields": [
+        {"target_field": "MATNR", "sap_description": "Material Number (staging key)", "transform": "direct", "source": "Item_ID"},
+        {"target_field": "WERKS", "sap_description": "Plant", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> Plant assignment (needs a real plant determination, not just Company Code)"},
+        {"target_field": "MINBE", "sap_description": "Reorder Point (per-plant; see notes on the separate per-warehouse Reorder Points table)", "transform": "direct", "source": "Reorder_Point"},
+        {"target_field": "EISBE", "sap_description": "Safety Stock", "transform": "direct", "source": "Min_Stock_Level"},
+        {"target_field": "MABST", "sap_description": "Maximum Stock Level", "transform": "direct", "source": "Max_Stock_Level"},
+        {"target_field": "PLIFZ", "sap_description": "Planned Delivery Time (days)", "transform": "direct", "source": "Lead_Time_Days"},
+        {"target_field": "XCHPF", "sap_description": "Batch Management Indicator", "transform": "value_map", "source": "Is_Lot_Tracked", "mapping": {"True": "X", "False": ""}}
+      ]
+    },
+    {
+      "table": "MBEW",
+      "fields": [
+        {"target_field": "MATNR", "sap_description": "Material Number (staging key)", "transform": "direct", "source": "Item_ID"},
+        {"target_field": "BWKEY", "sap_description": "Valuation Area", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> Valuation Area assignment (needs a real determination, not just Company Code)"},
+        {"target_field": "STPRS", "sap_description": "Standard Price", "transform": "direct", "source": "Unit_Cost"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Is_Serialized", "reason": "A boolean doesn't map directly to a serial number profile code (MARC-SERNP) -- 'true' needs to resolve to an actual configured profile in the target system, not just a flag."},
+    {"source": "Is_Active", "reason": "SAP has no single 'active' flag on the material master, only block/deletion indicators at different scopes (MARA-LVORM cross-plant vs. MARC-LVORM per-plant). All 100 rows are True in this data, giving no evidence of which one 'inactive' would need to mean -- same open question as Customers>Is_Active, needs a business decision before mapping."}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

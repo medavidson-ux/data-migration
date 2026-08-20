@@ -1,0 +1,51 @@
+{
+  "source_sheet": "Assets",
+  "source_key": "Asset_ID",
+  "notes": "Purchase_Cost, Current_Book_Value, and Accumulated_Depreciation are deliberately NOT encoded here -- they're transaction-derived/calculated values, not flat master-data fields, and loading historical asset values like these is normally a special one-time 'legacy data transfer' process (AS91-style) in SAP, not an ordinary field mapping. See assets_field_mapping.csv and assets_worked_example.md.",
+  "targets": [
+    {
+      "table": "ANLA",
+      "fields": [
+        {"target_field": "ANLN1", "sap_description": "Asset Number (staging key)", "transform": "direct", "source": "Asset_ID"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "INVNR", "sap_description": "Inventory Number", "transform": "direct", "source": "Asset_Code"},
+        {"target_field": "TXT50", "sap_description": "Description", "transform": "direct", "source": "Asset_Name"},
+        {"target_field": "AKTIV", "sap_description": "Capitalization Date", "transform": "date_yyyymmdd", "source": "Purchase_Date"}
+      ]
+    },
+    {
+      "table": "ANLZ",
+      "fields": [
+        {"target_field": "ANLN1", "sap_description": "Asset Number (staging key)", "transform": "direct", "source": "Asset_ID"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "KOSTL", "sap_description": "Cost Center", "transform": "lookup_passthrough", "source": "Department_Type_ID", "lookup_ref": "HR>Departments Types resolves to an HRP1000 Org Unit elsewhere in this project, NOT a Cost Center -- no established Department-Type-to-Cost-Center mapping exists yet; do not reuse the Org Unit lookup without confirming this cross-mapping"},
+        {"target_field": "STORT", "sap_description": "Location", "transform": "lookup_passthrough", "source": "Location_ID", "lookup_ref": "Assets>Locations -> T499S/ADRC (see locations.json)"}
+      ]
+    },
+    {
+      "table": "ANLB",
+      "fields": [
+        {"target_field": "ANLN1", "sap_description": "Asset Number (staging key)", "transform": "direct", "source": "Asset_ID"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "NDJAR", "sap_description": "Planned Useful Life (Years)", "transform": "direct", "source": "Useful_Life_Years"},
+        {"target_field": "SCHRW", "sap_description": "Scrap/Residual Value", "transform": "direct", "source": "Residual_Value"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Asset_Type_ID", "reason": "Resolves conceptually to an evaluation-group field on ANLA per the main schema catalog's Assets>Asset Types mapping, but no concrete field code is confirmed -- not encoded until one is verified against the target system."},
+    {"source": "Serial_Number", "reason": "No confident FI-AA field; likely belongs on the Plant Maintenance Equipment master (EQUI) if PM integration exists -- confirm before mapping either way."},
+    {"source": "Model_Number", "reason": "Same PM/Equipment-integration caveat as Serial_Number."},
+    {"source": "Purchase_Cost", "reason": "Not a flat master field -- recorded via an acquisition posting (ANEK/ANEP), and historical acquisitions normally need a special one-time legacy asset data transfer process, not a field mapping."},
+    {"source": "Current_Book_Value", "reason": "A calculated result (APC minus accumulated depreciation via ANLC), not stored master data."},
+    {"source": "Accumulated_Depreciation", "reason": "A calculated running balance (ANLC) -- same category of finding as General Ledger>Running_Balance."},
+    {"source": "Warranty_Expiry", "reason": "No standard FI-AA field; warranty tracking is normally a Plant Maintenance (Equipment) concern."},
+    {"source": "Assigned_To_ID", "reason": "An assignment relationship (see Assets>Assignments in the main schema catalog, approximately EQUI's assigned-to fields), not a flat field -- same pattern as Sales_Rep_ID/Manager_ID."},
+    {"source": "Status", "reason": "SAP tracks asset status via a deactivation date (ANLA-DEAKT) and posting-driven indicators, not one free-text field -- same finding as Sales Orders>Status."}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}

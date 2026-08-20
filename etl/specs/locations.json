@@ -1,0 +1,40 @@
+{
+  "source_sheet": "Locations",
+  "source_key": "Location_ID",
+  "notes": "Checked before mapping: Address's embedded city disagrees with the City column on 9/10 rows, but a third independent field (Location_Name) agrees with City on 10/10 -- opposite conclusion from customers_addresses.json's Country resolution. STREET still comes from parsing Address (only its city token was shown unreliable); CITY1/COUNTRY come from the verified City column, not from parsing Address a second way.",
+  "targets": [
+    {
+      "table": "T499S",
+      "fields": [
+        {"target_field": "WERKS", "sap_description": "Plant", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> Plant assignment (needs a real plant determination)"},
+        {"target_field": "STORT", "sap_description": "Location (staging key)", "transform": "direct", "source": "Location_ID"},
+        {"target_field": "STLTX", "sap_description": "Description", "transform": "direct", "source": "Location_Name"}
+      ]
+    },
+    {
+      "table": "ADRC",
+      "fields": [
+        {"target_field": "ADDRNUMBER", "sap_description": "Address Number (staging key)", "transform": "row_number_pad", "source": "Location_ID", "multiplier": 1, "width": 10},
+        {"target_field": "STREET", "sap_description": "Street", "transform": "split_delimiter", "source": "Address", "delimiter": ",", "part_index": 0},
+        {"target_field": "CITY1", "sap_description": "City", "transform": "direct", "source": "City"},
+        {
+          "target_field": "COUNTRY",
+          "sap_description": "Country Key (ISO 3166-1 alpha-2)",
+          "transform": "value_map",
+          "source": "City",
+          "mapping": {
+            "Amman": "JO", "Aqaba": "JO", "Irbid": "JO", "Jerash": "JO", "Karak": "JO",
+            "Madaba": "JO", "Mafraq": "JO", "Salt": "JO", "Zarqa": "JO",
+            "Doha": "QA", "Dubai": "AE", "Riyadh": "SA"
+          }
+        }
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Location_Code", "reason": "No standard 'old code' field on T499S; kept only as the Location_ID staging key's companion, not loaded separately."},
+    {"source": "Location_Type", "reason": "Determines which SAP object the location even becomes (Plant vs. Storage Location vs. Warehouse) -- a real routing decision, not a lookup gap, that needs to be made before load."},
+    {"source": "Country", "reason": "Verified reliable (agrees with City on 10/10 rows), but redundant with the City-derived COUNTRY already produced above -- not mapped a second time."},
+    {"source": "Is_Active", "reason": "Same block/deletion-flag ambiguity as every other Is_Active column in this project; all 10 rows are True, giving no evidence of intended semantics."}
+  ]
+}

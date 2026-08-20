@@ -10,11 +10,14 @@ than a generic template.
 | File | Purpose |
 |---|---|
 | `legacy_to_sap_mapping.csv` | One row per legacy table (199 total). Says whether it migrates, and if so, to which standard SAP table(s). **This is the primary driver for your AI-assisted ETL** — a per-table transform/routing rule set. |
-| `sap_tables.json` | Catalog of every unique SAP target table referenced by the mapping (119 tables). Machine-readable: description, module, table type, and key fields with SAP data types. |
+| `sap_tables.json` | Catalog of every unique SAP target table referenced by the mapping (126 tables). Machine-readable: description, module, table type, and key fields with SAP data types. |
 | `sap_tables.csv` | Same catalog, flattened to one row per field — easier to skim or load into a spreadsheet. |
 | `examples/employees_field_mapping.csv` + `examples/employees_worked_example.md` | Worked column-level mapping for a **master-data** table (`Employees` → SAP HCM infotypes): lookups, field splits, relationship modeling, system-generated fields. |
 | `examples/sales_orders_header_field_mapping.csv` + `examples/sales_order_lines_field_mapping.csv` + `examples/sales_orders_worked_example.md` | Worked column-level mapping for a **transactional header/item** table (`Sales Orders`/`Sales Order Lines` → SAP SD documents): condition-based pricing, partner determination, document flow, multi-field status. |
 | `examples/journal_entries_field_mapping.csv` + `examples/general_ledger_field_mapping.csv` + `examples/journal_entries_worked_example.md` | Worked column-level mapping for a **financial posting** table (`Journal Entries`/`General Ledger` → SAP `BKPF`/`ACDOCA` Universal Journal): debit/credit columns collapsing into one signed amount + indicator, header-field denormalization onto every line, verifying a header field is genuinely redundant before dropping it. |
+| `examples/customers_field_mapping.csv` + `examples/customers_worked_example.md` | Worked column-level mapping for a **Business Partner master-data** table (`Customers` → SAP `BUT000`/`KNB1`/`KNVV`/`ADRC`/…), the first one produced through a live AI agent session rather than by hand: a business-key field with a clean standard home for once (`BU_SORT1`), and — unlike the other three — several fields where the *mapping decision itself* is still genuinely open (which block/deletion flag, which relationship category), not just an unresolved lookup. |
+| `examples/inventory_items_field_mapping.csv` + `examples/product_catalog_field_mapping.csv` + `examples/materials_worked_example.md` | Worked column-level mapping for the **Material Master** (`Inventory Items`/`Product Catalog` → SAP `MARA`/`MAKT`/`MARC`/`MBEW`/`MVKE`). Corrects a wrong assumption from the original schema catalog — these two legacy tables were flagged as duplicates before their data had actually been checked; they turned out to be a real base-material/sales-view split, verified field-by-field (two genuine duplicates confirmed and dropped, two more that looked like duplicates and weren't). |
+| `examples/assets_field_mapping.csv` + `examples/locations_field_mapping.csv` + `examples/depreciation_field_mapping.csv` + `examples/asset_config_field_mapping.csv` + `examples/assets_worked_example.md` | Worked column-level mapping for **Asset Accounting** (`Assets`/`Locations`/`Depreciation` → SAP `ANLA`/`ANLZ`/`ANLB`/`T499S`/`ACDOCA`). Checks three more catalog "duplicate" flags against real data — one confirmed exactly right, one confirmed on amounts but not classification text, one found **backwards** (`Depreciation Schedules` vs. `Depreciation` turned out to be planned-vs-actual, not a duplicate, and the original catalog had the target mislabeled too). Also surfaces a genuinely new engine gap: a depreciation posting needs two balanced lines, and the source only supplies one. |
 
 ## Scope decisions (confirmed with you before building)
 
@@ -79,7 +82,7 @@ what's been custom-extended in your specific SAP instance.
 
 ## Implementation: `../etl/`
 
-The `etl/` folder (sibling to this one) turns the three worked examples above into a
+The `etl/` folder (sibling to this one) turns the six worked examples above into a
 runnable prototype: `etl/transform_engine.py` executes the same transform patterns against
 the real seed data and produces SAP-shaped staging tables, and `etl/agent/` is an
 interactive Claude-powered agent that extends the same patterns to new tables, grounded in

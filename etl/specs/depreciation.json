@@ -1,0 +1,31 @@
+{
+  "source_sheet": "Depreciation",
+  "source_key": "Depreciation_ID",
+  "notes": "IMPORTANT: this produces only ONE line of what should be a balanced two-line posting (debit depreciation expense, credit accumulated depreciation) -- the same double-entry requirement as journal_entries_header.json/general_ledger_lines.json, but this source has only one amount column per row, unlike General Ledger's paired Debit_Amount/Credit_Amount. The engine has no 'expand one row into a balanced multi-line document' capability yet. Treat this output as a per-asset depreciation record for reference, NOT as a loadable balanced ACDOCA document -- see depreciation_field_mapping.csv and assets_worked_example.md.",
+  "targets": [
+    {
+      "table": "ACDOCA",
+      "constants": {"DOCLN": "000001"},
+      "fields": [
+        {"target_field": "BELNR", "sap_description": "Document Number (staging key)", "transform": "direct", "source": "Depreciation_ID"},
+        {"target_field": "RBUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "ANLN1", "sap_description": "Asset Number", "transform": "direct", "source": "Asset_ID"},
+        {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Period_Date"},
+        {"target_field": "HSL", "sap_description": "Amount in Company Code Currency (one leg only -- see notes)", "transform": "direct", "source": "Depreciation_Amount"},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "GL_Journal_Reference", "max_len": 16}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Depreciation_Method_ID", "reason": "Implicit via the asset's own depreciation terms (ANLB-AFASL, see assets.json), not repeated on each posting line."},
+    {"source": "Accumulated_Depreciation", "reason": "A calculated running balance, not stored data -- same finding as General Ledger>Running_Balance."},
+    {"source": "Net_Book_Value", "reason": "Same running-balance reasoning as Accumulated_Depreciation."},
+    {"source": "Posted_By_User_ID", "reason": "Same USNAM-vs-Created_By_User_ID overlap flagged on Journal Entries>Prepared_By_User_ID -- confirm which is authoritative before mapping either."},
+    {"source": "Posted_At", "reason": "May overlap with Period_Date/BUDAT (technical timestamp vs. accounting posting date) -- confirm before mapping both."}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on posting"},
+    {"source": "Updated_At", "reason": "posted line items are normally immutable"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the posting SAP user"}
+  ]
+}
