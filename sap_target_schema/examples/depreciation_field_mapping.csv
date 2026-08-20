@@ -1,0 +1,15 @@
+legacy_column,legacy_sample_value,sap_target_table,sap_field,sap_field_description,sap_data_type,confidence,transform_notes
+Depreciation_ID,1,(cross-reference only),LEGACY_ID (custom),Legacy Depreciation ID,CHAR(20),HIGH,SAP's own key is the ACDOCA composite (client/ledger/company/fiscal year/document/DOCLN).
+Company_ID,1,ACDOCA,RBUKRS,Company Code,CHAR(4),HIGH,Resolve via Foundation>Companies lookup.
+Depreciation_Method_ID,1,(not carried on the posting line),--,--,--,APPROX,"The depreciation method is implicit via the asset's own depreciation terms (ANLB-AFASL), not repeated on each posting line -- redundant with the Assets master mapping, not a separate field to load here."
+Asset_ID,1,ACDOCA,ANLN1,Asset Number,CHAR(12),HIGH,"Must resolve to the same staging key used in the Assets master mapping. ACDOCA carries the asset number directly on asset-relevant posting lines."
+Period_Date,2026-01-01,ACDOCA,BUDAT,Posting Date,DATS,HIGH,
+Depreciation_Amount,1411.28,ACDOCA,HSL,Amount in Company Code Currency (signed),CURR,APPROX,"IMPORTANT GAP: a real depreciation posting is a balanced two-line document (debit depreciation expense, credit accumulated depreciation) -- the same double-entry shape as Journal Entries/General Ledger. This source table has only ONE amount per row, unlike General Ledger's paired Debit_Amount/Credit_Amount, so it can only supply one of the two required lines. The current transform engine has no 'expand one source row into a balanced multi-line posting' capability -- flagged as a real architecture gap, not worked around by fabricating an offsetting line or a plausible-looking account."
+Accumulated_Depreciation,46572.09,(not mapped -- derived),--,--,--,HIGH,"A running balance, not stored data -- same finding as General Ledger>Running_Balance and Assets>Accumulated_Depreciation; derived from the posted lines via ANLC, not loaded directly."
+Net_Book_Value,222559.12,(not mapped -- derived),--,--,--,HIGH,Same running-balance reasoning as Accumulated_Depreciation.
+GL_Journal_Reference,(varies),ACDOCA,XBLNR,Reference Document Number,CHAR(16),HIGH,
+Posted_By_User_ID,(varies),(cross-reference only),--,--,--,APPROX,"Same USNAM-vs-Created_By_User_ID overlap flagged on Journal Entries>Prepared_By_User_ID -- confirm which user-tracking field is actually authoritative before loading either."
+Posted_At,(varies),(overlaps with Period_Date),--,--,--,APPROX,"May be a technical system timestamp rather than the accounting posting date already captured in Period_Date/BUDAT -- confirm the two aren't redundant before mapping both."
+Created_At,(varies),NOT_MIGRATED,system-generated,--,--,HIGH,system-generated on posting -- not loaded as source data.
+Updated_At,(varies),NOT_MIGRATED,system-generated,--,--,HIGH,Posted line items are normally immutable -- not loaded as source data.
+Created_By_User_ID,(varies),NOT_MIGRATED,system-generated (or cross-reference only),--,--,APPROX,Legacy creator ID can be retained only as a migration audit/cross-reference attribute.

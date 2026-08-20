@@ -552,6 +552,18 @@
         "key": false
       },
       {
+        "field": "ANLN1",
+        "description": "Asset Number (asset-relevant lines only)",
+        "sap_type": "CHAR(12)",
+        "key": false
+      },
+      {
+        "field": "ANLN2",
+        "description": "Asset Sub-number",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
         "field": "DRCRK",
         "description": "Debit/Credit Indicator ('S'=Debit, 'H'=Credit)",
         "sap_type": "CHAR(1)",
@@ -1053,6 +1065,18 @@
         "description": "Capitalization Date",
         "sap_type": "DATS",
         "key": false
+      },
+      {
+        "field": "INVNR",
+        "description": "Inventory Number",
+        "sap_type": "CHAR(25)",
+        "key": false
+      },
+      {
+        "field": "DEAKT",
+        "description": "Deactivation Date",
+        "sap_type": "DATS",
+        "key": false
       }
     ]
   },
@@ -1150,6 +1174,12 @@
         "field": "NDJAR",
         "description": "Planned Useful Life (Years)",
         "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "SCHRW",
+        "description": "Scrap/Residual Value",
+        "sap_type": "CURR",
         "key": false
       }
     ]
@@ -1711,6 +1741,197 @@
         "field": "KDGRP",
         "description": "Customer Group",
         "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "KUKLA",
+        "description": "Customer Classification",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Customer's Order Currency",
+        "sap_type": "CUKY",
+        "key": false
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "KNB1": {
+    "description": "Customer Master: Company Code Data",
+    "module": "FI",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "KUNNR",
+        "description": "Customer",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "LOEVM",
+        "description": "Central Deletion Flag",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "SPERR",
+        "description": "Posting Block",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "BUT0ID": {
+    "description": "Business Partner: Identification Numbers/Industry (industry sector classification)",
+    "module": "Cross (Business Partner)",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PARTNER",
+        "description": "Business Partner",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BPEXT",
+        "description": "External ID Number",
+        "sap_type": "CHAR(20)",
+        "key": true
+      },
+      {
+        "field": "BRSCH",
+        "description": "Industry Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "BUT0TX": {
+    "description": "Business Partner: Tax Numbers",
+    "module": "Cross (Business Partner)",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "PARTNER",
+        "description": "Business Partner",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "TAXTYPE",
+        "description": "Tax Type",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "TAXNUM",
+        "description": "Tax Number",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "ADR6": {
+    "description": "Business Address Services: E-Mail Addresses",
+    "module": "Cross-app",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ADDRNUMBER",
+        "description": "Address Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "PERSNUMBER",
+        "description": "Person Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "CONSNUMBER",
+        "description": "Sequence Number",
+        "sap_type": "NUMC(3)",
+        "key": true
+      },
+      {
+        "field": "SMTP_ADDR",
+        "description": "E-Mail Address",
+        "sap_type": "CHAR(241)",
+        "key": false
+      }
+    ]
+  },
+  "ADR2": {
+    "description": "Business Address Services: Telephone Numbers",
+    "module": "Cross-app",
+    "type": "master",
+    "fields": [
+      {
+        "field": "CLIENT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "ADDRNUMBER",
+        "description": "Address Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "PERSNUMBER",
+        "description": "Person Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "CONSNUMBER",
+        "description": "Sequence Number",
+        "sap_type": "NUMC(3)",
+        "key": true
+      },
+      {
+        "field": "TEL_NUMBER",
+        "description": "Telephone Number",
+        "sap_type": "CHAR(30)",
         "key": false
       }
     ]
@@ -2983,6 +3204,42 @@
         "description": "MRP Type",
         "sap_type": "CHAR(2)",
         "key": false
+      },
+      {
+        "field": "EISBE",
+        "description": "Safety Stock",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "MABST",
+        "description": "Maximum Stock Level",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "PLIFZ",
+        "description": "Planned Delivery Time (days)",
+        "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "XCHPF",
+        "description": "Batch Management Indicator",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "SERNP",
+        "description": "Serial Number Profile",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "LVORM",
+        "description": "Deletion Flag (plant-specific)",
+        "sap_type": "CHAR(1)",
+        "key": false
       }
     ]
   },
@@ -3259,6 +3516,110 @@
       {
         "field": "MEINS",
         "description": "Base Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "BISMT",
+        "description": "Old Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "EAN11",
+        "description": "International Article Number (EAN/UPC)",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "BRGEW",
+        "description": "Gross Weight",
+        "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "NTGEW",
+        "description": "Net Weight",
+        "sap_type": "DEC",
+        "key": false
+      },
+      {
+        "field": "GEWEI",
+        "description": "Weight Unit",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "LVORM",
+        "description": "Deletion Flag (cross-plant)",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "MAKT": {
+    "description": "Material Descriptions (language-dependent short text)",
+    "module": "MM",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "SPRAS",
+        "description": "Language Key",
+        "sap_type": "LANG",
+        "key": true
+      },
+      {
+        "field": "MAKTX",
+        "description": "Material Description",
+        "sap_type": "CHAR(40)",
+        "key": false
+      }
+    ]
+  },
+  "MVKE": {
+    "description": "Material Master: Sales Data (per Sales Org / Distribution Channel)",
+    "module": "SD",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": true
+      },
+      {
+        "field": "VKORG",
+        "description": "Sales Organization",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "VTWEG",
+        "description": "Distribution Channel",
+        "sap_type": "CHAR(2)",
+        "key": true
+      },
+      {
+        "field": "VRKME",
+        "description": "Sales Unit",
         "sap_type": "UNIT(3)",
         "key": false
       }

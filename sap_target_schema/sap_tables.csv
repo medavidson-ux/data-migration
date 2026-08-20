@@ -75,6 +75,8 @@ ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Univ
 ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,XBLNR,Reference Document Number,CHAR(16),N
 ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,RWCUR,Transaction Currency,CUKY,N
 ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,HSL,Amount in Company Code Currency (signed),CURR,N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,ANLN1,Asset Number (asset-relevant lines only),CHAR(12),N
+ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,ANLN2,Asset Sub-number,CHAR(4),N
 ACDOCA,Universal Journal Entry Line Items (S/4HANA core FI/CO/AA table),FI (Universal Journal),transaction,DRCRK,"Debit/Credit Indicator ('S'=Debit, 'H'=Credit)",CHAR(1),N
 BKPF,Accounting Document Header,FI,transaction,MANDT,Client,CLNT,Y
 BKPF,Accounting Document Header,FI,transaction,BUKRS,Company Code,CHAR(4),Y
@@ -146,6 +148,8 @@ ANLA,Asset Master: General Data,FI-AA,master,ANLN2,Asset Sub-number,CHAR(4),Y
 ANLA,Asset Master: General Data,FI-AA,master,ANLKL,Asset Class,CHAR(8),N
 ANLA,Asset Master: General Data,FI-AA,master,TXT50,Description,CHAR(50),N
 ANLA,Asset Master: General Data,FI-AA,master,AKTIV,Capitalization Date,DATS,N
+ANLA,Asset Master: General Data,FI-AA,master,INVNR,Inventory Number,CHAR(25),N
+ANLA,Asset Master: General Data,FI-AA,master,DEAKT,Deactivation Date,DATS,N
 ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,MANDT,Client,CLNT,Y
 ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,BUKRS,Company Code,CHAR(4),Y
 ANLZ,Asset Master: Time-Dependent Data,FI-AA,master,ANLN1,Asset Number,CHAR(12),Y
@@ -160,6 +164,7 @@ ANLB,Asset Master: Depreciation Terms,FI-AA,master,ANLN2,Asset Sub-number,CHAR(4
 ANLB,Asset Master: Depreciation Terms,FI-AA,master,AFABE,Depreciation Area,CHAR(2),Y
 ANLB,Asset Master: Depreciation Terms,FI-AA,master,AFASL,Depreciation Key,CHAR(4),N
 ANLB,Asset Master: Depreciation Terms,FI-AA,master,NDJAR,Planned Useful Life (Years),DEC,N
+ANLB,Asset Master: Depreciation Terms,FI-AA,master,SCHRW,Scrap/Residual Value,CURR,N
 AFAMA,Depreciation Key,FI-AA,config,MANDT,Client,CLNT,Y
 AFAMA,Depreciation Key,FI-AA,config,AFAPL,Chart of Depreciation,CHAR(4),Y
 AFAMA,Depreciation Key,FI-AA,config,AFASL,Depreciation Key,CHAR(4),Y
@@ -236,6 +241,32 @@ KNVV,Customer Master: Sales Area Data,SD,master,VKORG,Sales Organization,CHAR(4)
 KNVV,Customer Master: Sales Area Data,SD,master,VTWEG,Distribution Channel,CHAR(2),Y
 KNVV,Customer Master: Sales Area Data,SD,master,SPART,Division,CHAR(2),Y
 KNVV,Customer Master: Sales Area Data,SD,master,KDGRP,Customer Group,CHAR(2),N
+KNVV,Customer Master: Sales Area Data,SD,master,KUKLA,Customer Classification,CHAR(2),N
+KNVV,Customer Master: Sales Area Data,SD,master,WAERS,Customer's Order Currency,CUKY,N
+KNVV,Customer Master: Sales Area Data,SD,master,ZTERM,Terms of Payment Key,CHAR(4),N
+KNB1,Customer Master: Company Code Data,FI,master,MANDT,Client,CLNT,Y
+KNB1,Customer Master: Company Code Data,FI,master,KUNNR,Customer,CHAR(10),Y
+KNB1,Customer Master: Company Code Data,FI,master,BUKRS,Company Code,CHAR(4),Y
+KNB1,Customer Master: Company Code Data,FI,master,LOEVM,Central Deletion Flag,CHAR(1),N
+KNB1,Customer Master: Company Code Data,FI,master,SPERR,Posting Block,CHAR(1),N
+BUT0ID,Business Partner: Identification Numbers/Industry (industry sector classification),Cross (Business Partner),master,CLIENT,Client,CLNT,Y
+BUT0ID,Business Partner: Identification Numbers/Industry (industry sector classification),Cross (Business Partner),master,PARTNER,Business Partner,CHAR(10),Y
+BUT0ID,Business Partner: Identification Numbers/Industry (industry sector classification),Cross (Business Partner),master,BPEXT,External ID Number,CHAR(20),Y
+BUT0ID,Business Partner: Identification Numbers/Industry (industry sector classification),Cross (Business Partner),master,BRSCH,Industry Key,CHAR(4),N
+BUT0TX,Business Partner: Tax Numbers,Cross (Business Partner),master,CLIENT,Client,CLNT,Y
+BUT0TX,Business Partner: Tax Numbers,Cross (Business Partner),master,PARTNER,Business Partner,CHAR(10),Y
+BUT0TX,Business Partner: Tax Numbers,Cross (Business Partner),master,TAXTYPE,Tax Type,CHAR(4),Y
+BUT0TX,Business Partner: Tax Numbers,Cross (Business Partner),master,TAXNUM,Tax Number,CHAR(20),N
+ADR6,Business Address Services: E-Mail Addresses,Cross-app,master,CLIENT,Client,CLNT,Y
+ADR6,Business Address Services: E-Mail Addresses,Cross-app,master,ADDRNUMBER,Address Number,CHAR(10),Y
+ADR6,Business Address Services: E-Mail Addresses,Cross-app,master,PERSNUMBER,Person Number,CHAR(10),Y
+ADR6,Business Address Services: E-Mail Addresses,Cross-app,master,CONSNUMBER,Sequence Number,NUMC(3),Y
+ADR6,Business Address Services: E-Mail Addresses,Cross-app,master,SMTP_ADDR,E-Mail Address,CHAR(241),N
+ADR2,Business Address Services: Telephone Numbers,Cross-app,master,CLIENT,Client,CLNT,Y
+ADR2,Business Address Services: Telephone Numbers,Cross-app,master,ADDRNUMBER,Address Number,CHAR(10),Y
+ADR2,Business Address Services: Telephone Numbers,Cross-app,master,PERSNUMBER,Person Number,CHAR(10),Y
+ADR2,Business Address Services: Telephone Numbers,Cross-app,master,CONSNUMBER,Sequence Number,NUMC(3),Y
+ADR2,Business Address Services: Telephone Numbers,Cross-app,master,TEL_NUMBER,Telephone Number,CHAR(30),N
 QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,MANDT,Client,CLNT,Y
 QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,QMNUM,Notification Number,CHAR(12),Y
 QMEL,Notification Header (Quality/Service/Maintenance),CS / QM / PM,transaction,QMART,Notification Type,CHAR(2),N
@@ -407,6 +438,12 @@ MARC,Material Master: Plant Data,MM,master,MATNR,Material Number,CHAR(18),Y
 MARC,Material Master: Plant Data,MM,master,WERKS,Plant,CHAR(4),Y
 MARC,Material Master: Plant Data,MM,master,MINBE,Reorder Point,QUAN,N
 MARC,Material Master: Plant Data,MM,master,DISMM,MRP Type,CHAR(2),N
+MARC,Material Master: Plant Data,MM,master,EISBE,Safety Stock,QUAN,N
+MARC,Material Master: Plant Data,MM,master,MABST,Maximum Stock Level,QUAN,N
+MARC,Material Master: Plant Data,MM,master,PLIFZ,Planned Delivery Time (days),DEC,N
+MARC,Material Master: Plant Data,MM,master,XCHPF,Batch Management Indicator,CHAR(1),N
+MARC,Material Master: Plant Data,MM,master,SERNP,Serial Number Profile,CHAR(4),N
+MARC,Material Master: Plant Data,MM,master,LVORM,Deletion Flag (plant-specific),CHAR(1),N
 MCHA,Batch Master (Plant Level),MM-Batch,master,MANDT,Client,CLNT,Y
 MCHA,Batch Master (Plant Level),MM-Batch,master,MATNR,Material Number,CHAR(18),Y
 MCHA,Batch Master (Plant Level),MM-Batch,master,WERKS,Plant,CHAR(4),Y
@@ -444,6 +481,21 @@ MARA,Material Master: General Data,MM,master,MATNR,Material Number,CHAR(18),Y
 MARA,Material Master: General Data,MM,master,MTART,Material Type,CHAR(4),N
 MARA,Material Master: General Data,MM,master,MATKL,Material Group,CHAR(9),N
 MARA,Material Master: General Data,MM,master,MEINS,Base Unit of Measure,UNIT(3),N
+MARA,Material Master: General Data,MM,master,BISMT,Old Material Number,CHAR(18),N
+MARA,Material Master: General Data,MM,master,EAN11,International Article Number (EAN/UPC),CHAR(18),N
+MARA,Material Master: General Data,MM,master,BRGEW,Gross Weight,DEC,N
+MARA,Material Master: General Data,MM,master,NTGEW,Net Weight,DEC,N
+MARA,Material Master: General Data,MM,master,GEWEI,Weight Unit,UNIT(3),N
+MARA,Material Master: General Data,MM,master,LVORM,Deletion Flag (cross-plant),CHAR(1),N
+MAKT,Material Descriptions (language-dependent short text),MM,master,MANDT,Client,CLNT,Y
+MAKT,Material Descriptions (language-dependent short text),MM,master,MATNR,Material Number,CHAR(18),Y
+MAKT,Material Descriptions (language-dependent short text),MM,master,SPRAS,Language Key,LANG,Y
+MAKT,Material Descriptions (language-dependent short text),MM,master,MAKTX,Material Description,CHAR(40),N
+MVKE,Material Master: Sales Data (per Sales Org / Distribution Channel),SD,master,MANDT,Client,CLNT,Y
+MVKE,Material Master: Sales Data (per Sales Org / Distribution Channel),SD,master,MATNR,Material Number,CHAR(18),Y
+MVKE,Material Master: Sales Data (per Sales Org / Distribution Channel),SD,master,VKORG,Sales Organization,CHAR(4),Y
+MVKE,Material Master: Sales Data (per Sales Org / Distribution Channel),SD,master,VTWEG,Distribution Channel,CHAR(2),Y
+MVKE,Material Master: Sales Data (per Sales Org / Distribution Channel),SD,master,VRKME,Sales Unit,UNIT(3),N
 MARD,Storage Location Stock,MM-IM,transaction,MANDT,Client,CLNT,Y
 MARD,Storage Location Stock,MM-IM,transaction,MATNR,Material Number,CHAR(18),Y
 MARD,Storage Location Stock,MM-IM,transaction,WERKS,Plant,CHAR(4),Y
