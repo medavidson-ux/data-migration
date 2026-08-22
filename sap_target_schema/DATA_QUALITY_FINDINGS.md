@@ -169,6 +169,41 @@ profiling findings:
   real load still allocates BP numbers from a configured SAP number range;
   these series exist only to keep the staging keys internally collision-free.
 
+## The inventory transaction tables: investigated, and deliberately not mapped
+
+Mapping the inventory component (batch after goods receipts) found three
+independent blockers on the transactional side. `Stock Levels` was clean and
+is mapped (`stock_levels.json` -> MARD, initial-stock approach); the other
+three are deferred with their routing notes updated — each blocker is a data
+or capability fact, not a judgment call:
+
+- **`Stock Movements` would double-post stock.** All **77 Receipt rows are
+  exact duplicates of the Goods Receipt Lines** already mapped to MSEG:
+  every one matches a GR on number + item, with quantity equal to the GR's
+  accepted quantity (47 of them differ from the GR's delivered quantity —
+  the accepted/rejected distinction — confirming they're the same event,
+  post-inspection). Mapping both sheets posts every goods receipt twice.
+  Beyond that: the 14 Transfer rows need two-leg movements (engine has no
+  row expansion), Issue/Return movement types depend on consumption account
+  assignment (target customizing), and quantities are signed (SAP stores
+  abs + SHKZG indicator). Needs a de-dup decision first.
+- **`Inventory Transfers` is double-blocked**: same two-leg movement
+  requirement, plus **3 of 35 rows have BOTH `From_Warehouse_ID` and
+  `To_Warehouse_ID` null** — a transfer with no source or destination.
+- **`Inventory Adjustments` arithmetic does not reconcile, in any row.** In
+  **42 of 42** non-null rows, `Quantity_After − Quantity_Before` equals
+  neither `+Adjustment_Quantity` nor `−Adjustment_Quantity`; the stated
+  adjustment quantity is always positive while before/after move in both
+  directions, and the magnitudes don't match either sign. The three columns
+  tell three different stories and it's impossible to tell from the data
+  which one is authoritative — this needs business review of the source
+  records, not a mapping guess. (Plus 3 rows with null Item/Warehouse.)
+
+These bring the count of engine-capability gaps blocking honest mappings to
+**three known instances**: the depreciation balanced two-line posting, the
+goods-receipt 101/122 split, and the transfer from/to two-leg posting — all
+the same "expand one source row into N target rows" need.
+
 ## How to use this alongside the rest of the project
 
 This complements, rather than duplicates, `etl/qc_check.py` (which checks the

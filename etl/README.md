@@ -52,15 +52,21 @@ Reads every `*.json` file in `specs/`, applies it to the matching sheet in
 
 ### What it currently covers
 
-Twenty-one specs. Five are the executable encoding of the first three worked
+Twenty-two specs. Five are the executable encoding of the first three worked
 examples in `sap_target_schema/examples/`; the next six cover the 4th, 5th,
 and 6th examples — `Customers`, the Material Master, and `Assets` — the
 `Customers` address half came out of a live session with the agent below, see
-§ "A real session, not a demo" for how it got there. The newest ten cover
+§ "A real session, not a demo" for how it got there. The newest eleven cover
 the **purchasing cycle end-to-end** (`Vendors`, purchase orders and their
 lines, vendor contracts, goods receipts and their lines, vendor invoices and
-their lines) and the **sales billing leg** (customer invoices and their
-lines, completing order → fulfillment → invoice). The billing mapping verified along the way that the Sales-side
+their lines), the **sales billing leg** (customer invoices and their lines,
+completing order → fulfillment → invoice), and the **inventory stock
+snapshot** (`Stock Levels` → MARD, initial-stock approach). The remaining
+inventory transaction tables (`Stock Movements`, `Inventory Transfers`,
+`Inventory Adjustments`) were investigated and deliberately deferred —
+see DATA_QUALITY_FINDINGS.md for the three blockers found (stock-movement
+receipts duplicate the goods-receipt data one-for-one, transfers need
+two-leg movements, adjustment arithmetic doesn't reconcile). The billing mapping verified along the way that the Sales-side
 `Invoices` sheet is a 1:1 duplicate of the Finance-side `Customer Invoices`
 (53/53 rows identical on every shared column) and mapped the Finance side as
 authoritative; the vendor side had no such duplicate and verified clean on
@@ -94,6 +100,7 @@ even/odd staging-key convention).
 | `vendor_invoice_lines.json` | Vendor Invoice Lines | `RSEG` |
 | `goods_receipts_header.json` | Goods Receipts | `MKPF` |
 | `goods_receipt_lines.json` | Goods Receipt Lines | `MSEG` (one-leg 101 only — see notes) |
+| `stock_levels.json` | Stock Levels | `MARD` (initial stock snapshot) |
 
 Together the two `customers_*.json` specs are the executable side of the 4th
 worked example, `sap_target_schema/examples/customers_field_mapping.csv` — see
@@ -129,7 +136,7 @@ posting, because the engine has no "expand one row into a balanced
 multi-line document" capability yet — flagged rather than worked around,
 same as the `Weight_KG` gap in the Materials example.
 
-Run against the real seed data, this produces 43 output tables from 2,410
+Run against the real seed data, this produces 44 output tables from 2,662
 distinct source rows, all 257 journal entries validate as balanced, every one
 of the 90 `ADRC` rows resolves a non-null `COUNTRY` with no `ADDRNUMBER`
 collisions, and every dropped/deferred field is accounted for in

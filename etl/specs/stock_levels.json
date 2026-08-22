@@ -1,0 +1,29 @@
+{
+  "source_sheet": "Stock Levels",
+  "source_key": "Stock_Level_ID",
+  "notes": "Inventory stock snapshot -> MARD (plant/storage-location stock). Verified clean first: no duplicate (Item_ID, Warehouse_ID) pairs across all 252 rows, so the MARD key (MATNR/WERKS/LGORT) is unique. HOW THIS FITS WITH MOVEMENTS: in SAP, MARD-LABST is not loaded data -- it is the running sum of material movements. Carrying the snapshot as an initial stock level is the standard migration approach (initial inventory entry, movement type 561 in a real load): this spec loads the stock LEVEL, and the movement HISTORY is a separate, deliberately-deferred question -- see DATA_QUALITY_FINDINGS.md for why Stock Movements, Inventory Transfers, and Inventory Adjustments are not yet mapped (Receipt rows duplicate the goods-receipt data one-for-one, transfers need two-leg movements, and the adjustment arithmetic does not reconcile).",
+  "targets": [
+    {
+      "table": "MARD",
+      "fields": [
+        {"target_field": "MATNR", "sap_description": "Material", "transform": "lookup_passthrough", "source": "Item_ID", "lookup_ref": "Purchasing>Inventory Items / Manufacturing>Product Catalog -> MARA"},
+        {"target_field": "WERKS", "sap_description": "Plant", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> plant determination (APPROX: single-company dataset, plant assignment undecided)"},
+        {"target_field": "LGORT", "sap_description": "Storage Location", "transform": "lookup_passthrough", "source": "Warehouse_ID", "lookup_ref": "Inventory>Warehouses -> T300 -> LGORT storage-location derivation"},
+        {"target_field": "LABST", "sap_description": "Valuated Stock with Unrestricted Use (snapshot as initial stock)", "transform": "direct", "source": "Quantity_On_Hand"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Stock_Level_ID", "reason": "MARD's key is the (material, plant, storage location) composite -- the legacy surrogate key has no SAP home"},
+    {"source": "Quantity_Reserved", "reason": "reserved stock in SAP lives in dedicated fields/tables driven by sales order and reservation documents (MARD-INSME etc. / RESB), derived from open documents, not snapshotted"},
+    {"source": "Quantity_Available", "reason": "derived by definition: On_Hand minus Reserved -- a computed value, not stored data"},
+    {"source": "Quantity_On_Order", "reason": "derived in SAP from open PO schedule lines (EKET-MENGE minus WEMNG), already carried by purchase_order_lines.json -- not a stored field"},
+    {"source": "Bin_Location_ID", "reason": "bin data belongs in storage-bin management (LAGP / MCHA depending on warehouse management configuration) -- deliberately out of scope until WM/Storage Unit configuration is decided, same family as the Lot_Number_ID deferral on goods receipts"},
+    {"source": "Last_Count_Date", "reason": "count history belongs to physical inventory documents (IKPF/ISEG cycle counts, not yet mapped); no MARD field"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}
