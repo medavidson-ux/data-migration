@@ -20,7 +20,11 @@ Checks, per sheet:
   5. Foreign-key referential integrity: for every "<Something>_ID" column that
      isn't the sheet's own primary key, if another sheet's primary key has that
      exact name, check what fraction of values actually exist there (orphaned
-     FKs -- a real load-blocking problem, not a modeling question)
+     FKs -- a real load-blocking problem, not a modeling question). Null FK
+     values on such columns are reported as NULL_FK findings (INFO, WARN at
+     majority-null rates) rather than silently skipped -- the check can't know
+     which references are mandatory, so nulls are surfaced for human judgment
+     instead of hiding behind an implied "clean"
   6. Date-pair sanity: for column pairs that look like a start/end or
      created/updated pair, flag rows where the end precedes the start
 
@@ -155,6 +159,22 @@ def check_referential_integrity(name, df, pk_index, sheets):
             continue
         fk_coverage["checked"] += 1
         target_pk_values = set(sheets[target_sheet][col].dropna().unique())
+        # Null FK values are not checked for existence (nothing to resolve) -- but
+        # they are NOT silently skipped either: a null reference on a relationship
+        # that turns out to be mandatory is a load blocker (e.g. Vendor Contracts
+        # rows 1 and 3 with no Vendor_ID). The check can't know which FK columns are
+        # mandatory -- that's schema knowledge -- so nulls are reported as NULL_FK,
+        # INFO by default and WARN at a majority-null rate (matching the NULLS
+        # check's convention), for a human to judge before mapping the sheet.
+        null_fk = df[col].isna().sum()
+        if null_fk:
+            pct = 100 * null_fk / len(df)
+            add_issue(name, col, "NULL_FK",
+                      f"{null_fk}/{len(df)} rows null on FK to {target_sheet}.{col} "
+                      f"({pct:.0f}%) -- legitimate for optional references "
+                      f"(e.g. Manager_ID for a CEO), a missing mandatory "
+                      f"relationship otherwise; confirm before mapping",
+                      "WARN" if pct >= 50 else "INFO")
         fk_values = df[col].dropna()
         if len(fk_values) == 0:
             continue

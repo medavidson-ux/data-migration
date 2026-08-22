@@ -38,15 +38,44 @@ Reads every `*.json` file in `specs/`, applies it to the matching sheet in
   marked not-migrated, with a one-line reason each. Nothing vanishes silently.
 - **`_validation_report.csv`** — pass/fail results of the pre-transform checks each
   spec declares (currently: the `General Ledger` balanced-debit/credit check).
-- **`_run_log.txt`** — a plain-text summary of the whole run.
+- **`_run_log.txt`** — a plain-text summary of the whole run, including three
+  failure-visibility sections: **string truncations applied** (how many values
+  were cut to SAP field lengths), **date parse failures** (count plus the
+  distinct offending source values — an unparseable date becomes a null SAP
+  date, so this is where you'd notice a format problem), and **null rates in
+  output fields** (per target field, `nulls/rows_emitting_the_field`, with an
+  `ALL NULL` marker when a transform produced nothing; fields a contributing
+  spec doesn't emit are *absent*, not null, and don't inflate the rate). The
+  null-rate section's first real run surfaced `ACDOCA.KOSTL` at 71% null —
+  investigated and confirmed expected; see the cost-center finding in
+  `sap_target_schema/DATA_QUALITY_FINDINGS.md`.
 
 ### What it currently covers
 
-Five of the eleven specs in `specs/` are the executable encoding of the first
-three worked examples in `sap_target_schema/examples/`; the rest cover the 4th,
-5th, and 6th examples — `Customers`, the Material Master, and `Assets` — the
+Twenty-two specs. Five are the executable encoding of the first three worked
+examples in `sap_target_schema/examples/`; the next six cover the 4th, 5th,
+and 6th examples — `Customers`, the Material Master, and `Assets` — the
 `Customers` address half came out of a live session with the agent below, see
-§ "A real session, not a demo" for how it got there:
+§ "A real session, not a demo" for how it got there. The newest eleven cover
+the **purchasing cycle end-to-end** (`Vendors`, purchase orders and their
+lines, vendor contracts, goods receipts and their lines, vendor invoices and
+their lines), the **sales billing leg** (customer invoices and their lines,
+completing order → fulfillment → invoice), and the **inventory stock
+snapshot** (`Stock Levels` → MARD, initial-stock approach). The remaining
+inventory transaction tables (`Stock Movements`, `Inventory Transfers`,
+`Inventory Adjustments`) were investigated and deliberately deferred —
+see DATA_QUALITY_FINDINGS.md for the three blockers found (stock-movement
+receipts duplicate the goods-receipt data one-for-one, transfers need
+two-leg movements, adjustment arithmetic doesn't reconcile). The billing mapping verified along the way that the Sales-side
+`Invoices` sheet is a 1:1 duplicate of the Finance-side `Customer Invoices`
+(53/53 rows identical on every shared column) and mapped the Finance side as
+authoritative; the vendor side had no such duplicate and verified clean on
+all FK checks (its `Invoice Matching` sheet is a 3-way-match process log,
+deliberately not mapped — see `vendor_invoices_header.json` notes) — see
+`sap_target_schema/DATA_QUALITY_FINDINGS.md` for everything the purchasing
+and billing batches surfaced (two vendor-less contracts, backward validity
+dates passed through verbatim, and the resolved Business-Partner
+even/odd staging-key convention).
 
 | Spec | Source sheet(s) | Target tables |
 |---|---|---|
@@ -60,7 +89,18 @@ three worked examples in `sap_target_schema/examples/`; the rest cover the 4th,
 | `inventory_items.json` | Inventory Items | `MARA`, `MAKT`, `MARC`, `MBEW` |
 | `locations.json` | Locations | `T499S`, `ADRC` |
 | `assets.json` | Assets | `ANLA`, `ANLZ`, `ANLB` |
-| `depreciation.json` | Depreciation | `ACDOCA` (one leg only — see notes below) |
+| `depreciation.json` | Depreciation | `ACDOCA` (balanced two-line posting via `legs` — see notes) |
+| `vendors_core.json` | Vendors | `BUT000`, `LFA1`, `LFB1` |
+| `purchase_orders_header.json` | Purchase Orders | `EKKO` |
+| `purchase_order_lines.json` | Purchase Order Lines | `EKPO`, `EKET` |
+| `vendor_contracts.json` | Vendor Contracts | `EKKO` (`BSTYP=K`, contract category) |
+| `customer_invoices_header.json` | Customer Invoices (Finance, authoritative — Sales `Invoices` verified a 1:1 duplicate) | `VBRK` |
+| `customer_invoice_lines.json` | Customer Invoice Lines | `VBRP` |
+| `vendor_invoices_header.json` | Vendor Invoices | `RBKP` |
+| `vendor_invoice_lines.json` | Vendor Invoice Lines | `RSEG` |
+| `goods_receipts_header.json` | Goods Receipts | `MKPF` |
+| `goods_receipt_lines.json` | Goods Receipt Lines | `MSEG` (101 leg + conditional 122 return leg via `legs`) |
+| `stock_levels.json` | Stock Levels | `MARD` (initial stock snapshot) |
 
 Together the two `customers_*.json` specs are the executable side of the 4th
 worked example, `sap_target_schema/examples/customers_field_mapping.csv` — see
@@ -90,13 +130,16 @@ right (`Asset Register`), one confirmed on amounts but not on classification
 text (`Disposals`), and one **backwards** — `Depreciation Schedules` and
 `Assets > Depreciation` are actually planned-vs-actual, not duplicates at
 all, and the original catalog had even mislabeled *which one* was "planned."
-`depreciation.json` also carries a known incompleteness in its own `notes`
-field: it produces only one leg of what should be a balanced two-line
-posting, because the engine has no "expand one row into a balanced
-multi-line document" capability yet — flagged rather than worked around,
-same as the `Weight_KG` gap in the Materials example.
+`depreciation.json` originally carried a known incompleteness: it produced
+only one leg of a balanced two-line posting because the engine had no "expand
+one row into a balanced multi-line document" capability. That capability now
+exists — a target can declare `legs` (per-leg fields, constants, and an
+`emit_if` condition on the source row) — and the spec emits the balanced
+expense/accumulated-depreciation pair; the same mechanism gives goods
+receipts their conditional 122 return-to-vendor leg. Same happy ending as the
+`Weight_KG` gap in the Materials example: flagged first, then fixed properly.
 
-Run against the real seed data, this produces 28 output tables from 1,770
+Run against the real seed data, this produces 44 output tables from 2,662
 distinct source rows, all 257 journal entries validate as balanced, every one
 of the 90 `ADRC` rows resolves a non-null `COUNTRY` with no `ADDRNUMBER`
 collisions, and every dropped/deferred field is accounted for in
@@ -177,6 +220,17 @@ change needed. If installing it doesn't clear the error, the cause is more
 likely the network itself, not certificates — check connectivity to
 `api.anthropic.com` directly.
 
+The model and endpoint are configurable via the same `.env`: `ANTHROPIC_MODEL`
+(defaults to `claude-opus-5`) and `ANTHROPIC_BASE_URL`, so any
+Anthropic-compatible endpoint works — e.g. Zhipu's GLM
+(`ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic`,
+`ANTHROPIC_MODEL=glm-4.5`, plus your GLM key as `ANTHROPIC_API_KEY`). The
+agent prints the active model and endpoint at startup. On a recoverable API
+error mid-session (rate limit, status error, network), the failed turn is
+rolled back out of the message history entirely — including a turn that died
+halfway through a tool call — so the conversation always resumes from a clean
+role-alternating state instead of failing every subsequent request.
+
 ### What it does
 
 An interactive REPL for talking through a mapping problem the worked examples
@@ -185,7 +239,7 @@ recalling SAP structure from training data:
 
 | Tool | Grounds the agent in |
 |---|---|
-| `search_sap_tables` | `sap_target_schema/sap_tables.json` — the real 119-table catalog |
+| `search_sap_tables` | `sap_target_schema/sap_tables.json` — the real table catalog |
 | `lookup_legacy_mapping` | `sap_target_schema/legacy_to_sap_mapping.csv` — table-level routing already decided |
 | `get_source_sample` | The real legacy data, so it reasons from actual values, not column names |
 | `preview_transform` | **This project's own transform engine** — runs a draft mapping against real rows before presenting it as final |
@@ -287,8 +341,16 @@ runtime, it just quietly produces nulls — this is the check that would catch
 that), every table/field a spec writes to is actually documented in
 `sap_tables.json`, `legacy_to_sap_mapping.csv` has no duplicate rows and every
 `MIGRATE` table matches a real sheet, every `see X.json`/`see Y.md`
-cross-reference in a doc actually points at a file that exists, and the engine
-itself still runs clean with all validation rules passing. Built after
+cross-reference in a doc actually points at a file that exists, the engine
+itself still runs clean with all validation rules passing, and the golden-value
+unit tests in `tests/` all pass (run standalone with
+`python -m unittest discover -s tests` from `etl/`). Those tests lock in each
+transform's exact semantics — the `signed_amount_pair` `AMBIGUOUS` refusal,
+the float-artifact cleanup, the `split_delimiter` fallbacks, the XREF
+placeholder format — plus a spec-level end-to-end run (fan-out,
+`skip_row_if_null`, constants) against a synthetic sheet, and a fully mocked
+smoke test of the agent's tool loop and error rollback (no network, no API
+key). Built after
 `employees.json` turned out to reference two SAP tables (`PA0009`, `PA0185`)
 and several fields (`PA0001-PERSK`, `PA0002-GESCH`/`NATIO`/`FAMST`) that had
 never actually been added to the catalog — real gaps from early in this

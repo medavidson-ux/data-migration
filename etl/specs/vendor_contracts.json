@@ -1,0 +1,33 @@
+{
+  "source_sheet": "Vendor Contracts",
+  "source_key": "Vendor_Contract_ID",
+  "notes": "Quantity/value contracts in SAP live in EKKO/EKPO with document category 'K' -- the same tables purchase orders use, distinguished by BSTYP. Header-only fields are mapped here; contract item data (release orders against the contract, target quantities per item) would need a K-targets EKPO leg once the business confirms whether Total_Value is a header aggregate or should be distributed to items. DATE-ORDER CAVEAT (from DATA_QUALITY_FINDINGS.md): 3 of 20 rows have End_Date before Start_Date (VC-2025-00007, VC-2025-00012, VC-2025-00014). The transform passes both dates through verbatim -- KDATB/KDATE are emitted exactly as the source states, with no 'correction' -- because guessing which date is wrong would fabricate data. SAP would reject these three at load; they need business review of the source records before a real load. NULL-VENDOR CAVEAT: rows 1 and 3 (VC-2025-00001, VC-2025-00003) have a null Vendor_ID in the source -- emitted as a null LIFNR (visible in the run-log null-rate section) rather than dropped, because silently losing rows would hide the defect; see DATA_QUALITY_FINDINGS.md.",
+  "targets": [
+    {
+      "table": "EKKO",
+      "fields": [
+        {"target_field": "EBELN", "sap_description": "Purchasing Document Number (staging key)", "transform": "direct", "source": "Vendor_Contract_ID"},
+        {"target_field": "BSTYP", "sap_description": "Purchasing Document Category (K = contract)", "transform": "constant", "value": "K"},
+        {"target_field": "BSART", "sap_description": "Purchasing Document Type", "transform": "lookup_passthrough", "source": "Contract_Type", "lookup_ref": "Purchasing contract type config (BSART), per source Contract_Type -- target-system configured"},
+        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, odd series Vendor_ID x 2 + 1, resolves against vendors_core LFA1/LIFNR)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
+        {"target_field": "KDATB", "sap_description": "Validity Start Date (passed through verbatim -- 3 source rows have this after KDATE, flagged for business review, see notes)", "transform": "date_yyyymmdd", "source": "Start_Date"},
+        {"target_field": "KDATE", "sap_description": "Validity End Date (see KDATB note)", "transform": "date_yyyymmdd", "source": "End_Date"},
+        {"target_field": "WAERS", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"},
+        {"target_field": "KTWRT", "sap_description": "Target Value (contract header value)", "transform": "direct", "source": "Total_Value"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Contract_Number", "reason": "external document number; staging key carries Vendor_Contract_ID, a real load assigns EBELN from a number range"},
+    {"source": "Contract_Name", "reason": "contract long text lives in the text system (STXH/STXL), not a table field"},
+    {"source": "Auto_Renew", "reason": "SAP contracts use validity-end follow-on actions / renewal via new contract versions, not a boolean flag -- a process decision, not a transform"},
+    {"source": "Document_URL", "reason": "document links belong in SAP DMS / GOS attachments, not a field on EKKO"},
+    {"source": "Status", "reason": "structural in SAP -- contract release/status lives in EKKO release fields driven by workflow, same treatment as PO and sales-order Status"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

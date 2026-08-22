@@ -1,0 +1,35 @@
+{
+  "source_sheet": "Customer Invoices",
+  "source_key": "Customer_Invoice_ID",
+  "notes": "Billing document header, completing the sales cycle (order -> fulfillment -> invoice). Uses the FINANCE-side sheet as authoritative: the Sales-side 'Invoices' sheet was verified 1:1 identical on every shared column (Invoice_Number, Invoice_Date, Customer_ID, totals, Status, Currency -- 53/53 rows) and is already marked deprecated in legacy_to_sap_mapping.csv; its two extra columns are Fulfillment_ID (delivery document-flow link, see dropped_fields) and Payment_Terms (see ZTERM note below). BP NUMBERING: KUNAG uses the even-series staging key (Customer_ID x 2) established in customers_core.json, so billing documents resolve against the customer master. FKART='F2' is the standard delivered invoice type rather than a site-specific customizing value -- flag for confirmation alongside BSART='NB' on purchase orders if the target uses custom types.",
+  "targets": [
+    {
+      "table": "VBRK",
+      "fields": [
+        {"target_field": "VBELN", "sap_description": "Billing Document Number (staging key, matches VBRP lines)", "transform": "direct", "source": "Customer_Invoice_ID"},
+        {"target_field": "FKART", "sap_description": "Billing Type (F2 = invoice, delivered standard)", "transform": "constant", "value": "F2"},
+        {"target_field": "KUNAG", "sap_description": "Sold-to Party (staging key, even series Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
+        {"target_field": "FKDAT", "sap_description": "Billing Date", "transform": "date_yyyymmdd", "source": "Invoice_Date"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "VGBEL", "sap_description": "Reference Document (staging key of the source sales order, resolves against VBAK)", "transform": "direct", "source": "Order_ID"},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number (external legacy invoice number)", "transform": "truncate", "source": "Invoice_Number", "max_len": 16},
+        {"target_field": "WAERS", "sap_description": "SD Document Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "NETWR", "sap_description": "Net Value (header, tax-exclusive -- matches the sum of VBRP line net values)", "transform": "direct", "source": "Subtotal"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Tax_Amount", "reason": "tax is calculated per item via tax conditions (VBRP-MWSKZ / KONV), not stored on the header"},
+    {"source": "Total_Amount", "reason": "derived -- net value plus tax conditions; the stored header value is NETWR (Subtotal)"},
+    {"source": "Amount_Collected", "reason": "AR clearing status is derived in SAP from incoming payment/clearing documents (ACDOCA/BSEG against the invoice), not carried as a flat field -- same treatment as Quantity_Received on PO schedule lines"},
+    {"source": "Outstanding_Amount", "reason": "same as Amount_Collected -- derived open-item status, not stored"},
+    {"source": "Due_Date", "reason": "VBRK has no due-date field -- it is derived at runtime from the billing date plus ZTERM payment terms; the terms themselves are the migration-relevant fact"},
+    {"source": "Status", "reason": "structural in SAP -- billing/index/clearing status (RFBSK etc.) is set by posting and clearing events, not carried from source; same treatment as PO and sales-order Status"},
+    {"source": "Payment_Terms", "reason": "not present on this (Finance) sheet -- only on the deprecated Sales-side duplicate; VBRK-ZTERM should instead follow the customer master (KNVV-ZTERM) or the sales order (VBAK), both already mapped"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

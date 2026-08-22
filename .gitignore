@@ -9,3 +9,6 @@ __pycache__/
 # Agent-generated artifacts (regenerate by running the scripts)
 etl/output/
 etl/agent/mapping_decisions.csv
+
+# ZCode session artifacts
+.zcode/

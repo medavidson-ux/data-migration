@@ -36,7 +36,7 @@ those first for the *why*; this format captures the *how*.
       "skip_row_if_null": "Manager_ID",        # optional: don't emit a row into this
                                                  # target if this source column is null
       "constants": {"BEGDA": "19000101"},      # target_field -> literal value, every row
-      "fields": [
+      "fields": [                             # single-leg form: one row out per row in
         {
           "target_field": "VORNA",
           "sap_description": "First Name",
@@ -119,6 +119,28 @@ Every transform function has the signature (row, field_spec) -> value, except
 signed_amount_pair which returns a dict {amount_field: v, indicator_field: v}.
 
 --------------------------------------------------------------------------------
+ROW EXPANSION (legs)
+--------------------------------------------------------------------------------
+A target may instead declare "legs": a list of leg templates, each emitting its
+own row per source row. Each leg has required "fields" (same shape as target
+"fields"), optional "constants" (merged over the target's own constants, so a
+leg can set e.g. a different movement type), and an optional "emit_if"
+condition evaluated against the RAW source row:
+
+  {"emit_if": {"field": "Quantity_Rejected", "op": "gt", "value": 0},
+   "constants": {"BWART": "122"},
+   "fields": [...]}
+
+Ops: gt/ge/lt/le/eq/ne (numeric when both sides parse as numbers, else string)
+and null/not_null (no "value"). Null values always fail the comparison ops.
+
+This is how one source row becomes N SAP rows: a goods-receipt line with both
+accepted and rejected quantities emits a 101 movement AND a 122 movement; an
+inventory transfer emits a from-leg and a to-leg; a depreciation entry emits a
+balanced expense/accumulated-depreciation pair. A leg whose condition fails
+emits nothing.
+
+--------------------------------------------------------------------------------
 OUTPUTS (written to etl/output/)
 --------------------------------------------------------------------------------
 <SAP_TABLE>.csv            one file per target table, rows from every spec that
@@ -178,16 +200,18 @@ def t_direct(row, spec):
     return _clean(v)
 
 
-def t_date_yyyymmdd(row, spec):
+def t_date_yyyymmdd(row, spec, run_log):
     v = row.get(spec["source"])
     if _is_null(v):
         return None
     try:
         ts = pd.to_datetime(v)
         if pd.isna(ts):
-            return None
+            raise ValueError(f"unparseable date: {v!r}")
         return ts.strftime("%Y%m%d")
     except Exception:
+        run_log["date_failures"] += 1
+        run_log["date_failure_values"].add(_clean(v))
         return None
 
 
@@ -320,7 +344,7 @@ def apply_field(row, field_spec, pending_lookups, run_log, table_name):
     if transform == "direct":
         return {field_spec["target_field"]: t_direct(row, field_spec)}
     if transform == "date_yyyymmdd":
-        return {field_spec["target_field"]: t_date_yyyymmdd(row, field_spec)}
+        return {field_spec["target_field"]: t_date_yyyymmdd(row, field_spec, run_log)}
     if transform == "truncate":
         return {field_spec["target_field"]: t_truncate(row, field_spec, run_log)}
     if transform == "constant":
@@ -337,6 +361,30 @@ def apply_field(row, field_spec, pending_lookups, run_log, table_name):
     if transform == "signed_amount_pair":
         return t_signed_amount_pair(row, field_spec)
     raise ValueError(f"Unknown transform type: {transform!r}")
+
+
+def _cond_met(row, cond: dict) -> bool:
+    """Evaluate a leg's `emit_if` condition against the raw source row.
+
+    Supported ops: not_null, null, gt, ge, lt, le, eq, ne. Comparisons try
+    numeric first and fall back to string compare, so {"field": "Qty", "op":
+    "gt", "value": 0} works on float64 columns and strings alike.
+    """
+    v = row.get(cond["field"])
+    op = cond["op"]
+    if op == "not_null":
+        return not _is_null(v)
+    if op == "null":
+        return _is_null(v)
+    if _is_null(v):
+        return False
+    val = cond["value"]
+    try:
+        a, b = float(v), float(val)
+    except (TypeError, ValueError):
+        a, b = str(v), str(val)
+    return {"gt": a > b, "ge": a >= b, "lt": a < b,
+            "le": a <= b, "eq": a == b, "ne": a != b}[op]
 
 
 def run_spec(spec: dict, table_frames: dict, pending_lookups: dict,
@@ -362,15 +410,52 @@ def run_spec(spec: dict, table_frames: dict, pending_lookups: dict,
         table_name = target["table"]
         out_rows = []
         skip_col = target.get("skip_row_if_null")
+        # Row expansion: a target with `legs` emits one row per leg whose
+        # `emit_if` condition holds -- e.g. a GR line with both accepted and
+        # rejected quantities becomes a 101 movement AND a 122 movement, or a
+        # stock transfer becomes a from-leg and a to-leg. Without `legs`,
+        # the target is itself the single leg (previous behavior, unchanged).
+        legs = target.get("legs") or [{"fields": target["fields"]}]
         for _, row in df.iterrows():
             if skip_col is not None and _is_null(row.get(skip_col)):
                 continue
-            out_row = dict(target.get("constants", {}))
-            for field_spec in target["fields"]:
-                out_row.update(apply_field(row, field_spec, pending_lookups, run_log, table_name))
-            out_rows.append(out_row)
+            for leg in legs:
+                cond = leg.get("emit_if")
+                if cond is not None and not _cond_met(row, cond):
+                    continue
+                out_row = dict(target.get("constants", {}))
+                out_row.update(leg.get("constants", {}))
+                for field_spec in leg["fields"]:
+                    out_row.update(apply_field(row, field_spec, pending_lookups, run_log, table_name))
+                out_rows.append(out_row)
         table_frames[table_name].extend(out_rows)
         run_log["targets_produced"].append((sheet, table_name, len(out_rows)))
+
+
+def summarize_null_rates(table_frames: dict) -> dict:
+    """Per table: {field: (null_count, rows_emitting_field)} for fields with nulls.
+
+    Only counts rows that actually contain the field -- a field one contributing
+    spec emits and another doesn't is absent, not null, and conflating the two
+    would overstate the null rate. A field that is null in *every* row that
+    emits it is the loudest signal (the transform produced nothing), so it gets
+    its own entry in the all-null list for the run log.
+    """
+    summary = {}
+    for table_name, rows in table_frames.items():
+        fields = {}
+        for field in {k for row in rows for k in row}:
+            values = [row.get(field, _ABSENT) for row in rows]
+            emitted = [v for v in values if v is not _ABSENT]
+            nulls = sum(1 for v in emitted if v is None)
+            if nulls:
+                fields[field] = (nulls, len(emitted))
+        if fields:
+            summary[table_name] = fields
+    return summary
+
+
+_ABSENT = object()  # sentinel: field not emitted for this row at all
 
 
 def main():
@@ -383,7 +468,8 @@ def main():
     pending_lookups: dict[tuple, set] = defaultdict(set)
     skipped_fields: list = []
     validation_results: list = []
-    run_log = {"sheets_processed": [], "targets_produced": [], "truncations": 0}
+    run_log = {"sheets_processed": [], "targets_produced": [], "truncations": 0,
+               "date_failures": 0, "date_failure_values": set()}
 
     for fname in spec_files:
         with open(os.path.join(SPECS_DIR, fname), encoding="utf-8") as f:
@@ -437,6 +523,23 @@ def main():
         for sheet, table, n in run_log["targets_produced"]:
             f.write(f"  {sheet} -> {table}: {n} rows\n")
         f.write(f"\nString truncations applied: {run_log['truncations']}\n")
+        f.write(f"\nDate parse failures (emitted as null): {run_log['date_failures']}\n")
+        if run_log["date_failures"]:
+            values = sorted(run_log["date_failure_values"])
+            shown = ", ".join(values[:20]) + ("..." if len(values) > 20 else "")
+            f.write(f"  Distinct offending values ({len(values)}): {shown}\n")
+
+        f.write("\nNull rates in output fields (nulls / rows emitting the field):\n")
+        null_summary = summarize_null_rates(table_frames)
+        if null_summary:
+            for table_name in sorted(null_summary):
+                f.write(f"  {table_name}:\n")
+                for field, (nulls, emitted) in sorted(null_summary[table_name].items(),
+                                                      key=lambda kv: -kv[1][0]):
+                    marker = "  <-- ALL NULL" if nulls == emitted else ""
+                    f.write(f"    {field}: {nulls}/{emitted}{marker}\n")
+        else:
+            f.write("  (none -- every emitted field is fully populated)\n")
         f.write(f"\nValidation results:\n")
         for r in validation_results:
             f.write(f"  [{r['status']}] {r['source_sheet']}: {r['rule']} "

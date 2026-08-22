@@ -63,7 +63,17 @@ SAP_TABLES_JSON = os.path.join(SCHEMA_DIR, "sap_tables.json")
 LEGACY_MAPPING_CSV = os.path.join(SCHEMA_DIR, "legacy_to_sap_mapping.csv")
 DECISIONS_CSV = os.path.join(AGENT_DIR, "mapping_decisions.csv")
 
-MODEL = "claude-opus-5"
+# Model is configurable via .env (ANTHROPIC_MODEL); base URL too, so any
+# Anthropic-compatible endpoint works -- e.g. Zhipu's GLM:
+#   ANTHROPIC_API_KEY=<your GLM key>
+#   ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic
+#   ANTHROPIC_MODEL=glm-4.5
+MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-opus-5")
+
+# Derived from the actual catalog so the tool description the model sees never
+# drifts from reality as sap_tables.json grows.
+with open(SAP_TABLES_JSON, encoding="utf-8") as _f:
+    N_SAP_TABLES = len(json.load(_f))
 
 SYSTEM_PROMPT = """\
 You are a migration mapping assistant for an AI-assisted legacy-to-SAP-S/4HANA \
@@ -108,7 +118,7 @@ TOOLS = [
     {
         "name": "search_sap_tables",
         "description": (
-            "Search the project's SAP S/4HANA target table catalog (119 tables) by "
+            f"Search the project's SAP S/4HANA target table catalog ({N_SAP_TABLES} tables) by "
             "keyword against table name, description, module, or field names/descriptions. "
             "Always use this before naming any SAP table or field -- never rely on memory."
         ),
@@ -275,7 +285,7 @@ def tool_preview_transform(sheet: str, target_table: str, fields: list, n_rows: 
 
     n_rows = max(1, min(int(n_rows or 5), 20))
     pending_lookups = defaultdict(set)
-    run_log = {"truncations": 0}
+    run_log = {"truncations": 0, "date_failures": 0, "date_failure_values": set()}
 
     out_rows = []
     errors = []
@@ -294,6 +304,10 @@ def tool_preview_transform(sheet: str, target_table: str, fields: list, n_rows: 
         "output_rows": out_rows,
         "pending_lookups_triggered": {f"{k[1]} ({k[2]})": len(v) for k, v in pending_lookups.items()},
         "truncations": run_log["truncations"],
+        "date_parse_failures": {
+            "count": run_log["date_failures"],
+            "distinct_values": sorted(run_log["date_failure_values"]),
+        },
         "errors": errors,
     }, indent=2, default=str)
 
@@ -364,12 +378,48 @@ def run_turn(client: anthropic.Anthropic, messages: list) -> str:
         return "\n".join(text_parts)
 
 
+def submit_user_turn(client: anthropic.Anthropic, messages: list, user_input: str) -> str | None:
+    """Append the user's input and run it to completion.
+
+    On a recoverable API error, truncates `messages` back to where the turn
+    started so no half-answered (or unanswered) turn is left behind -- a
+    dangling user message or a trailing tool_result would break the required
+    role alternation on the next request. Returns the assistant's reply text,
+    or None if the turn failed recoverably (caller should just prompt again).
+    Raises anthropic.AuthenticationError to signal "stop the REPL".
+    """
+    turn_start = len(messages)
+    messages.append({"role": "user", "content": user_input})
+    try:
+        reply = run_turn(client, messages)
+    except anthropic.AuthenticationError:
+        raise
+    except anthropic.RateLimitError as e:
+        retry_after = e.response.headers.get("retry-after", "a bit")
+        print(f"\nRate limited. Retry after {retry_after}s.\n")
+        del messages[turn_start:]
+        return None
+    except anthropic.APIStatusError as e:
+        print(f"\nAPI error ({e.status_code}): {e.message}\n")
+        del messages[turn_start:]
+        return None
+    except anthropic.APIConnectionError:
+        print("\nNetwork error reaching the Anthropic API. Check your connection.\n")
+        del messages[turn_start:]
+        return None
+    return reply
+
+
 def main():
     try:
-        client = anthropic.Anthropic()
+        client = anthropic.Anthropic(
+            base_url=os.environ.get("ANTHROPIC_BASE_URL"),  # None -> SDK default
+        )
     except Exception as e:
         print(f"Could not initialize the Anthropic client: {e}")
         sys.exit(1)
+    endpoint = os.environ.get("ANTHROPIC_BASE_URL", "api.anthropic.com")
+    print(f"Model: {MODEL}  via  {endpoint}")
 
     print("=" * 78)
     print("SAP Migration Mapping Assistant (prototype)")
@@ -393,9 +443,8 @@ def main():
         if user_input.lower() in ("exit", "quit"):
             break
 
-        messages.append({"role": "user", "content": user_input})
         try:
-            reply = run_turn(client, messages)
+            reply = submit_user_turn(client, messages, user_input)
         except anthropic.AuthenticationError:
             print(
                 "\nAuthentication failed. Copy .env.example to .env in this folder and fill "
@@ -403,15 +452,7 @@ def main():
                 "store a credential profile the SDK will pick up automatically.\n"
             )
             break
-        except anthropic.RateLimitError as e:
-            retry_after = e.response.headers.get("retry-after", "a bit")
-            print(f"\nRate limited. Retry after {retry_after}s.\n")
-            continue
-        except anthropic.APIStatusError as e:
-            print(f"\nAPI error ({e.status_code}): {e.message}\n")
-            continue
-        except anthropic.APIConnectionError:
-            print("\nNetwork error reaching the Anthropic API. Check your connection.\n")
+        if reply is None:
             continue
 
         print(f"\nagent> {reply}\n")

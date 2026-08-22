@@ -1,18 +1,35 @@
 {
   "source_sheet": "Depreciation",
   "source_key": "Depreciation_ID",
-  "notes": "IMPORTANT: this produces only ONE line of what should be a balanced two-line posting (debit depreciation expense, credit accumulated depreciation) -- the same double-entry requirement as journal_entries_header.json/general_ledger_lines.json, but this source has only one amount column per row, unlike General Ledger's paired Debit_Amount/Credit_Amount. The engine has no 'expand one row into a balanced multi-line document' capability yet. Treat this output as a per-asset depreciation record for reference, NOT as a loadable balanced ACDOCA document -- see depreciation_field_mapping.csv and assets_worked_example.md.",
+  "notes": "BALANCED TWO-LINE POSTING via the engine's row-expansion ('legs') capability: each depreciation entry expands into debit depreciation expense (DOCLN 000001, DRCRK 'S') and credit accumulated depreciation (DOCLN 000002, DRCRK 'H') -- the same double-entry structure as general_ledger_lines.json, which this source couldn't express before because it has only ONE amount column per row (unlike General Ledger's paired debit/credit columns). HSL is emitted POSITIVE on both legs with the direction carried by DRCRK -- a staging convention: a real load applies signs on posting. The GL accounts (expense vs accumulated) are target-system customizing values, so RACCT is a lookup_passthrough XREF on each leg with its own lookup ref rather than a guessed account number. See depreciation_field_mapping.csv and assets_worked_example.md.",
   "targets": [
     {
       "table": "ACDOCA",
-      "constants": {"DOCLN": "000001"},
-      "fields": [
-        {"target_field": "BELNR", "sap_description": "Document Number (staging key)", "transform": "direct", "source": "Depreciation_ID"},
-        {"target_field": "RBUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
-        {"target_field": "ANLN1", "sap_description": "Asset Number", "transform": "direct", "source": "Asset_ID"},
-        {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Period_Date"},
-        {"target_field": "HSL", "sap_description": "Amount in Company Code Currency (one leg only -- see notes)", "transform": "direct", "source": "Depreciation_Amount"},
-        {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "GL_Journal_Reference", "max_len": 16}
+      "legs": [
+        {
+          "constants": {"DOCLN": "000001", "DRCRK": "S"},
+          "fields": [
+            {"target_field": "BELNR", "sap_description": "Document Number (staging key)", "transform": "direct", "source": "Depreciation_ID"},
+            {"target_field": "RBUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+            {"target_field": "RACCT", "sap_description": "GL Account (depreciation EXPENSE -- debit leg)", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Finance>Chart of Accounts -> depreciation expense account (SKA1/SKB1, target-system determined)"},
+            {"target_field": "ANLN1", "sap_description": "Asset Number", "transform": "direct", "source": "Asset_ID"},
+            {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Period_Date"},
+            {"target_field": "HSL", "sap_description": "Amount in Company Code Currency (debit, expense leg)", "transform": "direct", "source": "Depreciation_Amount"},
+            {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "GL_Journal_Reference", "max_len": 16}
+          ]
+        },
+        {
+          "constants": {"DOCLN": "000002", "DRCRK": "H"},
+          "fields": [
+            {"target_field": "BELNR", "sap_description": "Document Number (staging key, same document as the debit leg)", "transform": "direct", "source": "Depreciation_ID"},
+            {"target_field": "RBUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+            {"target_field": "RACCT", "sap_description": "GL Account (ACCUMULATED DEPRECIATION -- credit leg)", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Finance>Chart of Accounts -> accumulated depreciation account (SKA1/SKB1, target-system determined)"},
+            {"target_field": "ANLN1", "sap_description": "Asset Number", "transform": "direct", "source": "Asset_ID"},
+            {"target_field": "BUDAT", "sap_description": "Posting Date", "transform": "date_yyyymmdd", "source": "Period_Date"},
+            {"target_field": "HSL", "sap_description": "Amount in Company Code Currency (credit, accumulated-depreciation leg -- positive with DRCRK 'H', signs applied at load)", "transform": "direct", "source": "Depreciation_Amount"},
+            {"target_field": "XBLNR", "sap_description": "Reference Document Number", "transform": "truncate", "source": "GL_Journal_Reference", "max_len": 16}
+          ]
+        }
       ]
     }
   ],

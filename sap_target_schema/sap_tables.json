@@ -831,6 +831,36 @@
         "description": "Amount",
         "sap_type": "CURR",
         "key": false
+      },
+      {
+        "field": "TXZ01",
+        "description": "Short Text",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "MENGE",
+        "description": "Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax on Sales/Purchases Code",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
       }
     ]
   },
@@ -873,6 +903,30 @@
         "field": "RMWWR",
         "description": "Gross Amount",
         "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency",
+        "sap_type": "CUKY(5)",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchase Order Number (staging reference)",
+        "sap_type": "CHAR(10)",
         "key": false
       }
     ]
@@ -917,6 +971,36 @@
         "description": "Net Value",
         "sap_type": "CURR",
         "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "SD Document Currency",
+        "sap_type": "CUKY(5)",
+        "key": false
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "VGBEL",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number (external)",
+        "sap_type": "CHAR(16)",
+        "key": false
       }
     ]
   },
@@ -959,6 +1043,24 @@
         "field": "NETWR",
         "description": "Net Value",
         "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "ARKTX",
+        "description": "Short Text (Item)",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "VRKME",
+        "description": "Sales Unit",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax on Sales/Purchases Code",
+        "sap_type": "CHAR(2)",
         "key": false
       }
     ]
@@ -2824,7 +2926,7 @@
     ]
   },
   "HRP1000": {
-    "description": "Org Management: Infotype 1000 (Objects \u2014 Org Unit, Position, Job, Qualification, etc.)",
+    "description": "Org Management: Infotype 1000 (Objects — Org Unit, Position, Job, Qualification, etc.)",
     "module": "PA-OM / PA-PD",
     "type": "master",
     "fields": [
@@ -3246,6 +3348,30 @@
         "description": "Quantity",
         "sap_type": "QUAN",
         "key": false
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchase Order Number (staging reference)",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "EBELP",
+        "description": "Item Number of Purchase Order",
+        "sap_type": "NUMC(5)",
+        "key": false
+      },
+      {
+        "field": "LGORT",
+        "description": "Storage Location",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
       }
     ]
   },
@@ -3282,6 +3408,12 @@
         "field": "BUDAT",
         "description": "Posting Date",
         "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
         "key": false
       }
     ]
@@ -4704,7 +4836,7 @@
     ]
   },
   "KONV": {
-    "description": "Pricing: Transaction Data \u2014 conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",
+    "description": "Pricing: Transaction Data — conditions actually applied to a document (classic name; S/4HANA's underlying storage is the redesigned PRCD_ELEMENTS table, exposed via a KONV-compatible CDS view)",
     "module": "SD-Pricing",
     "type": "transaction",
     "fields": [
@@ -5025,6 +5157,353 @@
         "field": "BUKRS",
         "description": "Company Code",
         "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "LFA1": {
+    "description": "Vendor Master: General Data",
+    "module": "FI",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LIFNR",
+        "description": "Vendor Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "LAND1",
+        "description": "Country Key",
+        "sap_type": "CHAR(3)",
+        "key": false
+      },
+      {
+        "field": "NAME1",
+        "description": "Name 1",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "SORTL",
+        "description": "Search Term",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "STRAS",
+        "description": "Street and House Number",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "ORT01",
+        "description": "City",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "PSTLZ",
+        "description": "Postal Code",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "TELF1",
+        "description": "First Telephone Number",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "STCD1",
+        "description": "Tax Number 1",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "STCEG",
+        "description": "VAT Registration Number",
+        "sap_type": "CHAR(20)",
+        "key": false
+      }
+    ]
+  },
+  "LFB1": {
+    "description": "Vendor Master: Company Code Data",
+    "module": "FI",
+    "type": "master",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "LIFNR",
+        "description": "Vendor Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": true
+      },
+      {
+        "field": "AKONT",
+        "description": "Reconciliation Account",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "ERDAT",
+        "description": "Date Created On",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "LOEVM",
+        "description": "Central Deletion Flag",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "SPERR",
+        "description": "Posting Block",
+        "sap_type": "CHAR(1)",
+        "key": false
+      }
+    ]
+  },
+  "EKKO": {
+    "description": "Purchasing Document Header",
+    "module": "MM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchasing Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "BSTYP",
+        "description": "Purchasing Document Category",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "BSART",
+        "description": "Purchasing Document Type",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "EKORG",
+        "description": "Purchasing Organization",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "LIFNR",
+        "description": "Vendor Number",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "ERDAT",
+        "description": "Created On",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency",
+        "sap_type": "CUKY(5)",
+        "key": false
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "KDATB",
+        "description": "Validity Start Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "KDATE",
+        "description": "Validity End Date",
+        "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "KTWRT",
+        "description": "Target Value",
+        "sap_type": "CURR",
+        "key": false
+      }
+    ]
+  },
+  "EKPO": {
+    "description": "Purchasing Document Item",
+    "module": "MM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchasing Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "EBELP",
+        "description": "Item Number",
+        "sap_type": "NUMC(5)",
+        "key": true
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
+      },
+      {
+        "field": "TXZ01",
+        "description": "Short Text",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "PSTYP",
+        "description": "Item Category",
+        "sap_type": "NUMC(1)",
+        "key": false
+      },
+      {
+        "field": "KNTTP",
+        "description": "Account Assignment Category",
+        "sap_type": "CHAR(1)",
+        "key": false
+      },
+      {
+        "field": "MENGE",
+        "description": "Purchase Order Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Purchase Order Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "NETWR",
+        "description": "Net Value",
+        "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax on Sales/Purchases Code",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "WERKS",
+        "description": "Plant",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "LGORT",
+        "description": "Storage Location",
+        "sap_type": "CHAR(4)",
+        "key": false
+      }
+    ]
+  },
+  "EKET": {
+    "description": "Purchasing Document Schedule Line",
+    "module": "MM",
+    "type": "transaction",
+    "fields": [
+      {
+        "field": "MANDT",
+        "description": "Client",
+        "sap_type": "CLNT",
+        "key": true
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchasing Document Number",
+        "sap_type": "CHAR(10)",
+        "key": true
+      },
+      {
+        "field": "EBELP",
+        "description": "Item Number",
+        "sap_type": "NUMC(5)",
+        "key": true
+      },
+      {
+        "field": "ETENR",
+        "description": "Delivery Schedule Line Number",
+        "sap_type": "NUMC(4)",
+        "key": true
+      },
+      {
+        "field": "MENGE",
+        "description": "Scheduled Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "WEMNG",
+        "description": "Quantity Delivered",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "EINDT",
+        "description": "Item Delivery Date",
+        "sap_type": "DATS",
         "key": false
       }
     ]

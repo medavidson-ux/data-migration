@@ -121,9 +121,9 @@ Inventory,Item Categories,MIGRATE,T134 (Material Type),MM (config),APPROX,"Close
 Inventory,Units of Measure,MIGRATE,T006,MM (config),HIGH,Units of measure
 Inventory,Warehouses,MIGRATE,T300,MM-WM (config),HIGH,Warehouse number assignment
 Inventory,Cycle Counts,MIGRATE,IKPF / ISEG,MM-IM,HIGH,Physical inventory document header/items
-Inventory,Inventory Adjustments,MIGRATE,MSEG (movement type 701/702),MM-IM,HIGH,"Material document line items, inventory adjustment movement types"
+Inventory,Inventory Adjustments,MIGRATE,MSEG (movement type 701/702),MM-IM,HIGH,"INVESTIGATED, DEFERRED: arithmetic irreconcilable in 42/42 rows (After - Before equals neither + nor - Adjustment_Quantity; Adjustment_Quantity is always positive yet Before/After move both directions); plus 3 rows null Item/Warehouse. Needs business review of source records -- see DATA_QUALITY_FINDINGS.md"
 Inventory,Reorder Points,MIGRATE,MARC-MINBE (approximate) or a custom per-warehouse table,MM (Plant data),APPROX,"CORRECTED after checking real data: this is per-(Item, Warehouse), not per-item -- 100 rows across only 59 distinct items (90 distinct item+warehouse combos), and its values disagree with Purchasing>Inventory Items' own single per-item Reorder_Point field on essentially all overlapping rows. Standard MARC-MINBE is per-plant, not per-warehouse/storage-location, so this table is actually MORE granular than MARC supports directly -- if warehouses don't map 1:1 to plants in the target org structure, this may need a custom (Z) table or MRP area-level configuration instead. Originally miscategorized as a plain duplicate of Purchasing>Inventory Items' own Reorder_Point column before verifying against real data; it is not."
-Inventory,Stock Movements,MIGRATE,MSEG + MKPF,MM-IM,HIGH,Material document line items + header
+Inventory,Stock Movements,MIGRATE,MSEG + MKPF,MM-IM,HIGH,"INVESTIGATED, DEFERRED: all 77 Receipt rows duplicate Goods Receipt Lines one-for-one (matched on GR number + item, quantity = accepted qty) -- mapping both would double-post stock; Issue/Return need per-consumption movement-type customizing; Transfer rows need two-leg movements (engine has no row expansion); quantities are signed (SAP uses abs + SHKZG). Needs de-dup decision + engine capability -- see DATA_QUALITY_FINDINGS.md"
 Inventory,Expiration Dates,MIGRATE,MCH1 / MCHB (VFDAT field),MM-Batch,HIGH,Shelf-life expiration date on the batch master
 Inventory,Lot Numbers,MIGRATE,MCHA / MCH1,MM-Batch,HIGH,Batch master
 Inventory,Serial Numbers,MIGRATE,EQUI / SER01,MM-Serial (PM),HIGH,Serial number master (Equipment-based)
@@ -175,20 +175,20 @@ Purchasing,Vendor Ratings,MIGRATE,Vendor Evaluation scores,MM-PUR,APPROX,Vendor 
 Purchasing,Vendors,MIGRATE,BUT000 + Vendor role (LFA1/LFB1 folded into BP),MM / FI (Business Partner),HIGH,S/4 retires standalone vendor master; Business Partner with Vendor role is the target object
 Purchasing,Goods Receipt Lines,MIGRATE,MSEG (movement type 101),MM-IM,HIGH,"Material document line items, goods receipt"
 Purchasing,Goods Receipts,MIGRATE,MKPF,MM-IM,HIGH,Material document header
-Purchasing,Invoice Matching,MIGRATE,RBKP / RSEG,MM-IV,HIGH,Duplicate of Finance > Vendor Invoices — consolidate before load
+Purchasing,Invoice Matching,MIGRATE,RBKP / RSEG,MM-IV,HIGH,"NOT mapped as a spec: 3-way matching is a runtime/config process in SAP (tolerance keys, ERS); match/variance amounts are derived comparisons, not migrated data -- see vendor_invoices_header.json notes"
 Purchasing,Purchase Order Lines,MIGRATE,EKPO,MM-PUR,HIGH,Purchase order item
 Purchasing,Purchase Orders,MIGRATE,EKKO,MM-PUR,HIGH,Purchase order header
 Purchasing,Purchase Requisition Lines,MIGRATE,EBAN,MM-PUR,HIGH,EBAN is itself item-level; header fields are repeated per item (no separate header table)
 Purchasing,Purchase Requisitions,MIGRATE,EBAN,MM-PUR,HIGH,Same table as line items — see note above
 Purchasing,Inventory Items,MIGRATE,MARA / MAKT / MARC / MBEW,MM,HIGH,"The base material master (100 rows, all materials) -- Manufacturing>Product Catalog is a sales-view *extension* keyed off this table's Item_ID for the 15 sellable items, not a duplicate; see sap_target_schema/examples/materials_worked_example.md for the corrected relationship."
-Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,Stock transfer movement types
+Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,"DEFERRED: two-leg movement now POSSIBLE (engine legs capability built), but Status models transfer stages (Pending/In Transit/Received/Cancelled) that one SAP posting cannot represent -- which stage is the posting event is a business decision; also 3 rows have BOTH From and To warehouses null -- see DATA_QUALITY_FINDINGS.md"
 Purchasing,Stock Levels,MIGRATE,MARD / MCHB,MM-IM,HIGH,Storage location stock / batch stock
 Purchasing,Procurement Reports,NOT_MIGRATED,,,,Analytics output
 Sales,Credit Limits,MIGRATE,UKM_BP (FSCM Credit Mgmt) / FD32 classic,FI-FSCM,HIGH,Credit management master data by Business Partner
 Sales,Customer Contracts,MIGRATE,VBAK (doc category 'Contract'),SD,HIGH,"Sales document header, contract document type"
 Sales,Customers,MIGRATE,BUT000 + Customer role,SD (Business Partner),HIGH,Duplicate of CRM > Customer Profiles — consolidate before load
 Sales,Fulfillment Lines,MIGRATE,LIPS,SD-Delivery,APPROX,Delivery item; 'fulfillment' maps to the SD delivery process
-Sales,Invoices,MIGRATE,VBRK / VBRP,SD-Billing,HIGH,Marked DEPRECATED in source; duplicates Finance > Customer Invoices — confirm which is authoritative before load
+Sales,Invoices,MIGRATE,VBRK / VBRP,SD-Billing,HIGH,"DEPRECATED duplicate of Finance > Customer Invoices, now VERIFIED: 1:1 on every shared column (53/53 rows -- Invoice_Number, dates, customer, totals, status, currency); Finance sheet is authoritative and mapped by customer_invoices_header.json. Sales extras: Fulfillment_ID (delivery document-flow link, LIKP, not yet migrated) and Payment_Terms (derivable from customer master / sales order). Not mapped separately."
 Sales,Order Fulfillment,MIGRATE,LIKP,SD-Delivery,HIGH,Delivery header
 Sales,Sales Order Lines,MIGRATE,VBAP,SD,HIGH,Sales document item
 Sales,Sales Orders,MIGRATE,VBAK,SD,HIGH,Sales document header

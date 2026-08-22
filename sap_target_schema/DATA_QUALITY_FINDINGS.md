@@ -100,6 +100,120 @@ anyone maps that table: an asset-tracking work order with a wholly-empty asset
 reference is either a deliberately-unused column or a sign the table isn't
 what its name suggests.
 
+## Cost centers on GL lines: 71% null, and that's correct (one anomaly)
+
+The transform engine's null-rate report (a `_run_log.txt` section added while
+hardening the engine) flagged `ACDOCA.KOSTL` (cost center) as null in 448 of
+631 rows — 71%. Investigated, and the nulls trace one-for-one to null
+`Cost_Center_ID` values in the `General Ledger` source sheet; the pattern
+behind them matches SAP's own rules almost perfectly:
+
+- **Every Revenue and Expense account** (Sales Revenue, COGS, Salaries, Rent,
+  Utilities, Depreciation, Marketing, Freight, Professional Fees, Insurance)
+  has a cost center on **all** of its lines — required in SAP, where P&L
+  postings need a cost-object assignment.
+- **Every balance-sheet account** (Bank, AR, AP, VAT receivable/payable,
+  accruals, payables, PP&E, accumulated depreciation, finished-goods
+  inventory) has a cost center on **zero** of its lines — also correct, since
+  SAP rejects cost centers on balance-sheet postings.
+
+No account appears on both lists — the split is perfectly account-exclusive,
+so no mapping change is needed; the transform faithfully preserves source
+semantics that were already SAP-shaped.
+
+**The one anomaly worth a business follow-up: Account 6.** "Inventory — Raw
+Materials" (an Asset account) carries a cost center on all 32 of its lines,
+while its sibling "Inventory — Finished Goods" (Account 8) carries none on
+any — the *only* balance-sheet account in the dataset with populated cost
+centers. In SAP, inventory accounts post via material/valuation class rather
+than cost center, so Account 6's values are unusual, and the inconsistency
+between the two inventory accounts suggests either a legacy data-entry quirk
+or an account-type mislabel in the source. It doesn't block the prototype,
+but confirm with the business whether those 32 rows are correct before a real
+load.
+
+## Findings surfaced while mapping the purchasing cycle (Vendors, POs, Contracts)
+
+Three issues found by the mapping work itself, recorded here alongside the
+profiling findings:
+
+- **Two vendor contracts have no vendor at all.** `Vendor Contracts` rows 1
+  and 3 (`VC-2025-00001`, `VC-2025-00003`) have a **null `Vendor_ID`** — a
+  contract with no counterparty. The name-based FK check didn't flag them
+  because it dropped null FK values before matching, making a null reference
+  *invisible* to referential-integrity checking rather than confirmed clean.
+  This gap has since been **fixed**: `data_quality_check.py` now reports null
+  FK values on name-resolvable relationships as `NULL_FK` findings (INFO,
+  WARN at majority-null rates) instead of skipping them — the full re-run
+  reports 118 such columns dataset-wide, 8 of them majority-null, each now
+  visible for a human to judge whether the reference is optional. The
+  transform emits these rows with a null `EKKO.LIFNR` — visible in the run
+  log's null-rate section — and they'd be rejected at load.
+- **Backward contract validity dates confirmed at row level.** The 3
+  `Vendor Contracts` rows flagged by the DATE_ORDER check are
+  `VC-2025-00007`, `VC-2025-00012`, `VC-2025-00014` (3 of 20 rows;
+  `Customer Contracts` has the same defect in 3 of 25 rows). The
+  `vendor_contracts` spec passes `KDATB`/`KDATE` through verbatim rather than
+  guessing which date is wrong; SAP would reject these at load, so they need
+  business review of the source records.
+- **Customer and vendor staging keys collided in BUT000 -- RESOLVED.** Both
+  `customers_core` and `vendors_core` originally emitted `PARTNER` = the raw
+  legacy `Customer_ID`/`Vendor_ID` (1..40 and 1..25), so customer 1 and
+  vendor 1 landed on the same Business Partner number. **Decision made:**
+  derived disjoint staging series — customers take the even series
+  (`Customer_ID x 2`), vendors the odd (`Vendor_ID x 2 + 1`) — applied
+  consistently to every `PARTNER`/`KUNNR`/`LIFNR` staging key, including the
+  `EKKO-LIFNR` references in the PO and vendor-contract specs, so document
+  references resolve across the whole staging set. Verified: 65 distinct
+  `PARTNER` values for 65 BUT000 rows, `KUNNR` all even, `LIFNR` all odd. A
+  real load still allocates BP numbers from a configured SAP number range;
+  these series exist only to keep the staging keys internally collision-free.
+
+## The inventory transaction tables: investigated, and deliberately not mapped
+
+Mapping the inventory component (batch after goods receipts) found three
+independent blockers on the transactional side. `Stock Levels` was clean and
+is mapped (`stock_levels.json` -> MARD, initial-stock approach); the other
+three are deferred with their routing notes updated — each blocker is a data
+or capability fact, not a judgment call:
+
+- **`Stock Movements` would double-post stock.** All **77 Receipt rows are
+  exact duplicates of the Goods Receipt Lines** already mapped to MSEG:
+  every one matches a GR on number + item, with quantity equal to the GR's
+  accepted quantity (47 of them differ from the GR's delivered quantity —
+  the accepted/rejected distinction — confirming they're the same event,
+  post-inspection). Mapping both sheets posts every goods receipt twice.
+  Beyond that: the 14 Transfer rows need two-leg movements (engine has no
+  row expansion), Issue/Return movement types depend on consumption account
+  assignment (target customizing), and quantities are signed (SAP stores
+  abs + SHKZG indicator). Needs a de-dup decision first.
+- **`Inventory Transfers` is double-blocked**: same two-leg movement
+  requirement, plus **3 of 35 rows have BOTH `From_Warehouse_ID` and
+  `To_Warehouse_ID` null** — a transfer with no source or destination.
+- **`Inventory Adjustments` arithmetic does not reconcile, in any row.** In
+  **42 of 42** non-null rows, `Quantity_After − Quantity_Before` equals
+  neither `+Adjustment_Quantity` nor `−Adjustment_Quantity`; the stated
+  adjustment quantity is always positive while before/after move in both
+  directions, and the magnitudes don't match either sign. The three columns
+  tell three different stories and it's impossible to tell from the data
+  which one is authoritative — this needs business review of the source
+  records, not a mapping guess. (Plus 3 rows with null Item/Warehouse.)
+
+These bring the count of engine-capability gaps blocking honest mappings to
+**three known instances** — the depreciation balanced two-line posting, the
+goods-receipt 101/122 split, and the transfer from/to two-leg posting, all
+the same "expand one source row into N target rows" need. **Update: that
+capability is now built** — the engine's `legs` construct (per-leg fields,
+constants, and an `emit_if` condition) — and the first two instances are
+resolved: `depreciation.json` now emits the balanced expense/accumulated-
+depreciation pair, and `goods_receipt_lines.json` emits the conditional 122
+return leg (30 movements) alongside the 101 leg (77). `Inventory Transfers`
+remains deferred, but on a different blocker now: its `Status` column models
+transfer *stages* (Pending / In Transit / Received / Cancelled) that a single
+SAP transfer posting can't represent — which stage counts as the posting
+event is a business decision — in addition to the 3 rows with both
+warehouses null.
+
 ## How to use this alongside the rest of the project
 
 This complements, rather than duplicates, `etl/qc_check.py` (which checks the
