@@ -20,6 +20,7 @@ Run: python -m unittest discover -s tests   (from etl/)
 from __future__ import annotations
 
 import importlib
+import json
 import os
 import sys
 import unittest
@@ -233,6 +234,92 @@ class TestNullRateSummary(unittest.TestCase):
         s = eng.summarize_null_rates({"T": [{"K": "1", "D": None}, {"K": "2", "D": None}]})
         nulls, emitted = s["T"]["D"]
         self.assertEqual((nulls, emitted), (2, 2))  # nulls == emitted -> run log marks ALL NULL
+
+
+class TestCondMet(unittest.TestCase):
+    ROW = {"qty": 5.0, "neg": -2.0, "zero": 0.0, "s": "abc", "n": None}
+
+    def test_ops(self):
+        c = eng._cond_met
+        r = self.ROW
+        self.assertTrue(c(r, {"field": "qty", "op": "gt", "value": 0}))
+        self.assertTrue(c(r, {"field": "neg", "op": "lt", "value": 0}))
+        self.assertTrue(c(r, {"field": "zero", "op": "le", "value": 0}))
+        self.assertTrue(c(r, {"field": "s", "op": "eq", "value": "abc"}))
+        self.assertTrue(c(r, {"field": "s", "op": "ne", "value": "xyz"}))
+        self.assertTrue(c(r, {"field": "qty", "op": "not_null"}))
+        self.assertTrue(c(r, {"field": "n", "op": "null"}))
+
+    def test_null_fails_comparisons(self):
+        c = eng._cond_met
+        self.assertFalse(c({"n": None}, {"field": "n", "op": "gt", "value": 0}))
+        self.assertFalse(c({"n": None}, {"field": "n", "op": "eq", "value": ""}))
+
+
+class TestLegExpansion(unittest.TestCase):
+    """Row expansion: one source row -> N target rows via `legs` + `emit_if`."""
+
+    SPEC = {
+        "source_sheet": "Synthetic",
+        "targets": [{
+            "table": "MSEG",
+            "constants": {"MANDT": "100"},
+            "legs": [
+                {"constants": {"BWART": "101"},
+                 "fields": [
+                     {"target_field": "MBLNR", "transform": "direct", "source": "ID"},
+                     {"target_field": "MENGE", "transform": "direct", "source": "Accepted"}]},
+                {"emit_if": {"field": "Rejected", "op": "gt", "value": 0},
+                 "constants": {"BWART": "122"},
+                 "fields": [
+                     {"target_field": "MBLNR", "transform": "direct", "source": "ID"},
+                     {"target_field": "MENGE", "transform": "direct", "source": "Rejected"}]},
+            ],
+        }],
+    }
+
+    def setUp(self):
+        self.df = pd.DataFrame({
+            "ID": [1, 2],
+            "Accepted": [10.0, 5.0],
+            "Rejected": [0.0, 3.0],   # row 1: clean GR; row 2: partial rejection
+        })
+        self._orig = eng.load_sheet
+        eng.load_sheet = lambda name: self.df
+        eng._sheet_cache.pop("Synthetic", None)
+
+    def tearDown(self):
+        eng.load_sheet = self._orig
+
+    def _run(self):
+        table_frames = defaultdict(list)
+        run_log = {"sheets_processed": [], "targets_produced": [], "truncations": 0,
+                   "date_failures": 0, "date_failure_values": set()}
+        eng.run_spec(self.SPEC, table_frames, defaultdict(set), [], [], run_log)
+        return table_frames["MSEG"]
+
+    def test_conditional_second_leg(self):
+        rows = self._run()
+        self.assertEqual(len(rows), 3)  # 101+101, 122 only for row 2
+        by_bwart = {}
+        for r in rows:
+            by_bwart.setdefault(r["BWART"], []).append(r)
+        self.assertEqual(len(by_bwart["101"]), 2)
+        self.assertEqual(by_bwart["122"], [{"MANDT": "100", "BWART": "122", "MBLNR": "2", "MENGE": "3"}])
+        # shared target constants reach both legs
+        self.assertTrue(all(r["MANDT"] == "100" for r in rows))
+
+    def test_leg_constants_override_target_constants(self):
+        spec = json.loads(json.dumps(self.SPEC))
+        spec["targets"][0]["constants"]["BWART"] = "999"
+        rows = self._run()
+        bwarts = {r["BWART"] for r in rows}
+        self.assertEqual(bwarts, {"101", "122"})  # leg constants win over target's
+
+    def test_null_condition_value_fails_leg(self):
+        self.df.loc[1, "Rejected"] = None
+        rows = self._run()
+        self.assertEqual(len(rows), 2)  # only the unconditional 101 legs
 
 
 class TestRunSpec(unittest.TestCase):

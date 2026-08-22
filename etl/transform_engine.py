@@ -36,7 +36,7 @@ those first for the *why*; this format captures the *how*.
       "skip_row_if_null": "Manager_ID",        # optional: don't emit a row into this
                                                  # target if this source column is null
       "constants": {"BEGDA": "19000101"},      # target_field -> literal value, every row
-      "fields": [
+      "fields": [                             # single-leg form: one row out per row in
         {
           "target_field": "VORNA",
           "sap_description": "First Name",
@@ -117,6 +117,28 @@ split_delimiter        splits one free-text source field on `delimiter` (default
 
 Every transform function has the signature (row, field_spec) -> value, except
 signed_amount_pair which returns a dict {amount_field: v, indicator_field: v}.
+
+--------------------------------------------------------------------------------
+ROW EXPANSION (legs)
+--------------------------------------------------------------------------------
+A target may instead declare "legs": a list of leg templates, each emitting its
+own row per source row. Each leg has required "fields" (same shape as target
+"fields"), optional "constants" (merged over the target's own constants, so a
+leg can set e.g. a different movement type), and an optional "emit_if"
+condition evaluated against the RAW source row:
+
+  {"emit_if": {"field": "Quantity_Rejected", "op": "gt", "value": 0},
+   "constants": {"BWART": "122"},
+   "fields": [...]}
+
+Ops: gt/ge/lt/le/eq/ne (numeric when both sides parse as numbers, else string)
+and null/not_null (no "value"). Null values always fail the comparison ops.
+
+This is how one source row becomes N SAP rows: a goods-receipt line with both
+accepted and rejected quantities emits a 101 movement AND a 122 movement; an
+inventory transfer emits a from-leg and a to-leg; a depreciation entry emits a
+balanced expense/accumulated-depreciation pair. A leg whose condition fails
+emits nothing.
 
 --------------------------------------------------------------------------------
 OUTPUTS (written to etl/output/)
@@ -341,6 +363,30 @@ def apply_field(row, field_spec, pending_lookups, run_log, table_name):
     raise ValueError(f"Unknown transform type: {transform!r}")
 
 
+def _cond_met(row, cond: dict) -> bool:
+    """Evaluate a leg's `emit_if` condition against the raw source row.
+
+    Supported ops: not_null, null, gt, ge, lt, le, eq, ne. Comparisons try
+    numeric first and fall back to string compare, so {"field": "Qty", "op":
+    "gt", "value": 0} works on float64 columns and strings alike.
+    """
+    v = row.get(cond["field"])
+    op = cond["op"]
+    if op == "not_null":
+        return not _is_null(v)
+    if op == "null":
+        return _is_null(v)
+    if _is_null(v):
+        return False
+    val = cond["value"]
+    try:
+        a, b = float(v), float(val)
+    except (TypeError, ValueError):
+        a, b = str(v), str(val)
+    return {"gt": a > b, "ge": a >= b, "lt": a < b,
+            "le": a <= b, "eq": a == b, "ne": a != b}[op]
+
+
 def run_spec(spec: dict, table_frames: dict, pending_lookups: dict,
              skipped_fields: list, validation_results: list, run_log: dict):
     sheet = spec["source_sheet"]
@@ -364,13 +410,24 @@ def run_spec(spec: dict, table_frames: dict, pending_lookups: dict,
         table_name = target["table"]
         out_rows = []
         skip_col = target.get("skip_row_if_null")
+        # Row expansion: a target with `legs` emits one row per leg whose
+        # `emit_if` condition holds -- e.g. a GR line with both accepted and
+        # rejected quantities becomes a 101 movement AND a 122 movement, or a
+        # stock transfer becomes a from-leg and a to-leg. Without `legs`,
+        # the target is itself the single leg (previous behavior, unchanged).
+        legs = target.get("legs") or [{"fields": target["fields"]}]
         for _, row in df.iterrows():
             if skip_col is not None and _is_null(row.get(skip_col)):
                 continue
-            out_row = dict(target.get("constants", {}))
-            for field_spec in target["fields"]:
-                out_row.update(apply_field(row, field_spec, pending_lookups, run_log, table_name))
-            out_rows.append(out_row)
+            for leg in legs:
+                cond = leg.get("emit_if")
+                if cond is not None and not _cond_met(row, cond):
+                    continue
+                out_row = dict(target.get("constants", {}))
+                out_row.update(leg.get("constants", {}))
+                for field_spec in leg["fields"]:
+                    out_row.update(apply_field(row, field_spec, pending_lookups, run_log, table_name))
+                out_rows.append(out_row)
         table_frames[table_name].extend(out_rows)
         run_log["targets_produced"].append((sheet, table_name, len(out_rows)))
 

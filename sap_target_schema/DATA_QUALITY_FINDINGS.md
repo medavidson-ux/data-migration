@@ -200,9 +200,19 @@ or capability fact, not a judgment call:
   records, not a mapping guess. (Plus 3 rows with null Item/Warehouse.)
 
 These bring the count of engine-capability gaps blocking honest mappings to
-**three known instances**: the depreciation balanced two-line posting, the
-goods-receipt 101/122 split, and the transfer from/to two-leg posting — all
-the same "expand one source row into N target rows" need.
+**three known instances** — the depreciation balanced two-line posting, the
+goods-receipt 101/122 split, and the transfer from/to two-leg posting, all
+the same "expand one source row into N target rows" need. **Update: that
+capability is now built** — the engine's `legs` construct (per-leg fields,
+constants, and an `emit_if` condition) — and the first two instances are
+resolved: `depreciation.json` now emits the balanced expense/accumulated-
+depreciation pair, and `goods_receipt_lines.json` emits the conditional 122
+return leg (30 movements) alongside the 101 leg (77). `Inventory Transfers`
+remains deferred, but on a different blocker now: its `Status` column models
+transfer *stages* (Pending / In Transit / Received / Cancelled) that a single
+SAP transfer posting can't represent — which stage counts as the posting
+event is a business decision — in addition to the 3 rows with both
+warehouses null.
 
 ## How to use this alongside the rest of the project
 

@@ -89,7 +89,7 @@ even/odd staging-key convention).
 | `inventory_items.json` | Inventory Items | `MARA`, `MAKT`, `MARC`, `MBEW` |
 | `locations.json` | Locations | `T499S`, `ADRC` |
 | `assets.json` | Assets | `ANLA`, `ANLZ`, `ANLB` |
-| `depreciation.json` | Depreciation | `ACDOCA` (one leg only — see notes below) |
+| `depreciation.json` | Depreciation | `ACDOCA` (balanced two-line posting via `legs` — see notes) |
 | `vendors_core.json` | Vendors | `BUT000`, `LFA1`, `LFB1` |
 | `purchase_orders_header.json` | Purchase Orders | `EKKO` |
 | `purchase_order_lines.json` | Purchase Order Lines | `EKPO`, `EKET` |
@@ -99,7 +99,7 @@ even/odd staging-key convention).
 | `vendor_invoices_header.json` | Vendor Invoices | `RBKP` |
 | `vendor_invoice_lines.json` | Vendor Invoice Lines | `RSEG` |
 | `goods_receipts_header.json` | Goods Receipts | `MKPF` |
-| `goods_receipt_lines.json` | Goods Receipt Lines | `MSEG` (one-leg 101 only — see notes) |
+| `goods_receipt_lines.json` | Goods Receipt Lines | `MSEG` (101 leg + conditional 122 return leg via `legs`) |
 | `stock_levels.json` | Stock Levels | `MARD` (initial stock snapshot) |
 
 Together the two `customers_*.json` specs are the executable side of the 4th
@@ -130,11 +130,14 @@ right (`Asset Register`), one confirmed on amounts but not on classification
 text (`Disposals`), and one **backwards** — `Depreciation Schedules` and
 `Assets > Depreciation` are actually planned-vs-actual, not duplicates at
 all, and the original catalog had even mislabeled *which one* was "planned."
-`depreciation.json` also carries a known incompleteness in its own `notes`
-field: it produces only one leg of what should be a balanced two-line
-posting, because the engine has no "expand one row into a balanced
-multi-line document" capability yet — flagged rather than worked around,
-same as the `Weight_KG` gap in the Materials example.
+`depreciation.json` originally carried a known incompleteness: it produced
+only one leg of a balanced two-line posting because the engine had no "expand
+one row into a balanced multi-line document" capability. That capability now
+exists — a target can declare `legs` (per-leg fields, constants, and an
+`emit_if` condition on the source row) — and the spec emits the balanced
+expense/accumulated-depreciation pair; the same mechanism gives goods
+receipts their conditional 122 return-to-vendor leg. Same happy ending as the
+`Weight_KG` gap in the Materials example: flagged first, then fixed properly.
 
 Run against the real seed data, this produces 44 output tables from 2,662
 distinct source rows, all 257 journal entries validate as balanced, every one

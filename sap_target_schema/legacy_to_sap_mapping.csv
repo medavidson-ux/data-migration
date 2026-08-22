@@ -181,7 +181,7 @@ Purchasing,Purchase Orders,MIGRATE,EKKO,MM-PUR,HIGH,Purchase order header
 Purchasing,Purchase Requisition Lines,MIGRATE,EBAN,MM-PUR,HIGH,EBAN is itself item-level; header fields are repeated per item (no separate header table)
 Purchasing,Purchase Requisitions,MIGRATE,EBAN,MM-PUR,HIGH,Same table as line items — see note above
 Purchasing,Inventory Items,MIGRATE,MARA / MAKT / MARC / MBEW,MM,HIGH,"The base material master (100 rows, all materials) -- Manufacturing>Product Catalog is a sales-view *extension* keyed off this table's Item_ID for the 15 sellable items, not a duplicate; see sap_target_schema/examples/materials_worked_example.md for the corrected relationship."
-Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,"INVESTIGATED, DEFERRED: a transfer posting is two MSEG lines (from/to) which the engine cannot split one row into; also 3 rows have BOTH From_Warehouse_ID and To_Warehouse_ID null -- see DATA_QUALITY_FINDINGS.md"
+Purchasing,Inventory Transfers,MIGRATE,MSEG (movement type 301/311),MM-IM,HIGH,"DEFERRED: two-leg movement now POSSIBLE (engine legs capability built), but Status models transfer stages (Pending/In Transit/Received/Cancelled) that one SAP posting cannot represent -- which stage is the posting event is a business decision; also 3 rows have BOTH From and To warehouses null -- see DATA_QUALITY_FINDINGS.md"
 Purchasing,Stock Levels,MIGRATE,MARD / MCHB,MM-IM,HIGH,Storage location stock / batch stock
 Purchasing,Procurement Reports,NOT_MIGRATED,,,,Analytics output
 Sales,Credit Limits,MIGRATE,UKM_BP (FSCM Credit Mgmt) / FD32 classic,FI-FSCM,HIGH,Credit management master data by Business Partner
