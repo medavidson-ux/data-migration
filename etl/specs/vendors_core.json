@@ -1,12 +1,12 @@
 {
   "source_sheet": "Vendors",
   "source_key": "Vendor_ID",
-  "notes": "Mirror of customers_core.json for the vendor side, following the same conventions: staging keys carry legacy IDs verbatim, every unknown SAP customizing value is a lookup_passthrough XREF, and open mapping decisions are left OUT rather than guessed. Address fields are simplified vs. the customers treatment: LFA1 keeps a one-line street string (STRAS) plus a split-derived city (ORT01), because unlike customers (billing vs shipping), vendors have exactly one free-text Address with no second address to disambiguate -- still a heuristic parse, flagged the same way the customers_addresses spec flags its own parsing. KNOWN OPEN DECISION: this spec emits PARTNER/LIFNR = raw Vendor_ID (1..25), which collides with customers_core's PARTNER = raw Customer_ID in BUT000 -- the BP numbering strategy (disjoint ranges or prefixed staging keys) is undecided; see DATA_QUALITY_FINDINGS.md. Until it is decided, BUT000 output is not loadable as-is.",
+  "notes": "Mirror of customers_core.json for the vendor side, following the same conventions: staging keys carry legacy IDs verbatim, every unknown SAP customizing value is a lookup_passthrough XREF, and open mapping decisions are left OUT rather than guessed. Address fields are simplified vs. the customers treatment: LFA1 keeps a one-line street string (STRAS) plus a split-derived city (ORT01), because unlike customers (billing vs shipping), vendors have exactly one free-text Address with no second address to disambiguate -- still a heuristic parse, flagged the same way the customers_addresses spec flags its own parsing. BP NUMBERING CONVENTION (decision made; was an open item): Business Partner staging keys are derived, not raw legacy IDs -- customers take the EVEN series (Customer_ID x 2, see customers_core.json), vendors the ODD (Vendor_ID x 2 + 1) -- because raw IDs collide in BUT000 (customer 1 vs vendor 1). Every PARTNER/LIFNR staging key, including EKKO references from the PO and contract specs, uses the same odd derivation so document references resolve; a real load allocates BP numbers from a configured number range instead.",
   "targets": [
     {
       "table": "BUT000",
       "fields": [
-        {"target_field": "PARTNER", "sap_description": "Business Partner Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "PARTNER", "sap_description": "Business Partner Number (staging key, odd series: Vendor_ID x 2 + 1)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
         {"target_field": "BU_SORT1", "sap_description": "Search Term 1", "transform": "direct", "source": "Vendor_Code"},
         {"target_field": "NAME_ORG1", "sap_description": "Organization Name", "transform": "truncate", "source": "Vendor_Name", "max_len": 40}
       ]
@@ -14,7 +14,7 @@
     {
       "table": "LFA1",
       "fields": [
-        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key, odd series: Vendor_ID x 2 + 1)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
         {"target_field": "NAME1", "sap_description": "Name 1", "transform": "truncate", "source": "Vendor_Name", "max_len": 40},
         {"target_field": "SORTL", "sap_description": "Search Term", "transform": "truncate", "source": "Vendor_Code", "max_len": 10},
         {"target_field": "LAND1", "sap_description": "Country Key", "transform": "value_map", "source": "Country", "mapping": {"Jordan": "JO"}},
@@ -27,7 +27,7 @@
     {
       "table": "LFB1",
       "fields": [
-        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key, odd series: Vendor_ID x 2 + 1)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
         {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
         {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"}
       ]

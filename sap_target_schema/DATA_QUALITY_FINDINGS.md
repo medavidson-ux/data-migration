@@ -156,14 +156,18 @@ profiling findings:
   `vendor_contracts` spec passes `KDATB`/`KDATE` through verbatim rather than
   guessing which date is wrong; SAP would reject these at load, so they need
   business review of the source records.
-- **Customer and vendor staging keys collide in BUT000.** Both
-  `customers_core` and `vendors_core` emit `PARTNER` = the raw legacy
-  `Customer_ID`/`Vendor_ID` (1..40 and 1..25), so customer 1 and vendor 1
-  land on the same Business Partner number. This is an open *numbering
-  strategy* decision (disjoint odd/even series, offset ranges, or prefixed
-  staging keys — every FK reference to PARTNER/KUNNR/LIFNR would need the
-  same treatment consistently), deliberately not guessed in the specs. Until
-  decided, BUT000 output must not be treated as loadable.
+- **Customer and vendor staging keys collided in BUT000 -- RESOLVED.** Both
+  `customers_core` and `vendors_core` originally emitted `PARTNER` = the raw
+  legacy `Customer_ID`/`Vendor_ID` (1..40 and 1..25), so customer 1 and
+  vendor 1 landed on the same Business Partner number. **Decision made:**
+  derived disjoint staging series — customers take the even series
+  (`Customer_ID x 2`), vendors the odd (`Vendor_ID x 2 + 1`) — applied
+  consistently to every `PARTNER`/`KUNNR`/`LIFNR` staging key, including the
+  `EKKO-LIFNR` references in the PO and vendor-contract specs, so document
+  references resolve across the whole staging set. Verified: 65 distinct
+  `PARTNER` values for 65 BUT000 rows, `KUNNR` all even, `LIFNR` all odd. A
+  real load still allocates BP numbers from a configured SAP number range;
+  these series exist only to keep the staging keys internally collision-free.
 
 ## How to use this alongside the rest of the project
 

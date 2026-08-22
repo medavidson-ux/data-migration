@@ -1,12 +1,12 @@
 {
   "source_sheet": "Customers",
   "source_key": "Customer_ID",
-  "notes": "Companion to customers_addresses.json, which covers Billing_Address/Shipping_Address/Country. This spec covers the fields from customers_field_mapping.csv that have a clean, unambiguous transform. Three fields from that CSV are deliberately NOT encoded here because the mapping decision itself is still open, not just an unresolved lookup: Email/Phone_Number (which ADDRNUMBER series they attach to isn't decided), Is_Active (LOEVM vs SPERR semantics aren't decided), and Account_Manager_ID (the BUT050 relationship category may not be a standard delivered one). Encoding a guess for any of those would produce output that looks loadable but isn't -- see customers_field_mapping.csv and customers_worked_example.md for the open questions.",
+  "notes": "Companion to customers_addresses.json, which covers Billing_Address/Shipping_Address/Country. This spec covers the fields from customers_field_mapping.csv that have a clean, unambiguous transform. Three fields from that CSV are deliberately NOT encoded here because the mapping decision itself is still open, not just an unresolved lookup: Email/Phone_Number (which ADDRNUMBER series they attach to isn't decided), Is_Active (LOEVM vs SPERR semantics aren't decided), and Account_Manager_ID (the BUT050 relationship category may not be a standard delivered one). Encoding a guess for any of those would produce output that looks loadable but isn't -- see customers_field_mapping.csv and customers_worked_example.md for the open questions. BP NUMBERING CONVENTION: Business Partner staging keys are derived, not raw legacy IDs -- customers take the EVEN series (Customer_ID x 2), vendors the ODD (Vendor_ID x 2 + 1) -- because raw IDs collide in BUT000 (customer 1 vs vendor 1). Every PARTNER/KUNNR/LIFNR staging key in every spec uses the same derivation so document references resolve; a real load allocates BP numbers from a configured number range instead.",
   "targets": [
     {
       "table": "BUT000",
       "fields": [
-        {"target_field": "PARTNER", "sap_description": "Business Partner Number (staging key)", "transform": "direct", "source": "Customer_ID"},
+        {"target_field": "PARTNER", "sap_description": "Business Partner Number (staging key, even series: Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
         {"target_field": "BU_SORT1", "sap_description": "Search Term 1", "transform": "direct", "source": "Customer_Code"},
         {"target_field": "NAME_ORG1", "sap_description": "Organization Name", "transform": "direct", "source": "Customer_Name"}
       ]
@@ -14,7 +14,7 @@
     {
       "table": "KNB1",
       "fields": [
-        {"target_field": "KUNNR", "sap_description": "Customer (staging key)", "transform": "direct", "source": "Customer_ID"},
+        {"target_field": "KUNNR", "sap_description": "Customer (staging key, even series: Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
         {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"}
       ]
     },
@@ -22,7 +22,7 @@
       "table": "KNVV",
       "notes": "VKORG (Sales Organization) is not included here -- it needs the same Company Code -> TVKO resolution already flagged as APPROX on Sales Orders, and distribution channel/division have no source column at all. This block covers only the fields that don't depend on a sales area being resolved first.",
       "fields": [
-        {"target_field": "KUNNR", "sap_description": "Customer (staging key)", "transform": "direct", "source": "Customer_ID"},
+        {"target_field": "KUNNR", "sap_description": "Customer (staging key, even series: Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
         {"target_field": "KUKLA", "sap_description": "Customer Classification", "transform": "lookup_passthrough", "source": "Customer_Type", "lookup_ref": "Customer Classification domain (KUKLA) -- or possibly BUT000-BU_GROUP instead, see worked example"},
         {"target_field": "WAERS", "sap_description": "Customer's Order Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
         {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"}
@@ -31,14 +31,14 @@
     {
       "table": "BUT0ID",
       "fields": [
-        {"target_field": "PARTNER", "sap_description": "Business Partner (staging key)", "transform": "direct", "source": "Customer_ID"},
+        {"target_field": "PARTNER", "sap_description": "Business Partner (staging key, even series: Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
         {"target_field": "BRSCH", "sap_description": "Industry Key", "transform": "lookup_passthrough", "source": "Industry", "lookup_ref": "Industry Key domain (BRSCH), target-system configured"}
       ]
     },
     {
       "table": "BUT0TX",
       "fields": [
-        {"target_field": "PARTNER", "sap_description": "Business Partner (staging key)", "transform": "direct", "source": "Customer_ID"},
+        {"target_field": "PARTNER", "sap_description": "Business Partner (staging key, even series: Customer_ID x 2)", "transform": "row_number_pad", "source": "Customer_ID", "multiplier": 2, "offset": 0},
         {"target_field": "TAXNUM", "sap_description": "Tax Number", "transform": "direct", "source": "Tax_ID"}
       ]
     }

@@ -9,7 +9,7 @@
         {"target_field": "EBELN", "sap_description": "Purchasing Document Number (staging key)", "transform": "direct", "source": "Vendor_Contract_ID"},
         {"target_field": "BSTYP", "sap_description": "Purchasing Document Category (K = contract)", "transform": "constant", "value": "K"},
         {"target_field": "BSART", "sap_description": "Purchasing Document Type", "transform": "lookup_passthrough", "source": "Contract_Type", "lookup_ref": "Purchasing contract type config (BSART), per source Contract_Type -- target-system configured"},
-        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, resolves against vendors_core LFA1/LIFNR)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, odd series Vendor_ID x 2 + 1, resolves against vendors_core LFA1/LIFNR)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
         {"target_field": "KDATB", "sap_description": "Validity Start Date (passed through verbatim -- 3 source rows have this after KDATE, flagged for business review, see notes)", "transform": "date_yyyymmdd", "source": "Start_Date"},
         {"target_field": "KDATE", "sap_description": "Validity End Date (see KDATB note)", "transform": "date_yyyymmdd", "source": "End_Date"},
         {"target_field": "WAERS", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},

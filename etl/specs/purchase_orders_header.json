@@ -10,7 +10,7 @@
         {"target_field": "BSTYP", "sap_description": "Purchasing Document Category (F = purchase order)", "transform": "constant", "value": "F"},
         {"target_field": "BSART", "sap_description": "Purchasing Document Type (NB = standard PO, delivered default)", "transform": "constant", "value": "NB"},
         {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
-        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, resolves against vendors_core LFA1/LIFNR)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, odd series Vendor_ID x 2 + 1, resolves against vendors_core LFA1/LIFNR)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
         {"target_field": "ERDAT", "sap_description": "Created On", "transform": "date_yyyymmdd", "source": "PO_Date"},
         {"target_field": "WAERS", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
         {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"}
