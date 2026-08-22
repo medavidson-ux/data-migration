@@ -140,14 +140,15 @@ profiling findings:
 - **Two vendor contracts have no vendor at all.** `Vendor Contracts` rows 1
   and 3 (`VC-2025-00001`, `VC-2025-00003`) have a **null `Vendor_ID`** — a
   contract with no counterparty. The name-based FK check didn't flag them
-  because it drops null FK values before matching: a null reference is
-  currently *invisible* to referential-integrity checking, not confirmed
-  clean. A null FK on a supposedly-mandatory relationship is arguably a
-  stronger finding than an orphaned value; a future version of
-  `data_quality_check.py` should report null FKs on non-nullable-looking
-  relationships separately. The transform emits these rows with a null
-  `EKKO.LIFNR` — visible in the run log's null-rate section — and they'd be
-  rejected at load.
+  because it dropped null FK values before matching, making a null reference
+  *invisible* to referential-integrity checking rather than confirmed clean.
+  This gap has since been **fixed**: `data_quality_check.py` now reports null
+  FK values on name-resolvable relationships as `NULL_FK` findings (INFO,
+  WARN at majority-null rates) instead of skipping them — the full re-run
+  reports 118 such columns dataset-wide, 8 of them majority-null, each now
+  visible for a human to judge whether the reference is optional. The
+  transform emits these rows with a null `EKKO.LIFNR` — visible in the run
+  log's null-rate section — and they'd be rejected at load.
 - **Backward contract validity dates confirmed at row level.** The 3
   `Vendor Contracts` rows flagged by the DATE_ORDER check are
   `VC-2025-00007`, `VC-2025-00012`, `VC-2025-00014` (3 of 20 rows;
