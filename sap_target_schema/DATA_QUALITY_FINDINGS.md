@@ -100,6 +100,38 @@ anyone maps that table: an asset-tracking work order with a wholly-empty asset
 reference is either a deliberately-unused column or a sign the table isn't
 what its name suggests.
 
+## Cost centers on GL lines: 71% null, and that's correct (one anomaly)
+
+The transform engine's null-rate report (a `_run_log.txt` section added while
+hardening the engine) flagged `ACDOCA.KOSTL` (cost center) as null in 448 of
+631 rows — 71%. Investigated, and the nulls trace one-for-one to null
+`Cost_Center_ID` values in the `General Ledger` source sheet; the pattern
+behind them matches SAP's own rules almost perfectly:
+
+- **Every Revenue and Expense account** (Sales Revenue, COGS, Salaries, Rent,
+  Utilities, Depreciation, Marketing, Freight, Professional Fees, Insurance)
+  has a cost center on **all** of its lines — required in SAP, where P&L
+  postings need a cost-object assignment.
+- **Every balance-sheet account** (Bank, AR, AP, VAT receivable/payable,
+  accruals, payables, PP&E, accumulated depreciation, finished-goods
+  inventory) has a cost center on **zero** of its lines — also correct, since
+  SAP rejects cost centers on balance-sheet postings.
+
+No account appears on both lists — the split is perfectly account-exclusive,
+so no mapping change is needed; the transform faithfully preserves source
+semantics that were already SAP-shaped.
+
+**The one anomaly worth a business follow-up: Account 6.** "Inventory — Raw
+Materials" (an Asset account) carries a cost center on all 32 of its lines,
+while its sibling "Inventory — Finished Goods" (Account 8) carries none on
+any — the *only* balance-sheet account in the dataset with populated cost
+centers. In SAP, inventory accounts post via material/valuation class rather
+than cost center, so Account 6's values are unusual, and the inconsistency
+between the two inventory accounts suggests either a legacy data-entry quirk
+or an account-type mislabel in the source. It doesn't block the prototype,
+but confirm with the business whether those 32 rows are correct before a real
+load.
+
 ## How to use this alongside the rest of the project
 
 This complements, rather than duplicates, `etl/qc_check.py` (which checks the

@@ -38,7 +38,17 @@ Reads every `*.json` file in `specs/`, applies it to the matching sheet in
   marked not-migrated, with a one-line reason each. Nothing vanishes silently.
 - **`_validation_report.csv`** — pass/fail results of the pre-transform checks each
   spec declares (currently: the `General Ledger` balanced-debit/credit check).
-- **`_run_log.txt`** — a plain-text summary of the whole run.
+- **`_run_log.txt`** — a plain-text summary of the whole run, including three
+  failure-visibility sections: **string truncations applied** (how many values
+  were cut to SAP field lengths), **date parse failures** (count plus the
+  distinct offending source values — an unparseable date becomes a null SAP
+  date, so this is where you'd notice a format problem), and **null rates in
+  output fields** (per target field, `nulls/rows_emitting_the_field`, with an
+  `ALL NULL` marker when a transform produced nothing; fields a contributing
+  spec doesn't emit are *absent*, not null, and don't inflate the rate). The
+  null-rate section's first real run surfaced `ACDOCA.KOSTL` at 71% null —
+  investigated and confirmed expected; see the cost-center finding in
+  `sap_target_schema/DATA_QUALITY_FINDINGS.md`.
 
 ### What it currently covers
 
@@ -177,6 +187,17 @@ change needed. If installing it doesn't clear the error, the cause is more
 likely the network itself, not certificates — check connectivity to
 `api.anthropic.com` directly.
 
+The model and endpoint are configurable via the same `.env`: `ANTHROPIC_MODEL`
+(defaults to `claude-opus-5`) and `ANTHROPIC_BASE_URL`, so any
+Anthropic-compatible endpoint works — e.g. Zhipu's GLM
+(`ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic`,
+`ANTHROPIC_MODEL=glm-4.5`, plus your GLM key as `ANTHROPIC_API_KEY`). The
+agent prints the active model and endpoint at startup. On a recoverable API
+error mid-session (rate limit, status error, network), the failed turn is
+rolled back out of the message history entirely — including a turn that died
+halfway through a tool call — so the conversation always resumes from a clean
+role-alternating state instead of failing every subsequent request.
+
 ### What it does
 
 An interactive REPL for talking through a mapping problem the worked examples
@@ -185,7 +206,7 @@ recalling SAP structure from training data:
 
 | Tool | Grounds the agent in |
 |---|---|
-| `search_sap_tables` | `sap_target_schema/sap_tables.json` — the real 119-table catalog |
+| `search_sap_tables` | `sap_target_schema/sap_tables.json` — the real table catalog |
 | `lookup_legacy_mapping` | `sap_target_schema/legacy_to_sap_mapping.csv` — table-level routing already decided |
 | `get_source_sample` | The real legacy data, so it reasons from actual values, not column names |
 | `preview_transform` | **This project's own transform engine** — runs a draft mapping against real rows before presenting it as final |
@@ -287,8 +308,16 @@ runtime, it just quietly produces nulls — this is the check that would catch
 that), every table/field a spec writes to is actually documented in
 `sap_tables.json`, `legacy_to_sap_mapping.csv` has no duplicate rows and every
 `MIGRATE` table matches a real sheet, every `see X.json`/`see Y.md`
-cross-reference in a doc actually points at a file that exists, and the engine
-itself still runs clean with all validation rules passing. Built after
+cross-reference in a doc actually points at a file that exists, the engine
+itself still runs clean with all validation rules passing, and the golden-value
+unit tests in `tests/` all pass (run standalone with
+`python -m unittest discover -s tests` from `etl/`). Those tests lock in each
+transform's exact semantics — the `signed_amount_pair` `AMBIGUOUS` refusal,
+the float-artifact cleanup, the `split_delimiter` fallbacks, the XREF
+placeholder format — plus a spec-level end-to-end run (fan-out,
+`skip_row_if_null`, constants) against a synthetic sheet, and a fully mocked
+smoke test of the agent's tool loop and error rollback (no network, no API
+key). Built after
 `employees.json` turned out to reference two SAP tables (`PA0009`, `PA0185`)
 and several fields (`PA0001-PERSK`, `PA0002-GESCH`/`NATIO`/`FAMST`) that had
 never actually been added to the catalog — real gaps from early in this

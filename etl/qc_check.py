@@ -21,7 +21,7 @@ Checks:
                                sap_tables.json (or is an explicitly-known exception).
   6.  Spec target fields    -- every target_field a spec writes is a field the
                                catalog actually documents for that table.
-  7.  Legacy table coverage -- every one of the 199 rows in legacy_to_sap_mapping.csv
+  7.  Legacy table coverage -- every row in legacy_to_sap_mapping.csv
                                matches either a real sheet in the seed workbook or is
                                explicitly a rollup/summary row, and there are no
                                duplicate (component, legacy_table) rows.
@@ -304,6 +304,23 @@ def check_engine_run():
 
 
 # ---------------------------------------------------------------------------
+# 11. Unit tests (transform-engine golden values)
+# ---------------------------------------------------------------------------
+
+def check_unit_tests():
+    result = subprocess.run(
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
+        cwd=SCRIPT_DIR, capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        # unittest prints failures to stderr
+        report("Unit tests (tests/)", "FAIL", result.stderr.strip().splitlines()[-1])
+    else:
+        n = sum(1 for line in result.stderr.splitlines() if line.startswith("test_"))
+        report("Unit tests (tests/)", "PASS", f"{n} tests, all passing")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -322,6 +339,7 @@ def main():
     check_example_csv_table_names(catalog)
     check_cross_references()
     check_engine_run()
+    check_unit_tests()
 
     print()
     print("=" * 78)

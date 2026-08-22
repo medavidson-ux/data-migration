@@ -178,16 +178,18 @@ def t_direct(row, spec):
     return _clean(v)
 
 
-def t_date_yyyymmdd(row, spec):
+def t_date_yyyymmdd(row, spec, run_log):
     v = row.get(spec["source"])
     if _is_null(v):
         return None
     try:
         ts = pd.to_datetime(v)
         if pd.isna(ts):
-            return None
+            raise ValueError(f"unparseable date: {v!r}")
         return ts.strftime("%Y%m%d")
     except Exception:
+        run_log["date_failures"] += 1
+        run_log["date_failure_values"].add(_clean(v))
         return None
 
 
@@ -320,7 +322,7 @@ def apply_field(row, field_spec, pending_lookups, run_log, table_name):
     if transform == "direct":
         return {field_spec["target_field"]: t_direct(row, field_spec)}
     if transform == "date_yyyymmdd":
-        return {field_spec["target_field"]: t_date_yyyymmdd(row, field_spec)}
+        return {field_spec["target_field"]: t_date_yyyymmdd(row, field_spec, run_log)}
     if transform == "truncate":
         return {field_spec["target_field"]: t_truncate(row, field_spec, run_log)}
     if transform == "constant":
@@ -373,6 +375,32 @@ def run_spec(spec: dict, table_frames: dict, pending_lookups: dict,
         run_log["targets_produced"].append((sheet, table_name, len(out_rows)))
 
 
+def summarize_null_rates(table_frames: dict) -> dict:
+    """Per table: {field: (null_count, rows_emitting_field)} for fields with nulls.
+
+    Only counts rows that actually contain the field -- a field one contributing
+    spec emits and another doesn't is absent, not null, and conflating the two
+    would overstate the null rate. A field that is null in *every* row that
+    emits it is the loudest signal (the transform produced nothing), so it gets
+    its own entry in the all-null list for the run log.
+    """
+    summary = {}
+    for table_name, rows in table_frames.items():
+        fields = {}
+        for field in {k for row in rows for k in row}:
+            values = [row.get(field, _ABSENT) for row in rows]
+            emitted = [v for v in values if v is not _ABSENT]
+            nulls = sum(1 for v in emitted if v is None)
+            if nulls:
+                fields[field] = (nulls, len(emitted))
+        if fields:
+            summary[table_name] = fields
+    return summary
+
+
+_ABSENT = object()  # sentinel: field not emitted for this row at all
+
+
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     spec_files = sorted(
@@ -383,7 +411,8 @@ def main():
     pending_lookups: dict[tuple, set] = defaultdict(set)
     skipped_fields: list = []
     validation_results: list = []
-    run_log = {"sheets_processed": [], "targets_produced": [], "truncations": 0}
+    run_log = {"sheets_processed": [], "targets_produced": [], "truncations": 0,
+               "date_failures": 0, "date_failure_values": set()}
 
     for fname in spec_files:
         with open(os.path.join(SPECS_DIR, fname), encoding="utf-8") as f:
@@ -437,6 +466,23 @@ def main():
         for sheet, table, n in run_log["targets_produced"]:
             f.write(f"  {sheet} -> {table}: {n} rows\n")
         f.write(f"\nString truncations applied: {run_log['truncations']}\n")
+        f.write(f"\nDate parse failures (emitted as null): {run_log['date_failures']}\n")
+        if run_log["date_failures"]:
+            values = sorted(run_log["date_failure_values"])
+            shown = ", ".join(values[:20]) + ("..." if len(values) > 20 else "")
+            f.write(f"  Distinct offending values ({len(values)}): {shown}\n")
+
+        f.write("\nNull rates in output fields (nulls / rows emitting the field):\n")
+        null_summary = summarize_null_rates(table_frames)
+        if null_summary:
+            for table_name in sorted(null_summary):
+                f.write(f"  {table_name}:\n")
+                for field, (nulls, emitted) in sorted(null_summary[table_name].items(),
+                                                      key=lambda kv: -kv[1][0]):
+                    marker = "  <-- ALL NULL" if nulls == emitted else ""
+                    f.write(f"    {field}: {nulls}/{emitted}{marker}\n")
+        else:
+            f.write("  (none -- every emitted field is fully populated)\n")
         f.write(f"\nValidation results:\n")
         for r in validation_results:
             f.write(f"  [{r['status']}] {r['source_sheet']}: {r['rule']} "
