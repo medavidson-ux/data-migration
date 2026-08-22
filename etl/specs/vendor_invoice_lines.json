@@ -1,0 +1,33 @@
+{
+  "source_sheet": "Vendor Invoice Lines",
+  "source_key": "Vendor_Invoice_Line_ID",
+  "targets": [
+    {
+      "table": "RSEG",
+      "notes": "Invoice document item, mirroring the VBRP/EKPO conventions: BUZEI follows SAP numbering (Line_Number x10), pricing source columns are dropped as condition-driven, and each line carries its PO reference (EBELN/EBELP) so logistics invoice verification can match it against the goods receipt.",
+      "fields": [
+        {"target_field": "BELNR", "sap_description": "Document Number of an Invoice Document (staging key, must match the header)", "transform": "direct", "source": "Vendor_Invoice_ID"},
+        {"target_field": "BUZEI", "sap_description": "Number of Line Item Within Accounting Document", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 10, "width": 6},
+        {"target_field": "EBELN", "sap_description": "Purchase Order Number (staging reference, from the header's PO -- RSEG items repeat it per SAP design)", "transform": "lookup_passthrough", "source": "Vendor_Invoice_ID", "lookup_ref": "Purchasing>Vendor Invoices -> header PO_ID -> EKKO-EBELN (denormalized header reference; resolvable at load via the header join)"},
+        {"target_field": "TXZ01", "sap_description": "Short Text", "transform": "truncate", "source": "Description", "max_len": 40},
+        {"target_field": "MATNR", "sap_description": "Material", "transform": "lookup_passthrough", "source": "Item_ID", "lookup_ref": "Purchasing>Inventory Items / Manufacturing>Product Catalog -> MARA"},
+        {"target_field": "MENGE", "sap_description": "Quantity", "transform": "direct", "source": "Quantity"},
+        {"target_field": "MEINS", "sap_description": "Unit of Measure", "transform": "lookup_passthrough", "source": "UOM_ID", "lookup_ref": "Inventory>Units of Measure -> T006"},
+        {"target_field": "WRBTR", "sap_description": "Amount in Document Currency", "transform": "direct", "source": "Line_Total"},
+        {"target_field": "MWSKZ", "sap_description": "Tax on Sales/Purchases Code", "transform": "lookup_passthrough", "source": "Tax_Code_ID", "lookup_ref": "Foundation>Tax Codes -> T007A"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Vendor_Invoice_Line_ID", "reason": "SAP's own key is RSEG-BUZEI; kept only as an informal source row identifier, not loaded"},
+    {"source": "Company_ID", "reason": "denormalized in the source -- RSEG has no company code field, it is inherited from the header (RBKP-BUKRS)"},
+    {"source": "Unit_Price", "reason": "pricing is fully condition-driven in MM (KONV/PRCD_ELEMENTS), no flat RSEG field -- same treatment as EKPO/VBRP"},
+    {"source": "Discount_Percent", "reason": "item-level discount condition record (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Tax_Amount", "reason": "tax condition record result (KONV/PRCD_ELEMENTS), not a stored field -- the tax CODE is carried via RSEG-MWSKZ"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the entering SAP user"}
+  ]
+}

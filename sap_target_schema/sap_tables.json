@@ -831,6 +831,36 @@
         "description": "Amount",
         "sap_type": "CURR",
         "key": false
+      },
+      {
+        "field": "TXZ01",
+        "description": "Short Text",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "MENGE",
+        "description": "Quantity",
+        "sap_type": "QUAN",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax on Sales/Purchases Code",
+        "sap_type": "CHAR(2)",
+        "key": false
+      },
+      {
+        "field": "MATNR",
+        "description": "Material Number",
+        "sap_type": "CHAR(18)",
+        "key": false
       }
     ]
   },
@@ -873,6 +903,30 @@
         "field": "RMWWR",
         "description": "Gross Amount",
         "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "Currency",
+        "sap_type": "CUKY(5)",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
+        "key": false
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchase Order Number (staging reference)",
+        "sap_type": "CHAR(10)",
         "key": false
       }
     ]

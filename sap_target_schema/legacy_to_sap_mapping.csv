@@ -175,7 +175,7 @@ Purchasing,Vendor Ratings,MIGRATE,Vendor Evaluation scores,MM-PUR,APPROX,Vendor 
 Purchasing,Vendors,MIGRATE,BUT000 + Vendor role (LFA1/LFB1 folded into BP),MM / FI (Business Partner),HIGH,S/4 retires standalone vendor master; Business Partner with Vendor role is the target object
 Purchasing,Goods Receipt Lines,MIGRATE,MSEG (movement type 101),MM-IM,HIGH,"Material document line items, goods receipt"
 Purchasing,Goods Receipts,MIGRATE,MKPF,MM-IM,HIGH,Material document header
-Purchasing,Invoice Matching,MIGRATE,RBKP / RSEG,MM-IV,HIGH,Duplicate of Finance > Vendor Invoices — consolidate before load
+Purchasing,Invoice Matching,MIGRATE,RBKP / RSEG,MM-IV,HIGH,"NOT mapped as a spec: 3-way matching is a runtime/config process in SAP (tolerance keys, ERS); match/variance amounts are derived comparisons, not migrated data -- see vendor_invoices_header.json notes"
 Purchasing,Purchase Order Lines,MIGRATE,EKPO,MM-PUR,HIGH,Purchase order item
 Purchasing,Purchase Orders,MIGRATE,EKKO,MM-PUR,HIGH,Purchase order header
 Purchasing,Purchase Requisition Lines,MIGRATE,EBAN,MM-PUR,HIGH,EBAN is itself item-level; header fields are repeated per item (no separate header table)

@@ -748,3 +748,12 @@ VBRK,Billing Document Header,SD-Billing,transaction,XBLNR,Reference Document Num
 VBRP,Billing Document Item,SD-Billing,transaction,ARKTX,Short Text (Item),CHAR(40),N
 VBRP,Billing Document Item,SD-Billing,transaction,VRKME,Sales Unit,UNIT(3),N
 VBRP,Billing Document Item,SD-Billing,transaction,MWSKZ,Tax on Sales/Purchases Code,CHAR(2),N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,BUKRS,Company Code,CHAR(4),N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,WAERS,Currency,CUKY(5),N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,XBLNR,Reference Document Number,CHAR(16),N
+RBKP,Invoice Verification: Document Header,MM-IV,transaction,EBELN,Purchase Order Number (staging reference),CHAR(10),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,TXZ01,Short Text,CHAR(40),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,MENGE,Quantity,QUAN,N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,MEINS,Unit of Measure,UNIT(3),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,MWSKZ,Tax on Sales/Purchases Code,CHAR(2),N
+RSEG,Invoice Verification: Line Items,MM-IV,transaction,MATNR,Material Number,CHAR(18),N

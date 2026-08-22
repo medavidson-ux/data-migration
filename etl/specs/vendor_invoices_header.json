@@ -1,0 +1,33 @@
+{
+  "source_sheet": "Vendor Invoices",
+  "source_key": "Vendor_Invoice_ID",
+  "notes": "Vendor invoice receipt header (logistics invoice verification), completing the purchasing cycle the same way customer_invoices_header completed the sales cycle -- no duplicate-table question here: the vendor side has exactly one invoice sheet, verified clean on FKs (0 null Vendor_ID, 0 null PO_ID, all PO references resolve against Purchase Orders). LIFNR uses the odd-series BP staging key (Vendor_ID x 2 + 1) matching vendors_core and the EKKO references. GJAHR (fiscal year, part of RBKP's key) is deliberately NOT emitted: deriving it requires fiscal-year-variant logic (a calendar year is an assumption), and posting date/year is assigned by the target system at invoice entry -- same reason BELNR elsewhere is only a staging key. Invoice Matching (3-way match log) is intentionally not mapped: matching is a runtime/config process in SAP (tolerance keys, ERS), and the match/variance amounts are derived comparisons, not migrated master or document data -- recorded in legacy_to_sap_mapping notes instead of a spec.",
+  "targets": [
+    {
+      "table": "RBKP",
+      "fields": [
+        {"target_field": "BELNR", "sap_description": "Document Number of an Invoice Document (staging key, matches RSEG lines)", "transform": "direct", "source": "Vendor_Invoice_ID"},
+        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, odd series Vendor_ID x 2 + 1)", "transform": "row_number_pad", "source": "Vendor_ID", "multiplier": 2, "offset": 1},
+        {"target_field": "BLDAT", "sap_description": "Invoice Date (from vendor document)", "transform": "date_yyyymmdd", "source": "Invoice_Date"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "EBELN", "sap_description": "Purchase Order Number (staging reference, resolves against EKKO)", "transform": "direct", "source": "PO_ID"},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number (external legacy/vendor invoice number)", "transform": "truncate", "source": "Invoice_Number", "max_len": 16},
+        {"target_field": "WAERS", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "RMWWR", "sap_description": "Gross Invoice Value (tax-inclusive total -- RBKP stores the gross, unlike VBRK-NETWR which is net)", "transform": "direct", "source": "Total_Amount"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Subtotal", "reason": "net total is derivable as gross minus tax; RBKP stores the gross invoice value (RMWWR) -- the tax-relevant code lives per line via RSEG-MWSKZ"},
+    {"source": "Tax_Amount", "reason": "tax is calculated per item via tax conditions (RSEG-MWSKZ), not stored on the header"},
+    {"source": "Amount_Paid", "reason": "AP clearing status is derived in SAP from outgoing payment/clearing documents (ACDOCA/BSEG against the invoice), not carried as a flat field -- same treatment as Amount_Collected on customer invoices"},
+    {"source": "Outstanding_Amount", "reason": "same as Amount_Paid -- derived open-item status, not stored"},
+    {"source": "Due_Date", "reason": "RBKP has no due-date field -- derived at runtime from the invoice date plus ZTERM payment terms from the vendor master (LFB1-ZTERM, already mapped)"},
+    {"source": "Status", "reason": "structural in SAP -- invoice/parking/clearing status (RBKPP/RFBSK) is set by posting events, not carried from source; same treatment as every other Status column in this project"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the entering SAP user"}
+  ]
+}
