@@ -1,0 +1,51 @@
+{
+  "source_sheet": "Vendors",
+  "source_key": "Vendor_ID",
+  "notes": "Mirror of customers_core.json for the vendor side, following the same conventions: staging keys carry legacy IDs verbatim, every unknown SAP customizing value is a lookup_passthrough XREF, and open mapping decisions are left OUT rather than guessed. Address fields are simplified vs. the customers treatment: LFA1 keeps a one-line street string (STRAS) plus a split-derived city (ORT01), because unlike customers (billing vs shipping), vendors have exactly one free-text Address with no second address to disambiguate -- still a heuristic parse, flagged the same way the customers_addresses spec flags its own parsing. KNOWN OPEN DECISION: this spec emits PARTNER/LIFNR = raw Vendor_ID (1..25), which collides with customers_core's PARTNER = raw Customer_ID in BUT000 -- the BP numbering strategy (disjoint ranges or prefixed staging keys) is undecided; see DATA_QUALITY_FINDINGS.md. Until it is decided, BUT000 output is not loadable as-is.",
+  "targets": [
+    {
+      "table": "BUT000",
+      "fields": [
+        {"target_field": "PARTNER", "sap_description": "Business Partner Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "BU_SORT1", "sap_description": "Search Term 1", "transform": "direct", "source": "Vendor_Code"},
+        {"target_field": "NAME_ORG1", "sap_description": "Organization Name", "transform": "truncate", "source": "Vendor_Name", "max_len": 40}
+      ]
+    },
+    {
+      "table": "LFA1",
+      "fields": [
+        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "NAME1", "sap_description": "Name 1", "transform": "truncate", "source": "Vendor_Name", "max_len": 40},
+        {"target_field": "SORTL", "sap_description": "Search Term", "transform": "truncate", "source": "Vendor_Code", "max_len": 10},
+        {"target_field": "LAND1", "sap_description": "Country Key", "transform": "value_map", "source": "Country", "mapping": {"Jordan": "JO"}},
+        {"target_field": "STRAS", "sap_description": "Street and House Number", "transform": "truncate", "source": "Address", "max_len": 40},
+        {"target_field": "ORT01", "sap_description": "City (heuristic: last comma-separated part of the free-text Address)", "transform": "split_delimiter", "source": "Address", "delimiter": ",", "part_index": -1},
+        {"target_field": "TELF1", "sap_description": "First Telephone Number", "transform": "truncate", "source": "Phone_Number", "max_len": 16},
+        {"target_field": "STCD1", "sap_description": "Tax Number 1", "transform": "truncate", "source": "Tax_ID", "max_len": 16}
+      ]
+    },
+    {
+      "table": "LFB1",
+      "fields": [
+        {"target_field": "LIFNR", "sap_description": "Vendor Number (staging key)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Contact_Person", "reason": "same denormalization artifact as on Customers -- a vendor contact person belongs in its own BP + BUT050 relationship, not a flat text field on LFA1"},
+    {"source": "Email", "reason": "belongs in ADR6 via ADDRNUMBER; same open address-routing decision documented in customers_core.json"},
+    {"source": "Vendor_Type", "reason": "LFA1 has no classification field; the natural home is BUT000-BU_GROUP (BP grouping), which is target-system configuration -- a business decision, not a transform"},
+    {"source": "Currency", "reason": "a vendor's order currency lives in LFM1 (purchasing organization view, LFM1-WAERS), which requires an EKORG purchasing-organization assignment that this dataset has no source column for -- same sales-area-shaped gap as KNVV-VKORG on customers"},
+    {"source": "Bank_Account", "reason": "vendor bank details belong in LFBK (Vendor Master Bank Details), keyed by LIFNR + bank sequence -- deliberately out of scope of this spec, add an LFBK target when bank migration is confirmed"},
+    {"source": "IBAN", "reason": "same as Bank_Account -- LFBK, not LFA1"},
+    {"source": "Credit_Limit", "reason": "vendor credit management is FSCM Credit Management (UKM_BP), not an LFA1/LFB1 field -- same APPROX routing already recorded for Sales>Credit Limits"},
+    {"source": "Is_Active", "reason": "same LOEVM-vs-SPERR ambiguity documented on customers -- needs a business decision before encoding"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change (13 rows also have Updated_At before Created_At -- see DATA_QUALITY_FINDINGS.md, defect never reaches a mapping)"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

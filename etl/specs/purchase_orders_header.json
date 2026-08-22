@@ -1,0 +1,38 @@
+{
+  "source_sheet": "Purchase Orders",
+  "source_key": "Purchase_Order_ID",
+  "notes": "Purchasing-document header, mirroring the sales_orders_header/journal_entries_header conventions: the legacy Purchase_Order_ID is carried verbatim as EBELN (a real load assigns EBELN from a number range), header totals are dropped as derived (sum of EKPO items), and workflow/status columns are dropped as structural. BSTYP='F' and BSART='NB' are the standard delivered purchase-order category/type rather than a site-specific customizing value -- flag for confirmation if the target system uses custom document types.",
+  "targets": [
+    {
+      "table": "EKKO",
+      "fields": [
+        {"target_field": "EBELN", "sap_description": "Purchasing Document Number (staging key, matches EKPO/EKET lines)", "transform": "direct", "source": "Purchase_Order_ID"},
+        {"target_field": "BSTYP", "sap_description": "Purchasing Document Category (F = purchase order)", "transform": "constant", "value": "F"},
+        {"target_field": "BSART", "sap_description": "Purchasing Document Type (NB = standard PO, delivered default)", "transform": "constant", "value": "NB"},
+        {"target_field": "BUKRS", "sap_description": "Company Code", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> T001-BUKRS"},
+        {"target_field": "LIFNR", "sap_description": "Vendor (staging key, resolves against vendors_core LFA1/LIFNR)", "transform": "direct", "source": "Vendor_ID"},
+        {"target_field": "ERDAT", "sap_description": "Created On", "transform": "date_yyyymmdd", "source": "PO_Date"},
+        {"target_field": "WAERS", "sap_description": "Currency", "transform": "lookup_passthrough", "source": "Currency", "lookup_ref": "Foundation>Currencies -> TCURC"},
+        {"target_field": "ZTERM", "sap_description": "Terms of Payment Key", "transform": "lookup_passthrough", "source": "Payment_Terms", "lookup_ref": "Foundation>Payment Terms -> T052"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "PO_Number", "reason": "external document number; the staging key carries Purchase_Order_ID, a real load assigns EBELN from a number range -- same convention as BELNR/VBELN"},
+    {"source": "Subtotal", "reason": "derived -- a PO's value is the sum of its EKPO item net values, same treatment as journal-entry Debit_Total/Credit_Total"},
+    {"source": "Tax_Amount", "reason": "derived -- tax is calculated per item (EKPO-MWSKZ / condition records), not stored on the header"},
+    {"source": "Total_Amount", "reason": "derived -- sum of EKPO net values plus tax conditions"},
+    {"source": "Delivery_Date", "reason": "the real per-item delivery dates live on the schedule lines (EKET-EINDT, populated by purchase_order_lines.json from Expected_Date); the header-level date is redundant denormalization"},
+    {"source": "Delivery_Address", "reason": "EKKO has no address field -- a delivery address is a ship-to partner/address-management assignment (ADRC linked via the partner function), not a header column; model when partner functions are configured"},
+    {"source": "Notes", "reason": "PO header long text lives in the text system (STXH/STXL, object EKKO), not a table field"},
+    {"source": "Status", "reason": "structural in SAP -- release status is EKKO release procedure fields (FRGKE/FRGZU) and procurement status (PROCSTAT), both driven by workflow events, not a carried-over flat value; same treatment as Sales Orders Status"},
+    {"source": "Requisition_ID", "reason": "document-flow link to a purchase requisition (EBAN) -- purchase requisitions are not yet migrated (see legacy_to_sap_mapping); encode the link once that side exists"},
+    {"source": "Approval_Request_ID", "reason": "approval is rebuilt via SAP release workflow configuration, not carried as a flat field"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Approved_By_User_ID", "reason": "captured by the release workflow as the releasing SAP user"},
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

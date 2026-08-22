@@ -132,6 +132,38 @@ or an account-type mislabel in the source. It doesn't block the prototype,
 but confirm with the business whether those 32 rows are correct before a real
 load.
 
+## Findings surfaced while mapping the purchasing cycle (Vendors, POs, Contracts)
+
+Three issues found by the mapping work itself, recorded here alongside the
+profiling findings:
+
+- **Two vendor contracts have no vendor at all.** `Vendor Contracts` rows 1
+  and 3 (`VC-2025-00001`, `VC-2025-00003`) have a **null `Vendor_ID`** — a
+  contract with no counterparty. The name-based FK check didn't flag them
+  because it drops null FK values before matching: a null reference is
+  currently *invisible* to referential-integrity checking, not confirmed
+  clean. A null FK on a supposedly-mandatory relationship is arguably a
+  stronger finding than an orphaned value; a future version of
+  `data_quality_check.py` should report null FKs on non-nullable-looking
+  relationships separately. The transform emits these rows with a null
+  `EKKO.LIFNR` — visible in the run log's null-rate section — and they'd be
+  rejected at load.
+- **Backward contract validity dates confirmed at row level.** The 3
+  `Vendor Contracts` rows flagged by the DATE_ORDER check are
+  `VC-2025-00007`, `VC-2025-00012`, `VC-2025-00014` (3 of 20 rows;
+  `Customer Contracts` has the same defect in 3 of 25 rows). The
+  `vendor_contracts` spec passes `KDATB`/`KDATE` through verbatim rather than
+  guessing which date is wrong; SAP would reject these at load, so they need
+  business review of the source records.
+- **Customer and vendor staging keys collide in BUT000.** Both
+  `customers_core` and `vendors_core` emit `PARTNER` = the raw legacy
+  `Customer_ID`/`Vendor_ID` (1..40 and 1..25), so customer 1 and vendor 1
+  land on the same Business Partner number. This is an open *numbering
+  strategy* decision (disjoint odd/even series, offset ranges, or prefixed
+  staging keys — every FK reference to PARTNER/KUNNR/LIFNR would need the
+  same treatment consistently), deliberately not guessed in the specs. Until
+  decided, BUT000 output must not be treated as loadable.
+
 ## How to use this alongside the rest of the project
 
 This complements, rather than duplicates, `etl/qc_check.py` (which checks the

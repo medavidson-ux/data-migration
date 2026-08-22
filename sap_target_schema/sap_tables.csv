@@ -688,3 +688,55 @@ ADRC,"Business Address Services: Addresses (central address table used across BP
 TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,MANDT,Client,CLNT,Y
 TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,VKORG,Sales Organization,CHAR(4),Y
 TVKO,Sales Organizations (and their assignment to a Company Code),SD (config),config,BUKRS,Company Code,CHAR(4),N
+LFA1,Vendor Master: General Data,FI,master,MANDT,Client,CLNT,Y
+LFA1,Vendor Master: General Data,FI,master,LIFNR,Vendor Number,CHAR(10),Y
+LFA1,Vendor Master: General Data,FI,master,LAND1,Country Key,CHAR(3),N
+LFA1,Vendor Master: General Data,FI,master,NAME1,Name 1,CHAR(40),N
+LFA1,Vendor Master: General Data,FI,master,SORTL,Search Term,CHAR(10),N
+LFA1,Vendor Master: General Data,FI,master,STRAS,Street and House Number,CHAR(40),N
+LFA1,Vendor Master: General Data,FI,master,ORT01,City,CHAR(40),N
+LFA1,Vendor Master: General Data,FI,master,PSTLZ,Postal Code,CHAR(10),N
+LFA1,Vendor Master: General Data,FI,master,TELF1,First Telephone Number,CHAR(16),N
+LFA1,Vendor Master: General Data,FI,master,STCD1,Tax Number 1,CHAR(16),N
+LFA1,Vendor Master: General Data,FI,master,STCEG,VAT Registration Number,CHAR(20),N
+LFB1,Vendor Master: Company Code Data,FI,master,MANDT,Client,CLNT,Y
+LFB1,Vendor Master: Company Code Data,FI,master,LIFNR,Vendor Number,CHAR(10),Y
+LFB1,Vendor Master: Company Code Data,FI,master,BUKRS,Company Code,CHAR(4),Y
+LFB1,Vendor Master: Company Code Data,FI,master,AKONT,Reconciliation Account,CHAR(10),N
+LFB1,Vendor Master: Company Code Data,FI,master,ZTERM,Terms of Payment Key,CHAR(4),N
+LFB1,Vendor Master: Company Code Data,FI,master,ERDAT,Date Created On,DATS,N
+LFB1,Vendor Master: Company Code Data,FI,master,LOEVM,Central Deletion Flag,CHAR(1),N
+LFB1,Vendor Master: Company Code Data,FI,master,SPERR,Posting Block,CHAR(1),N
+EKKO,Purchasing Document Header,MM,transaction,MANDT,Client,CLNT,Y
+EKKO,Purchasing Document Header,MM,transaction,EBELN,Purchasing Document Number,CHAR(10),Y
+EKKO,Purchasing Document Header,MM,transaction,BSTYP,Purchasing Document Category,CHAR(1),N
+EKKO,Purchasing Document Header,MM,transaction,BSART,Purchasing Document Type,CHAR(4),N
+EKKO,Purchasing Document Header,MM,transaction,BUKRS,Company Code,CHAR(4),N
+EKKO,Purchasing Document Header,MM,transaction,EKORG,Purchasing Organization,CHAR(4),N
+EKKO,Purchasing Document Header,MM,transaction,LIFNR,Vendor Number,CHAR(10),N
+EKKO,Purchasing Document Header,MM,transaction,ERDAT,Created On,DATS,N
+EKKO,Purchasing Document Header,MM,transaction,WAERS,Currency,CUKY(5),N
+EKKO,Purchasing Document Header,MM,transaction,ZTERM,Terms of Payment Key,CHAR(4),N
+EKKO,Purchasing Document Header,MM,transaction,KDATB,Validity Start Date,DATS,N
+EKKO,Purchasing Document Header,MM,transaction,KDATE,Validity End Date,DATS,N
+EKKO,Purchasing Document Header,MM,transaction,KTWRT,Target Value,CURR,N
+EKPO,Purchasing Document Item,MM,transaction,MANDT,Client,CLNT,Y
+EKPO,Purchasing Document Item,MM,transaction,EBELN,Purchasing Document Number,CHAR(10),Y
+EKPO,Purchasing Document Item,MM,transaction,EBELP,Item Number,NUMC(5),Y
+EKPO,Purchasing Document Item,MM,transaction,MATNR,Material Number,CHAR(18),N
+EKPO,Purchasing Document Item,MM,transaction,TXZ01,Short Text,CHAR(40),N
+EKPO,Purchasing Document Item,MM,transaction,PSTYP,Item Category,NUMC(1),N
+EKPO,Purchasing Document Item,MM,transaction,KNTTP,Account Assignment Category,CHAR(1),N
+EKPO,Purchasing Document Item,MM,transaction,MENGE,Purchase Order Quantity,QUAN,N
+EKPO,Purchasing Document Item,MM,transaction,MEINS,Purchase Order Unit of Measure,UNIT(3),N
+EKPO,Purchasing Document Item,MM,transaction,NETWR,Net Value,CURR,N
+EKPO,Purchasing Document Item,MM,transaction,MWSKZ,Tax on Sales/Purchases Code,CHAR(2),N
+EKPO,Purchasing Document Item,MM,transaction,WERKS,Plant,CHAR(4),N
+EKPO,Purchasing Document Item,MM,transaction,LGORT,Storage Location,CHAR(4),N
+EKET,Purchasing Document Schedule Line,MM,transaction,MANDT,Client,CLNT,Y
+EKET,Purchasing Document Schedule Line,MM,transaction,EBELN,Purchasing Document Number,CHAR(10),Y
+EKET,Purchasing Document Schedule Line,MM,transaction,EBELP,Item Number,NUMC(5),Y
+EKET,Purchasing Document Schedule Line,MM,transaction,ETENR,Delivery Schedule Line Number,NUMC(4),Y
+EKET,Purchasing Document Schedule Line,MM,transaction,MENGE,Scheduled Quantity,QUAN,N
+EKET,Purchasing Document Schedule Line,MM,transaction,WEMNG,Quantity Delivered,QUAN,N
+EKET,Purchasing Document Schedule Line,MM,transaction,EINDT,Item Delivery Date,DATS,N

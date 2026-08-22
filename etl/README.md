@@ -52,11 +52,18 @@ Reads every `*.json` file in `specs/`, applies it to the matching sheet in
 
 ### What it currently covers
 
-Five of the eleven specs in `specs/` are the executable encoding of the first
-three worked examples in `sap_target_schema/examples/`; the rest cover the 4th,
-5th, and 6th examples — `Customers`, the Material Master, and `Assets` — the
+Fifteen specs. Five are the executable encoding of the first three worked
+examples in `sap_target_schema/examples/`; the next six cover the 4th, 5th,
+and 6th examples — `Customers`, the Material Master, and `Assets` — the
 `Customers` address half came out of a live session with the agent below, see
-§ "A real session, not a demo" for how it got there:
+§ "A real session, not a demo" for how it got there. The newest four cover
+the **purchasing cycle** (`Vendors`, purchase orders and their lines, and
+vendor contracts) — chosen because the data-quality report flagged the
+contract tables' date-order defects as "check before mapping", and because it
+balances the existing customer/sales side; see
+`sap_target_schema/DATA_QUALITY_FINDINGS.md` for what mapping them surfaced
+(two vendor-less contracts, the backward validity dates passed through
+verbatim, and an open Business-Partner numbering decision).
 
 | Spec | Source sheet(s) | Target tables |
 |---|---|---|
@@ -71,6 +78,10 @@ three worked examples in `sap_target_schema/examples/`; the rest cover the 4th,
 | `locations.json` | Locations | `T499S`, `ADRC` |
 | `assets.json` | Assets | `ANLA`, `ANLZ`, `ANLB` |
 | `depreciation.json` | Depreciation | `ACDOCA` (one leg only — see notes below) |
+| `vendors_core.json` | Vendors | `BUT000`, `LFA1`, `LFB1` |
+| `purchase_orders_header.json` | Purchase Orders | `EKKO` |
+| `purchase_order_lines.json` | Purchase Order Lines | `EKPO`, `EKET` |
+| `vendor_contracts.json` | Vendor Contracts | `EKKO` (`BSTYP=K`, contract category) |
 
 Together the two `customers_*.json` specs are the executable side of the 4th
 worked example, `sap_target_schema/examples/customers_field_mapping.csv` — see
@@ -106,7 +117,7 @@ posting, because the engine has no "expand one row into a balanced
 multi-line document" capability yet — flagged rather than worked around,
 same as the `Weight_KG` gap in the Materials example.
 
-Run against the real seed data, this produces 28 output tables from 1,770
+Run against the real seed data, this produces 33 output tables from 1,988
 distinct source rows, all 257 journal entries validate as balanced, every one
 of the 90 `ADRC` rows resolves a non-null `COUNTRY` with no `ADDRNUMBER`
 collisions, and every dropped/deferred field is accounted for in

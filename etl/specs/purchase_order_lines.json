@@ -1,0 +1,44 @@
+{
+  "source_sheet": "Purchase Order Lines",
+  "source_key": "Purchase_Order_Line_ID",
+  "targets": [
+    {
+      "table": "EKPO",
+      "notes": "PO item, mirroring sales_order_lines/VBAP conventions: EBELP follows SAP numbering (Line_Number x10), pricing source columns are dropped as condition-driven, and quantities are carried as-is.",
+      "fields": [
+        {"target_field": "EBELN", "sap_description": "Purchasing Document Number (staging key, must match the header)", "transform": "direct", "source": "Purchase_Order_ID"},
+        {"target_field": "EBELP", "sap_description": "Item Number", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 10, "width": 5},
+        {"target_field": "MATNR", "sap_description": "Material", "transform": "lookup_passthrough", "source": "Item_ID", "lookup_ref": "Purchasing>Inventory Items / Manufacturing>Product Catalog -> MARA"},
+        {"target_field": "TXZ01", "sap_description": "Short Text", "transform": "truncate", "source": "Description", "max_len": 40},
+        {"target_field": "MENGE", "sap_description": "Purchase Order Quantity", "transform": "direct", "source": "Quantity"},
+        {"target_field": "MEINS", "sap_description": "Purchase Order Unit of Measure", "transform": "lookup_passthrough", "source": "UOM_ID", "lookup_ref": "Inventory>Units of Measure -> T006"},
+        {"target_field": "NETWR", "sap_description": "Net Value (Item)", "transform": "direct", "source": "Line_Total"},
+        {"target_field": "MWSKZ", "sap_description": "Tax on Sales/Purchases Code", "transform": "lookup_passthrough", "source": "Tax_Code_ID", "lookup_ref": "Foundation>Tax Codes -> T007A"}
+      ]
+    },
+    {
+      "table": "EKET",
+      "notes": "One schedule line per item (ETENR constant '1') -- the source has a single Expected_Date per line, so there is nothing to fan out into multiple schedule lines. Quantity_Received is carried here as WEMNG, mirroring how sales lines treat delivered quantity as document-flow data: in a real load it would be derived from goods-receipt documents (MSEG) instead of trusted from the source.",
+      "fields": [
+        {"target_field": "EBELN", "sap_description": "Purchasing Document Number (staging key)", "transform": "direct", "source": "Purchase_Order_ID"},
+        {"target_field": "EBELP", "sap_description": "Item Number", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 10, "width": 5},
+        {"target_field": "ETENR", "sap_description": "Delivery Schedule Line Number", "transform": "constant", "value": "1"},
+        {"target_field": "MENGE", "sap_description": "Scheduled Quantity", "transform": "direct", "source": "Quantity"},
+        {"target_field": "WEMNG", "sap_description": "Quantity Delivered (from legacy Quantity_Received; a real load derives this from MSEG goods movements)", "transform": "direct", "source": "Quantity_Received"},
+        {"target_field": "EINDT", "sap_description": "Item Delivery Date", "transform": "date_yyyymmdd", "source": "Expected_Date"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Purchase_Order_Line_ID", "reason": "SAP's own key is EKPO-EBELP; kept only as an informal source row identifier, not loaded"},
+    {"source": "Company_ID", "reason": "denormalized in the source -- EKPO has no company code field, it is inherited from the header (EKKO-BUKRS)"},
+    {"source": "Unit_Price", "reason": "pricing is fully condition-driven in MM (KONV/PRCD_ELEMENTS), no flat EKPO field -- same treatment as VBAP"},
+    {"source": "Discount_Percent", "reason": "item-level discount condition record (KONV/PRCD_ELEMENTS), not a stored field"},
+    {"source": "Tax_Amount", "reason": "tax condition record result (KONV/PRCD_ELEMENTS), not a stored field -- the tax CODE is carried via EKPO-MWSKZ"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}
