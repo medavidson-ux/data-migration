@@ -1,0 +1,28 @@
+{
+  "source_sheet": "Goods Receipts",
+  "source_key": "Goods_Receipt_ID",
+  "notes": "Material document header for goods receipts against purchase orders -- closes the middle of the purchasing cycle (PO -> GR -> invoice verification, whose RBKP/RSEG legs are already mapped). FKs verified clean before mapping: 0 null PO_ID, every PO reference resolves against Purchase Orders, and every Goods Receipt Lines header resolves here. MJAHR (material document year, part of MKPF's key) is deliberately not emitted -- same reasoning as RBKP-GJAHR: deriving it requires fiscal-year-variant logic and the target assigns it at posting. No vendor on the header target: MKPF has no LIFNR field -- the vendor is implied by the PO reference carried on the MSEG items.",
+  "targets": [
+    {
+      "table": "MKPF",
+      "fields": [
+        {"target_field": "MBLNR", "sap_description": "Number of Material Document (staging key, matches MSEG items)", "transform": "direct", "source": "Goods_Receipt_ID"},
+        {"target_field": "BLDAT", "sap_description": "Document Date in Document", "transform": "date_yyyymmdd", "source": "Receipt_Date"},
+        {"target_field": "BUDAT", "sap_description": "Posting Date in the Document", "transform": "date_yyyymmdd", "source": "Receipt_Date"},
+        {"target_field": "XBLNR", "sap_description": "Reference Document Number (external legacy GR number)", "transform": "truncate", "source": "GR_Number", "max_len": 16}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Company_ID", "reason": "MKPF has no company code field -- it is implied by the plant on the MSEG items (WERKS), same header-inherits-from-item structure as RBKP references"},
+    {"source": "Vendor_ID", "reason": "MKPF has no vendor field; the vendor is implied by the PO reference (EBELN) on the MSEG items -- verified consistent with the PO's own vendor during FK checks"},
+    {"source": "Warehouse_ID", "reason": "the receiving warehouse is item-level data in SAP (MSEG-LGORT), carried on the goods_receipt_lines spec"},
+    {"source": "Notes", "reason": "material document header text lives in the text system, not a table field"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Received_By_User_ID", "reason": "captured automatically as the entering SAP user"},
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

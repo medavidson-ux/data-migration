@@ -1,0 +1,39 @@
+{
+  "source_sheet": "Goods Receipt Lines",
+  "source_key": "Goods_Receipt_Line_ID",
+  "targets": [
+    {
+      "table": "MSEG",
+      "notes": "KNOWN ONE-LEG LIMITATION (same class as depreciation.json's): 30 of 77 lines have BOTH a positive Quantity_Accepted and a positive Quantity_Rejected, which SAP models as TWO MSEG movements -- 101 (GR into stock) for the accepted quantity and 122 (return/reversal) for the rejected. The engine has no conditional row-splitting transform, so this spec emits only the 101 leg with Quantity_Accepted; rejected quantities are NOT emitted and must not be assumed zero. The rejected 122 leg needs either a row-expansion engine capability or a pre-split source extract -- flagged, not worked around. BWART='101' is the standard delivered movement type for GR against PO. Lot_Number_ID is 91% null in the source and batch (MCHA/MCH1) handling is not decided, so it is dropped with a reason rather than half-mapped.",
+      "fields": [
+        {"target_field": "MBLNR", "sap_description": "Number of Material Document (staging key, must match the header)", "transform": "direct", "source": "Goods_Receipt_ID"},
+        {"target_field": "ZEILE", "sap_description": "Item in Material Document", "transform": "row_number_pad", "source": "Line_Number", "multiplier": 10, "width": 4},
+        {"target_field": "BWART", "sap_description": "Movement Type (101 = GR against PO, delivered standard)", "transform": "constant", "value": "101"},
+        {"target_field": "MATNR", "sap_description": "Material", "transform": "lookup_passthrough", "source": "Item_ID", "lookup_ref": "Purchasing>Inventory Items / Manufacturing>Product Catalog -> MARA"},
+        {"target_field": "MENGE", "sap_description": "Quantity (ACCEPTED only -- see one-leg note: rejected quantities are not emitted)", "transform": "direct", "source": "Quantity_Accepted"},
+        {"target_field": "MEINS", "sap_description": "Unit of Measure", "transform": "lookup_passthrough", "source": "UOM_ID", "lookup_ref": "Inventory>Units of Measure -> T006"},
+        {"target_field": "WERKS", "sap_description": "Plant", "transform": "lookup_passthrough", "source": "Company_ID", "lookup_ref": "Foundation>Companies -> plant determination (APPROX: single-company dataset, plant assignment undecided)"},
+        {"target_field": "LGORT", "sap_description": "Storage Location (receiving warehouse from the GR header)", "transform": "lookup_passthrough", "source": "Goods_Receipt_ID", "lookup_ref": "Inventory>Warehouses -> T300/LGORT via GR header Warehouse_ID (denormalized header reference; resolvable at load via the header join)"},
+        {"target_field": "EBELN", "sap_description": "Purchase Order Number (staging reference, from the GR header's PO_ID)", "transform": "lookup_passthrough", "source": "Goods_Receipt_ID", "lookup_ref": "Purchasing>Goods Receipts -> header PO_ID -> EKKO-EBELN (denormalized header reference; resolvable at load via the header join)"},
+        {"target_field": "EBELP", "sap_description": "Item Number of Purchase Order", "transform": "lookup_passthrough", "source": "Purchase_Order_Line_ID", "lookup_ref": "Purchasing>Purchase Order Lines -> EKPO-EBELP (resolvable at load: PO line Line_Number x 10)"}
+      ]
+    }
+  ],
+  "dropped_fields": [
+    {"source": "Goods_Receipt_Line_ID", "reason": "SAP's own key is MSEG-ZEILE; kept only as an informal source row identifier, not loaded"},
+    {"source": "Quantity", "reason": "superseded by Quantity_Accepted -- the legacy column counts delivered goods, MSEG must carry what actually entered stock; the delta (rejected) needs a 122 movement this spec cannot emit (see notes)"},
+    {"source": "Quantity_Rejected", "reason": "requires a separate 122 movement line per source row -- engine cannot conditionally split one row into two movements (see notes); must be handled by row expansion or pre-split extract before load"},
+    {"source": "Quantity_Ordered", "reason": "redundant denormalization of the PO line quantity (already on EKET-MENGE via purchase_order_lines.json)"},
+    {"source": "Unit_Price", "reason": "valuation comes from the PO price via the account assignment, not a flat MSEG field"},
+    {"source": "Discount_Percent", "reason": "pricing condition data, not a goods-movement field"},
+    {"source": "Tax_Code_ID", "reason": "tax code belongs to the invoice verification side (RSEG-MWSKZ, already mapped), not the material document"},
+    {"source": "Tax_Amount", "reason": "tax condition result, not a goods-movement field"},
+    {"source": "Line_Total", "reason": "GR line value is derived at valuation time from PO price x accepted quantity, not stored flat on MSEG"},
+    {"source": "Lot_Number_ID", "reason": "91% null in the source (70/77) and batch management (MCHA/MCH1) is an undecided target-system configuration -- mapping a 9%-populated batch reference before that decision would produce output that looks batch-managed but isn't; revisit when batch strategy is set"}
+  ],
+  "not_migrated_fields": [
+    {"source": "Created_At", "reason": "system-generated on save"},
+    {"source": "Updated_At", "reason": "system-generated on change"},
+    {"source": "Created_By_User_ID", "reason": "captured automatically as the creating SAP user"}
+  ]
+}

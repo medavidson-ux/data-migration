@@ -757,3 +757,8 @@ RSEG,Invoice Verification: Line Items,MM-IV,transaction,MENGE,Quantity,QUAN,N
 RSEG,Invoice Verification: Line Items,MM-IV,transaction,MEINS,Unit of Measure,UNIT(3),N
 RSEG,Invoice Verification: Line Items,MM-IV,transaction,MWSKZ,Tax on Sales/Purchases Code,CHAR(2),N
 RSEG,Invoice Verification: Line Items,MM-IV,transaction,MATNR,Material Number,CHAR(18),N
+MKPF,Material Document: Header,MM-IM,transaction,XBLNR,Reference Document Number,CHAR(16),N
+MSEG,Material Document: Line Items,MM-IM,transaction,EBELN,Purchase Order Number (staging reference),CHAR(10),N
+MSEG,Material Document: Line Items,MM-IM,transaction,EBELP,Item Number of Purchase Order,NUMC(5),N
+MSEG,Material Document: Line Items,MM-IM,transaction,LGORT,Storage Location,CHAR(4),N
+MSEG,Material Document: Line Items,MM-IM,transaction,MEINS,Unit of Measure,UNIT(3),N

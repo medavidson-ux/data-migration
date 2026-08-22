@@ -3348,6 +3348,30 @@
         "description": "Quantity",
         "sap_type": "QUAN",
         "key": false
+      },
+      {
+        "field": "EBELN",
+        "description": "Purchase Order Number (staging reference)",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "EBELP",
+        "description": "Item Number of Purchase Order",
+        "sap_type": "NUMC(5)",
+        "key": false
+      },
+      {
+        "field": "LGORT",
+        "description": "Storage Location",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "MEINS",
+        "description": "Unit of Measure",
+        "sap_type": "UNIT(3)",
+        "key": false
       }
     ]
   },
@@ -3384,6 +3408,12 @@
         "field": "BUDAT",
         "description": "Posting Date",
         "sap_type": "DATS",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(16)",
         "key": false
       }
     ]
