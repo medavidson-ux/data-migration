@@ -740,3 +740,11 @@ EKET,Purchasing Document Schedule Line,MM,transaction,ETENR,Delivery Schedule Li
 EKET,Purchasing Document Schedule Line,MM,transaction,MENGE,Scheduled Quantity,QUAN,N
 EKET,Purchasing Document Schedule Line,MM,transaction,WEMNG,Quantity Delivered,QUAN,N
 EKET,Purchasing Document Schedule Line,MM,transaction,EINDT,Item Delivery Date,DATS,N
+VBRK,Billing Document Header,SD-Billing,transaction,BUKRS,Company Code,CHAR(4),N
+VBRK,Billing Document Header,SD-Billing,transaction,WAERS,SD Document Currency,CUKY(5),N
+VBRK,Billing Document Header,SD-Billing,transaction,ZTERM,Terms of Payment Key,CHAR(4),N
+VBRK,Billing Document Header,SD-Billing,transaction,VGBEL,Reference Document Number,CHAR(10),N
+VBRK,Billing Document Header,SD-Billing,transaction,XBLNR,Reference Document Number (external),CHAR(16),N
+VBRP,Billing Document Item,SD-Billing,transaction,ARKTX,Short Text (Item),CHAR(40),N
+VBRP,Billing Document Item,SD-Billing,transaction,VRKME,Sales Unit,UNIT(3),N
+VBRP,Billing Document Item,SD-Billing,transaction,MWSKZ,Tax on Sales/Purchases Code,CHAR(2),N

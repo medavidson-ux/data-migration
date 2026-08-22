@@ -917,6 +917,36 @@
         "description": "Net Value",
         "sap_type": "CURR",
         "key": false
+      },
+      {
+        "field": "BUKRS",
+        "description": "Company Code",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "WAERS",
+        "description": "SD Document Currency",
+        "sap_type": "CUKY(5)",
+        "key": false
+      },
+      {
+        "field": "ZTERM",
+        "description": "Terms of Payment Key",
+        "sap_type": "CHAR(4)",
+        "key": false
+      },
+      {
+        "field": "VGBEL",
+        "description": "Reference Document Number",
+        "sap_type": "CHAR(10)",
+        "key": false
+      },
+      {
+        "field": "XBLNR",
+        "description": "Reference Document Number (external)",
+        "sap_type": "CHAR(16)",
+        "key": false
       }
     ]
   },
@@ -959,6 +989,24 @@
         "field": "NETWR",
         "description": "Net Value",
         "sap_type": "CURR",
+        "key": false
+      },
+      {
+        "field": "ARKTX",
+        "description": "Short Text (Item)",
+        "sap_type": "CHAR(40)",
+        "key": false
+      },
+      {
+        "field": "VRKME",
+        "description": "Sales Unit",
+        "sap_type": "UNIT(3)",
+        "key": false
+      },
+      {
+        "field": "MWSKZ",
+        "description": "Tax on Sales/Purchases Code",
+        "sap_type": "CHAR(2)",
         "key": false
       }
     ]

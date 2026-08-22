@@ -188,7 +188,7 @@ Sales,Credit Limits,MIGRATE,UKM_BP (FSCM Credit Mgmt) / FD32 classic,FI-FSCM,HIG
 Sales,Customer Contracts,MIGRATE,VBAK (doc category 'Contract'),SD,HIGH,"Sales document header, contract document type"
 Sales,Customers,MIGRATE,BUT000 + Customer role,SD (Business Partner),HIGH,Duplicate of CRM > Customer Profiles — consolidate before load
 Sales,Fulfillment Lines,MIGRATE,LIPS,SD-Delivery,APPROX,Delivery item; 'fulfillment' maps to the SD delivery process
-Sales,Invoices,MIGRATE,VBRK / VBRP,SD-Billing,HIGH,Marked DEPRECATED in source; duplicates Finance > Customer Invoices — confirm which is authoritative before load
+Sales,Invoices,MIGRATE,VBRK / VBRP,SD-Billing,HIGH,"DEPRECATED duplicate of Finance > Customer Invoices, now VERIFIED: 1:1 on every shared column (53/53 rows -- Invoice_Number, dates, customer, totals, status, currency); Finance sheet is authoritative and mapped by customer_invoices_header.json. Sales extras: Fulfillment_ID (delivery document-flow link, LIKP, not yet migrated) and Payment_Terms (derivable from customer master / sales order). Not mapped separately."
 Sales,Order Fulfillment,MIGRATE,LIKP,SD-Delivery,HIGH,Delivery header
 Sales,Sales Order Lines,MIGRATE,VBAP,SD,HIGH,Sales document item
 Sales,Sales Orders,MIGRATE,VBAK,SD,HIGH,Sales document header
