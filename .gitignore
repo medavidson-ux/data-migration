@@ -12,3 +12,9 @@ etl/agent/mapping_decisions.csv
 
 # ZCode session artifacts
 .zcode/
+
+# Wrangler / Miniflare local dev state
+.wrangler/
+
+# Generated documentation PDFs
+docs/*.pdf
